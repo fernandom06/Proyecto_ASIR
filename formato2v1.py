@@ -27,17 +27,16 @@ def cargar_archivo(texto):
 
 
 def medio(e, barra_tiempo):
-    # Cambiar por la variable csv y video
-    previsualizar("imagen2.jpg", barra_tiempo=barra_tiempo)
+    print(e)
+    previsualizar(video, barra_tiempo=barra_tiempo)
 
 
 def previsualizar(video, barra_tiempo):
     def cargado(e):
         print("cargado")
         reproductor.player.Play()
-        timer.Start(1000)
+        timer.Start(250)
         print(timer.IsRunning())
-
 
     def pause(e):
         print("pause")
@@ -47,82 +46,78 @@ def previsualizar(video, barra_tiempo):
 
     def actualizar(e):
         print("actualizar")
-        #Establezco el valor del slider segun la posicion del video
-        slider.SetValue(reproductor.player.Tell()/1000)
+        # Establezco el valor del slider segun la posicion del video
+        slider.SetValue(reproductor.player.Tell() / 1000)
 
-        tiempo=568/len(barra_tiempo)
-        movimiento=wx.Point(52+(slider.GetValue()*tiempo),30)
+        tiempo = 568 / len(barra_tiempo)
+        movimiento = wx.Point(52 + (slider.GetValue() * tiempo), 30)
         barra_mover.SetPosition(movimiento)
-        #print(slider.GetValue())
-
+        # print(slider.GetValue())
 
     # Destruir la ventana con el menu
     menu.Destroy()
 
     # Crear ventana para el video
-    reproductor = interfaz.Menu(1500, 1000)
+    reproductor = interfaz.Menu((1500, 1000))
     reproductor.SetBackgroundColour("LIGHT BLUE")
     reproductor.Maximize()
     reproductor.Bind(wx.EVT_CLOSE, cerrar)
 
-    main_sizer=wx.GridSizer(2,1,0,0)
+    main_sizer = wx.GridSizer(2, 1, 0, 0)
 
-    sizer_video=wx.GridSizer(1,3,0,0)
+    sizer_video = wx.GridSizer(1, 3, 0, 0)
     main_sizer.Add(sizer_video, 1, wx.EXPAND, 5)
 
-    sizer_grafica=wx.GridSizer(1,3,0,0)
+    sizer_grafica = wx.GridSizer(1, 3, 0, 0)
     main_sizer.Add(sizer_grafica, 1, wx.EXPAND, 5)
 
     panel_botones = wx.Panel(reproductor)
     sizer_video.Add(panel_botones)
     panel_video = wx.Panel(reproductor)
     sizer_video.Add(panel_video)
-    #sizer_dervi= wx.GridSizer(3, 1, 0, 0)
-    #sizer_video.Add(sizer_dervi)
-    panel_dervi=wx.Panel(reproductor)
+    # sizer_dervi= wx.GridSizer(3, 1, 0, 0)
+    # sizer_video.Add(sizer_dervi)
+    panel_dervi = wx.Panel(reproductor)
     sizer_video.Add(panel_dervi)
-    #sizer_dervi.Add(panel_dervi)
-    wx.StaticBitmap(panel_dervi, -1, wx.Bitmap(name="socio2.png"), pos=(0, 0), size=wx.DefaultSize, style=wx.ALIGN_RIGHT)
+    # sizer_dervi.Add(panel_dervi)
+    wx.StaticBitmap(panel_dervi, -1, wx.Bitmap(name="socio2.png"), pos=(0, 0), size=wx.DefaultSize)
 
-
-
-    panel_izqgr=wx.Panel(reproductor)
+    panel_izqgr = wx.Panel(reproductor)
     sizer_grafica.Add(panel_izqgr)
     panel_grafica = wx.Panel(reproductor)
     sizer_grafica.Add(panel_grafica)
 
-
     # Video
     boton_play = wx.Button(panel_botones, label="Play")
     boton_pause = wx.Button(panel_botones, label="Pause", pos=(30, 30))
-    boton_play.Bind(wx.EVT_BUTTON,cargado)
+    boton_play.Bind(wx.EVT_BUTTON, cargado)
     boton_pause.Bind(wx.EVT_BUTTON, pause)
 
     reproductor.player = wx.media.MediaCtrl(panel_video, pos=(0, 0), size=(640, 400))
     reproductor.player.ShowPlayerControls(flags=wx.media.MEDIACTRLPLAYERCONTROLS_VOLUME)
-    reproductor.player.Load(r"madrid.mp4")
+    reproductor.player.Load(video)
 
     # Grafica
 
     wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name="grafico.png"), pos=(0, 0), size=(640, 480))
 
     # Slider
-    timer=wx.Timer(reproductor.player)
-    reproductor.player.Bind(wx.EVT_TIMER,actualizar,timer)
+    timer = wx.Timer(reproductor.player)
+    reproductor.player.Bind(wx.EVT_TIMER, actualizar, timer)
 
-    slider=wx.Slider(reproductor,pos=(20,500),style=wx.SL_VALUE_LABEL)
+    slider = wx.Slider(reproductor, pos=(20, 500), style=wx.SL_VALUE_LABEL)
     slider.Hide()
-    slider.SetRange(0,len(barra_tiempo))
-    barra_mover=wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name="barra2.png"), pos=(52, 30))
+    slider.SetRange(0, len(barra_tiempo))
+    barra_mover = wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name="barra2.png"), pos=(52, 30))
 
     # Sizers
 
     reproductor.SetSizer(main_sizer)
     reproductor.Layout()
 
-    reproductor.Centre(wx.BOTH)
 
     reproductor.Show()
+    reproductor.Centre(wx.BOTH)
 
 
 def graficas(csvp):
@@ -135,11 +130,11 @@ def graficas(csvp):
         x = []
         y = []
         z = []
-        barra_tiempo = []
+        barra = []
 
         for line in leido:
             tiempo.append(line[0])
-            barra_tiempo.append(datetime.strptime(line[0], '%H:%M:%S'))
+            barra.append(datetime.strptime(line[0], '%H:%M:%S'))
             y.append(float(line[1]))
             z.append(float(line[2]))
 
@@ -176,27 +171,27 @@ def graficas(csvp):
     # Guarda el grafico con los colores especificados
     # plt.savefig("grafico.png",facecolor=fig.get_facecolor())
     plt.savefig("grafico.png")
-    return barra_tiempo
+    return barra
 
 
 print("bienvenido al programa")
 print("Carga el archivo CSV")
 
-# csvp=cargar_archivo("Cargar el CSV")
-csvp = "real_madrid.csv"  # Para no tener que elegir siempre
-# video=cargar_archivo("Cargar el video")
+# csvp = cargar_archivo("Cargar el CSV")
+csvp = "real_madrid.csv"
+# video = cargar_archivo("Cargar el Video")
+video = "madrid.mp4"
 
-
-menu = interfaz.Menu(400, 300)
+menu = interfaz.Menu()
 
 barra_tiempo = graficas(csvp)
-panel = interfaz.Panel(menu, 0, 0, 400, 300)
+panel = interfaz.Panel(menu)
 texto1 = interfaz.Texto(panel, "Video", 20, 40)
 texto2 = interfaz.Texto(panel, "CSV", 20, 80)
 
 # Cambiar el cuadro de texto por el path
-cuadro1 = interfaz.CuadroTexto(panel, "video", 70, 38, 175, -1)
-cuadro2 = interfaz.CuadroTexto(panel, "csv", 70, 78, 175, -1)
+cuadro1 = interfaz.CuadroTexto(panel, video, (70, 38), (175, -1))
+cuadro2 = interfaz.CuadroTexto(panel, csvp, (70, 78), (175, -1))
 
 btn_salir = interfaz.Boton(panel, "salir", 20, 120)
 btn_salir.Bind(wx.EVT_BUTTON, cerrar, btn_salir)
@@ -209,36 +204,3 @@ btn_gen = interfaz.Boton(panel, "Generar video", 240, 120)
 menu.Bind(wx.EVT_CLOSE, cerrar)
 menu.Show()
 app.MainLoop()
-
-"""
-    # Creacion de sizers (Antiguos sizers)
-    main_sizer = wx.GridSizer(2, 1, 0, 0)
-
-    sizer_video = wx.GridSizer(1, 3, 0, 0)
-    main_sizer.Add(sizer_video, 1, wx.EXPAND, 5)
-
-    # sizer video
-    izqvi = wx.BoxSizer(wx.VERTICAL)
-    sizer_video.Add(izqvi, 1, wx.EXPAND, 5)
-    centrovi = wx.BoxSizer(wx.VERTICAL)
-    sizer_video.Add(centrovi, 1, wx.EXPAND, 5)
-    dervi = wx.GridSizer(3, 1, 0, 0)
-    # Aqui los sizer de dentro de Dervi
-    sizer_video.Add(dervi, 1, wx.EXPAND, 5)
-
-    # sizers grafica
-    sizer_grafica = wx.GridBagSizer()
-    izqgr = wx.BoxSizer(wx.VERTICAL)
-
-    sizer_grafica.Add(izqgr,pos=(0,0),span=(1,1))
-
-    centrogr = wx.BoxSizer(wx.VERTICAL)
-
-    sizer_grafica.Add(centrogr,pos=(0,1),span=(1,2))
-
-    # dergr = wx.BoxSizer(wx.VERTICAL)
-
-    # sizer_grafica.Add(dergr, 1, wx.EXPAND, 5)
-
-    main_sizer.Add(sizer_grafica, 1, wx.EXPAND, 5)
-    """
