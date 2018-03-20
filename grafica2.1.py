@@ -32,17 +32,19 @@ for i in range(0, len(tiempo), usuario):
 #Cambia el color del fondo de la figura
 #fig = plt.figure(facecolor='red')
 fig = plt.figure()
-fig.subplots_adjust(top=0.96,bottom=0.15,left=0.08,right=0.97,hspace=0.47)
+fig.subplots_adjust(top=0.95,bottom=0.15,left=0.08,right=0.97,hspace=0.6)
 
 gra1 = fig.add_subplot(2, 1, 1)
 gra1.plot(tiempo, y)
-# Establece donde empieza y donde acaba el eje x, con esa formula ajusta la grafica perfectamente
+gra1.set_title('Atención')
+# Establece donde empieza y donde acaba el eje x, con esa formula ajusta la grafica
 gra1.set_xlim(0,x[len(x)-1])
 gra1.set_xticks(x)
 plt.xticks(rotation=70)
 
 gra2 = fig.add_subplot(2, 1, 2)
 gra2.plot(tiempo, z)
+gra2.set_title('Emoción')
 gra2.set_xlim(0,x[len(x)-1])
 gra2.set_xticks(x)
 
