@@ -1,5 +1,6 @@
 import wx
 import wx.media
+import wx.lib.buttons
 import interfaz
 import sys
 import csv
@@ -46,7 +47,6 @@ def previsualizar(video, barra_tiempo):
 
     def actualizar(e):
         print("actualizar")
-        #reproductor.player.Tell()
         #Establezco el valor del slider segun la posicion del video
         slider.SetValue(reproductor.player.Tell()/1000)
 
@@ -61,68 +61,46 @@ def previsualizar(video, barra_tiempo):
 
     # Crear ventana para el video
     reproductor = interfaz.Menu(1500, 1000)
-    reproductor.SetBackgroundColour("WHITE")
-    # reproductor.Maximize()
+    reproductor.SetBackgroundColour("LIGHT BLUE")
+    reproductor.Maximize()
     reproductor.Bind(wx.EVT_CLOSE, cerrar)
 
-    # Creacion de sizers
-    main_sizer = wx.GridSizer(2, 1, 0, 0)
+    main_sizer=wx.GridSizer(2,1,0,0)
 
-    sizer_video = wx.GridSizer(1, 3, 0, 0)
+    sizer_video=wx.GridSizer(1,3,0,0)
     main_sizer.Add(sizer_video, 1, wx.EXPAND, 5)
 
-    # sizer video
-    izqvi = wx.BoxSizer(wx.VERTICAL)
-    sizer_video.Add(izqvi, 1, wx.EXPAND, 5)
-    centrovi = wx.BoxSizer(wx.VERTICAL)
-    sizer_video.Add(centrovi, 1, wx.EXPAND, 5)
-    dervi = wx.GridSizer(3, 1, 0, 0)
-    # Aqui los sizer de dentro de Dervi
-    sizer_video.Add(dervi, 1, wx.EXPAND, 5)
-
-    # sizers grafica
-    sizer_grafica = wx.GridSizer(1, 3, 0, 0)
-    izqgr = wx.BoxSizer(wx.VERTICAL)
-
-    sizer_grafica.Add(izqgr, 1, wx.EXPAND, 5)
-
-    centrogr = wx.BoxSizer(wx.VERTICAL)
-
-    sizer_grafica.Add(centrogr, 1, wx.EXPAND, 5)
-
-    # dergr = wx.BoxSizer(wx.VERTICAL)
-
-    # sizer_grafica.Add(dergr, 1, wx.EXPAND, 5)
-
+    sizer_grafica=wx.GridSizer(1,3,0,0)
     main_sizer.Add(sizer_grafica, 1, wx.EXPAND, 5)
 
+    panel_botones = wx.Panel(reproductor)
+    sizer_video.Add(panel_botones)
     panel_video = wx.Panel(reproductor)
-    centrovi.Add(panel_video)
-    panel_izqvi = wx.Panel(reproductor)
-    izqvi.Add(panel_izqvi)
+    sizer_video.Add(panel_video)
+    #sizer_dervi= wx.GridSizer(3, 1, 0, 0)
+    #sizer_video.Add(sizer_dervi)
+    panel_dervi=wx.Panel(reproductor)
+    sizer_video.Add(panel_dervi)
+    #sizer_dervi.Add(panel_dervi)
+    wx.StaticBitmap(panel_dervi, -1, wx.Bitmap(name="socio2.png"), pos=(0, 0), size=wx.DefaultSize, style=wx.ALIGN_RIGHT)
 
-    panel_grafica = wx.Panel(reproductor)
-    centrogr.Add(panel_grafica)
+
+
     panel_izqgr=wx.Panel(reproductor)
-    izqgr.Add(panel_izqgr)
+    sizer_grafica.Add(panel_izqgr)
+    panel_grafica = wx.Panel(reproductor)
+    sizer_grafica.Add(panel_grafica)
+
 
     # Video
-    boton_play = wx.Button(panel_izqvi, label="Play")
-    boton_pause = wx.Button(panel_izqvi, label="Pause", pos=(30, 30))
+    boton_play = wx.Button(panel_botones, label="Play")
+    boton_pause = wx.Button(panel_botones, label="Pause", pos=(30, 30))
     boton_play.Bind(wx.EVT_BUTTON,cargado)
     boton_pause.Bind(wx.EVT_BUTTON, pause)
 
-    reproductor.player = wx.media.MediaCtrl(panel_video, pos=(0, 0), size=(500, 250))
+    reproductor.player = wx.media.MediaCtrl(panel_video, pos=(0, 0), size=(640, 400))
     reproductor.player.ShowPlayerControls(flags=wx.media.MEDIACTRLPLAYERCONTROLS_VOLUME)
-    # reproductor.Bind(wx.media.EVT_MEDIA_LOADED,cargado)
     reproductor.player.Load(r"madrid.mp4")
-    # reproductor.player.Play()
-    # print(reproductor.player.Length())
-
-    # Barra y grafica
-
-    # reproductor.Bind(wx.media.EVT_MEDIA_PAUSE,lambda e,ejex=ejex:barra(e,ejex))
-
 
     # Grafica
 
@@ -132,8 +110,8 @@ def previsualizar(video, barra_tiempo):
     timer=wx.Timer(reproductor.player)
     reproductor.player.Bind(wx.EVT_TIMER,actualizar,timer)
 
-
     slider=wx.Slider(reproductor,pos=(20,500),style=wx.SL_VALUE_LABEL)
+    slider.Hide()
     slider.SetRange(0,len(barra_tiempo))
     barra_mover=wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name="barra2.png"), pos=(52, 30))
 
@@ -168,7 +146,7 @@ def graficas(csvp):
     # tiempo tiene todos los valores del tiempo del csv
 
     # Elegir cada cuanto quieres las etiquetas en la grafica
-    usuario = 20
+    usuario = 10
 
     # for para guardar solo los tiempos que interesan
     for i in range(0, len(tiempo), usuario):
@@ -231,3 +209,36 @@ btn_gen = interfaz.Boton(panel, "Generar video", 240, 120)
 menu.Bind(wx.EVT_CLOSE, cerrar)
 menu.Show()
 app.MainLoop()
+
+"""
+    # Creacion de sizers (Antiguos sizers)
+    main_sizer = wx.GridSizer(2, 1, 0, 0)
+
+    sizer_video = wx.GridSizer(1, 3, 0, 0)
+    main_sizer.Add(sizer_video, 1, wx.EXPAND, 5)
+
+    # sizer video
+    izqvi = wx.BoxSizer(wx.VERTICAL)
+    sizer_video.Add(izqvi, 1, wx.EXPAND, 5)
+    centrovi = wx.BoxSizer(wx.VERTICAL)
+    sizer_video.Add(centrovi, 1, wx.EXPAND, 5)
+    dervi = wx.GridSizer(3, 1, 0, 0)
+    # Aqui los sizer de dentro de Dervi
+    sizer_video.Add(dervi, 1, wx.EXPAND, 5)
+
+    # sizers grafica
+    sizer_grafica = wx.GridBagSizer()
+    izqgr = wx.BoxSizer(wx.VERTICAL)
+
+    sizer_grafica.Add(izqgr,pos=(0,0),span=(1,1))
+
+    centrogr = wx.BoxSizer(wx.VERTICAL)
+
+    sizer_grafica.Add(centrogr,pos=(0,1),span=(1,2))
+
+    # dergr = wx.BoxSizer(wx.VERTICAL)
+
+    # sizer_grafica.Add(dergr, 1, wx.EXPAND, 5)
+
+    main_sizer.Add(sizer_grafica, 1, wx.EXPAND, 5)
+    """
