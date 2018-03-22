@@ -45,7 +45,6 @@ def previsualizar(video, barra_tiempo):
         print(reproductor.player.Tell())
 
     def actualizar(e):
-        print("actualizar")
         # Establezco el valor del slider segun la posicion del video
         slider.SetValue(reproductor.player.Tell() / 1000)
 

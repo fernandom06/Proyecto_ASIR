@@ -1,6 +1,6 @@
-import clase
+import Variables
 
-hola = clase.Grafica('real_madrid.csv')
+hola = Variables.Grafica('real_madrid.csv')
 
 x, y, z = hola.leer_csv()
 
