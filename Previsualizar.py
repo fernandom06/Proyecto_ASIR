@@ -26,6 +26,9 @@ def previsualizar(e):
         barra_mover.SetPosition(movimiento)
         # print(slider.GetValue())
 
+    def atras(e):
+        reproductor.Destroy()
+
     barra_tiempo = gr.grafica()
 
     # Crear ventana para el video
@@ -61,8 +64,10 @@ def previsualizar(e):
     # Video
     boton_play = wx.Button(panel_botones, label="Play")
     boton_pause = wx.Button(panel_botones, label="Pause", pos=(30, 30))
+    boton_atras = wx.Button(panel_botones, label="Atrás", pos=(60, 60))
     boton_play.Bind(wx.EVT_BUTTON, cargado)
     boton_pause.Bind(wx.EVT_BUTTON, pause)
+    boton_atras.Bind(wx.EVT_BUTTON, atras)
 
     reproductor.player = wx.media.MediaCtrl(panel_video, pos=(0, 0), size=(640, 400))
     reproductor.player.ShowPlayerControls(flags=wx.media.MEDIACTRLPLAYERCONTROLS_VOLUME)

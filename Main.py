@@ -4,7 +4,7 @@ import wx
 from functools import partial
 
 
-def cargar_archivo(e, letra, texto):
+def cargar_archivo(e, numero, texto):
     cargar = wx.Frame(None, -1, 'win.py')
     cargar.SetSize(0, 0, 200, 50)
 
@@ -12,7 +12,7 @@ def cargar_archivo(e, letra, texto):
 
     if dlg.ShowModal() == wx.ID_OK:
         # return dlg.GetPath()
-        if letra == "a":
+        if numero == 1:
             vb.video = dlg.GetPath()
             print(vb.video)
             cuadro1.write(dlg.GetPath())
@@ -39,8 +39,8 @@ boton_salir=wx.Button(panel_principal,label="Salir",pos=(20,120))
 boton_previsualizar = wx.Button(panel_principal, label="Previsualizar video", pos=(120, 120))
 boton_gen = wx.Button(panel_principal, label="Generar video", pos=(250, 120))
 
-boton1.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el video", letra="a"))
-boton2.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el CSV", letra="b"))
+boton1.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el video", numero=1))
+boton2.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el CSV", numero=2))
 boton_salir.Bind(wx.EVT_BUTTON,vb.cerrar)
 boton_previsualizar.Bind(wx.EVT_BUTTON,pr.previsualizar)
 
