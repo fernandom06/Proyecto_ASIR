@@ -31,11 +31,17 @@ def previsualizar(e):
         reproductor.Destroy()
 
     barra_tiempo = gr.grafica()
-    print(vb.background_rep)
+    print(vb.back_rep)
+    print(vb.titulo1)
+    print(vb.color_linea)
+    print(vb.background_gr)
+    print(vb.contorno)
+    print(vb.titulo2)
+    print(vb.label)
 
     # Crear ventana para el video
     reproductor = wx.Frame(None)
-    reproductor.SetBackgroundColour(vb.background_rep)
+    reproductor.SetBackgroundColour(vb.back_rep)
     reproductor.Maximize()
     reproductor.Bind(wx.EVT_CLOSE, vb.cerrar)
 
