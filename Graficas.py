@@ -41,7 +41,7 @@ def grafica():
     # Establece donde empieza y donde acaba el eje x, con esa formula ajusta la grafica
     gra1.set_xlim(0, tiempo[len(tiempo) - 1])
     gra1.set_xticks(x)
-    gra1.set_title(vb.titulo1, family="serif")
+    gra1.set_title(vb.titulo1, family="serif", color="blue",size=14)
     gra1.spines['bottom'].set_color(vb.contorno)
     gra1.spines['top'].set_color(vb.contorno)
     gra1.spines['right'].set_color(vb.contorno)

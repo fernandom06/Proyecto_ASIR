@@ -1,7 +1,6 @@
 import Variables as vb
 import Previsualizar as pr
 import wx
-import matplotlib.pyplot as plt
 from functools import partial
 
 
@@ -11,6 +10,19 @@ def valores_choice(e):
     vb.background_gr = ch_back_gr.GetString(ch_back_gr.GetCurrentSelection())
     vb.color_linea_ = ch_linea_gr.GetString(ch_linea_gr.GetCurrentSelection())
     vb.label = ch_label_gr.GetString(ch_label_gr.GetCurrentSelection())
+
+def valores_color(e):
+    vb.back_rep=cl_back_rep.GetColour()
+    vb.back_rep=vb.back_rep.GetAsString(flags=wx.C2S_HTML_SYNTAX)
+    vb.contorno=cl_back_con.GetColour()
+    vb.contorno=vb.contorno.GetAsString(flags=wx.C2S_HTML_SYNTAX)
+    vb.background_gr=cl_back_gr.GetColour()
+    vb.background_gr=vb.background_gr.GetAsString(flags=wx.C2S_HTML_SYNTAX)
+    vb.color_linea=cl_linea_gr.GetColour()
+    vb.color_linea=vb.color_linea.GetAsString(flags=wx.C2S_HTML_SYNTAX)
+    vb.label=cl_label_gr.GetColour()
+    vb.label=vb.label.GetAsString(flags=wx.C2S_HTML_SYNTAX)
+
 
     # Conseguir el color en formato hexadecimal
     # vb.color_prueba = elegir_color.GetColour()
@@ -104,6 +116,7 @@ cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 145))
 cl_back_rep.Hide()
 ch_back_rep.SetSelection(11)
 ch_back_rep.Bind(wx.EVT_CHOICE, valores_choice)
+cl_back_rep.Bind(wx.EVT_COLOURPICKER_CHANGED,valores_color)
 
 texto_back_con = wx.StaticText(panel_principal, label="Color del contorno d las gráficas", pos=(20, 190))
 ch_back_con = wx.Choice(panel_principal, choices=colores, pos=(200, 185))
@@ -111,6 +124,7 @@ cl_back_con = wx.ColourPickerCtrl(panel_principal, pos=(200, 185))
 cl_back_con.Hide()
 ch_back_con.SetSelection(11)
 ch_back_con.Bind(wx.EVT_CHOICE, valores_choice)
+cl_back_con.Bind(wx.EVT_COLOURPICKER_CHANGED,valores_color)
 
 texto_back_gr = wx.StaticText(panel_principal, label="Color de fondo de la gráfica", pos=(20, 230))
 ch_back_gr = wx.Choice(panel_principal, choices=colores, pos=(180, 225))
@@ -118,6 +132,7 @@ cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225))
 cl_back_gr.Hide()
 ch_back_gr.SetSelection(11)
 ch_back_gr.Bind(wx.EVT_CHOICE, valores_choice)
+cl_back_gr.Bind(wx.EVT_COLOURPICKER_CHANGED,valores_color)
 
 texto_linea_gr = wx.StaticText(panel_principal, label="Color de las líneas de la gráfica", pos=(20, 270))
 ch_linea_gr = wx.Choice(panel_principal, choices=colores, pos=(190, 265))
@@ -125,6 +140,7 @@ cl_linea_gr = wx.ColourPickerCtrl(panel_principal, pos=(190, 265))
 cl_linea_gr.Hide()
 ch_linea_gr.SetSelection(11)
 ch_linea_gr.Bind(wx.EVT_CHOICE, valores_choice)
+cl_linea_gr.Bind(wx.EVT_COLOURPICKER_CHANGED,valores_color)
 
 texto_label_gr = wx.StaticText(panel_principal, label="Color de las etiquetas de la gráfica", pos=(20, 310))
 ch_label_gr = wx.Choice(panel_principal, choices=colores, pos=(210, 305))
@@ -132,6 +148,7 @@ cl_label_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 305))
 cl_label_gr.Hide()
 ch_label_gr.SetSelection(11)
 ch_label_gr.Bind(wx.EVT_CHOICE, valores_choice)
+cl_label_gr.Bind(wx.EVT_COLOURPICKER_CHANGED,valores_color)
 
 texto_titulo1 = wx.StaticText(panel_principal, label="Titulo 1", pos=(20, 355))
 titulo1 = wx.TextCtrl(panel_principal, value=vb.titulo1, pos=(70, 352), size=(175, -1))
