@@ -1,6 +1,8 @@
 #Archivo que sirve para guardar los valores que no se pueden retornar con los eventos
 import sys
 
+numero=1
+
 csv="real_madrid.csv"
 video="madrid.mp4"
 # Variables de las graficas
@@ -10,6 +12,8 @@ background_gr="white" # Color de fondo de la imagen
 label="black" # Color de las etiquetas
 titulo1="Atención"
 titulo2="Emoción"
+
+
 
 #Reproductor
 

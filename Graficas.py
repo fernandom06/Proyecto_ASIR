@@ -64,7 +64,6 @@ def grafica():
     plt.xticks(rotation=70)
     # plt.show()
     fig.set_facecolor(vb.background_gr)
-    print(fig.get_facecolor())
     # Guarda el grafico con los colores especificados
     plt.savefig("grafico.png",facecolor=fig.get_facecolor())
     #plt.savefig("grafico.png")
