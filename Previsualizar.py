@@ -4,6 +4,7 @@ import Graficas as gr
 import Variables as vb
 
 
+
 def previsualizar(e):
     def cargado(e):
         print("cargado")
@@ -30,10 +31,11 @@ def previsualizar(e):
         reproductor.Destroy()
 
     barra_tiempo = gr.grafica()
+    print(vb.background_rep)
 
     # Crear ventana para el video
     reproductor = wx.Frame(None)
-    reproductor.SetBackgroundColour("WIGHT")
+    reproductor.SetBackgroundColour(vb.background_rep)
     reproductor.Maximize()
     reproductor.Bind(wx.EVT_CLOSE, vb.cerrar)
 
