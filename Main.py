@@ -180,7 +180,7 @@ etiquetas_input.Bind(wx.EVT_TEXT,valores_texto)
 # Grosor linea, fuente y tamaño del titulo de la grafica
 
 grosor = wx.StaticText(panel_principal, label="Pixeles de tamaño de la línea del gráfico", pos=(400, 80))
-grosor_input = wx.TextCtrl(panel_principal, pos=(630, 78), size=(80, -1))
+grosor_input = wx.TextCtrl(panel_principal,value="1.5", pos=(630, 78), size=(80, -1))
 grosor_input.Bind(wx.EVT_TEXT,valores_texto)
 
 titulo_tam = wx.StaticText(panel_principal, label="Tamaño del título del gráfico", pos=(400, 120))

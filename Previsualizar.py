@@ -4,28 +4,35 @@ import Graficas as gr
 import Variables as vb
 
 
-
 def previsualizar(e):
     def cargado(e):
         print("cargado")
-        reproductor.player.Play()
+        player.Play()
         timer.Start(250)
         print(timer.IsRunning())
 
     def pause(e):
         print("pause")
-        reproductor.player.Pause()
+        player.Pause()
         timer.Stop()
-        print(reproductor.player.Tell())
+        print(player.Tell())
 
     def actualizar(e):
         # Establezco el valor del slider segun la posicion del video
-        slider.SetValue(reproductor.player.Tell() / 1000)
+        slider.SetValue(player.Tell() / 1000)
+        slider_player.SetValue(player.Tell() / 1000)
 
         tiempo = 568 / len(barra_tiempo)
         movimiento = wx.Point(52 + (slider.GetValue() * tiempo), 30)
         barra_mover.SetPosition(movimiento)
         # print(slider.GetValue())
+
+    def par_slider(e):
+        timer.Stop()
+
+    def mov_slider(e):
+        player.Seek(slider_player.GetValue()*1000)
+        timer.Start(250)
 
     def atras(e):
         reproductor.Destroy()
@@ -33,7 +40,7 @@ def previsualizar(e):
     barra_tiempo = gr.grafica()
 
     # Crear ventana para el video
-    reproductor = wx.Frame(None)
+    reproductor = wx.Frame(None,size=(1000,1000))
     reproductor.SetBackgroundColour(vb.back_rep)
     reproductor.Maximize()
     reproductor.Bind(wx.EVT_CLOSE, vb.cerrar)
@@ -70,17 +77,23 @@ def previsualizar(e):
     boton_pause.Bind(wx.EVT_BUTTON, pause)
     boton_atras.Bind(wx.EVT_BUTTON, atras)
 
-    reproductor.player = wx.media.MediaCtrl(panel_video, pos=(0, 0), size=(640, 400))
-    reproductor.player.ShowPlayerControls(flags=wx.media.MEDIACTRLPLAYERCONTROLS_VOLUME)
-    reproductor.player.Load(vb.video)
+    player = wx.media.MediaCtrl(panel_video, pos=(0, 0), size=(640, 400))
+    #player.ShowPlayerControls(flags=wx.media.MEDIACTRLPLAYERCONTROLS_VOLUME)
+    player.Load(vb.video)
+
+    # Slider que llevara el tiempo del video
+    slider_player=wx.Slider(panel_video, pos=(0,420),size=(640,-1))
+    slider_player.SetRange(0, len(barra_tiempo))
+    slider_player.Bind(wx.EVT_SCROLL_THUMBTRACK,par_slider)
+    slider_player.Bind(wx.EVT_SCROLL_THUMBRELEASE,mov_slider)
 
     # Grafica
 
     wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name="grafico.png"), pos=(0, 0), size=(640, 480))
 
     # Slider
-    timer = wx.Timer(reproductor.player)
-    reproductor.player.Bind(wx.EVT_TIMER, actualizar, timer)
+    timer = wx.Timer(player)
+    player.Bind(wx.EVT_TIMER, actualizar, timer)
 
     slider = wx.Slider(reproductor, pos=(20, 500), style=wx.SL_VALUE_LABEL)
     slider.Hide()
