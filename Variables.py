@@ -24,6 +24,16 @@ titulo2 = "Emoción"
 
 back_rep = "WHITE"
 
+# Posiciones: Grafica, SocioGraph y Reproductor
+
+l_gr=640
+t_gr=530
+
+l_rep=640
+t_rep=0
+
+l_soc=1400
+t_soc=0
 
 def cerrar(e):
     # Funcion para cerrar el programa
