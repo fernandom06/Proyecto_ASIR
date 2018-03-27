@@ -45,6 +45,8 @@ def valores_texto(e):
     vb.t_rep = int(t_rep_input.GetValue())
     vb.l_log = int(l_log_input.GetValue())
     vb.t_log = int(t_log_input.GetValue())
+    vb.s_entrada=int(s_entrada_input.GetValue())
+    vb.s_salida=int(s_salida_input.GetValue())
 
 
 def cambiar(e):
@@ -228,6 +230,17 @@ l_log_input.Bind(wx.EVT_TEXT, valores_texto)
 t_log = wx.StaticText(panel_principal, label="Distancia desde arriba (Logotipo)", pos=(400, 400))
 t_log_input = wx.TextCtrl(panel_principal, value="0", pos=(580, 398), size=(80, -1))
 t_log_input.Bind(wx.EVT_TEXT, valores_texto)
+
+# Tiempo entrada y salida
+s_entrada = wx.StaticText(panel_principal, label="Tiempo entrada del video (segundos)", pos=(400, 440))
+s_entrada_input = wx.TextCtrl(panel_principal, value="0", pos=(600, 438), size=(80, -1))
+s_entrada_input.Bind(wx.EVT_TEXT, valores_texto)
+
+
+s_salida = wx.StaticText(panel_principal, label="Tiempo salida del video (segundos)", pos=(400, 480))
+# Poner que si se deja a 0 se tomara el valor total del video
+s_salida_input = wx.TextCtrl(panel_principal, value="0", pos=(590, 478), size=(80, -1))
+s_salida_input.Bind(wx.EVT_TEXT, valores_texto)
 
 # Titulos de las graficas
 texto_titulo1 = wx.StaticText(panel_principal, label="Titulo 1", pos=(20, 395))
