@@ -23,11 +23,10 @@ def previsualizar(e):
         if slider_player.GetMax()==slider_player.GetValue():
             parar_video()
         # Establecer el valor del slider segun la posicion del video
-        tiempo = 566 / len(vb.barra_tiempo)
-        slider_player.SetValue(player.Tell() / 1000)
-        movimiento = wx.Point(vb.l_gr+ 52 + (player.Tell() / 1000 * tiempo), vb.t_gr+30)
+        tiempo = 568 / (vb.s_salida-vb.s_entrada)
+        slider_player.SetValue((player.Tell() / 1000))
+        movimiento = wx.Point(vb.l_gr+ 52 + ((slider_player.GetValue()-vb.s_entrada) * tiempo), vb.t_gr+30)
         barra_mover.SetPosition(movimiento)
-        # print(slider.GetValue())
 
     def par_slider(e):
         timer.Stop()
@@ -42,6 +41,7 @@ def previsualizar(e):
         vb.c_segundos=1
 
     def atras(e):
+        vb.c_segundos=1
         reproductor.Destroy()
 
     vb.barra_tiempo = gr.grafica()
