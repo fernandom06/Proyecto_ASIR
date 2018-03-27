@@ -24,9 +24,10 @@ def grafica():
     # tiempo tiene todos los valores del tiempo del csv
 
     # Elegir cada cuanto quieres las etiquetas en la grafica
-
+    if vb.s_salida==0:
+        vb.s_salida=len(tiempo)
     # for para guardar solo los tiempos que interesan
-    for i in range(0, len(tiempo), vb.etiquetas):
+    for i in range(vb.s_entrada, vb.s_salida, vb.etiquetas):
         x.append(tiempo[i])
 
     # Cambia el color del fondo de la figura
@@ -38,7 +39,7 @@ def grafica():
     gra1.plot(tiempo, y, color=vb.color_linea, linewidth=vb.grosor)
     gra1.set_facecolor(vb.background_gr)
     # Establece donde empieza y donde acaba el eje x, con esa formula ajusta la grafica
-    gra1.set_xlim(0, tiempo[len(tiempo) - 1])
+    gra1.set_xlim(vb.s_entrada, vb.s_salida)
     gra1.set_xticks(x)
     gra1.set_title(vb.titulo1, family=vb.fuente_tit, color=vb.titulo_gr,size=vb.tamanno_tit)
     gra1.spines['bottom'].set_color(vb.contorno)
@@ -51,7 +52,7 @@ def grafica():
     gra2 = fig.add_subplot(2, 1, 2)
     gra2.plot(tiempo, z, color=vb.color_linea, linewidth=vb.grosor)
     gra2.set_facecolor(vb.background_gr)
-    gra2.set_xlim(0, tiempo[len(tiempo) - 1])
+    gra2.set_xlim(vb.s_entrada, vb.s_salida)
     gra2.set_xticks(x)
     gra2.set_title(vb.titulo2, family=vb.fuente_tit,color=vb.titulo_gr,size=vb.tamanno_tit)
     gra2.spines['bottom'].set_color(vb.contorno)
