@@ -24,6 +24,7 @@ titulo2 = "Emoción"
 
 back_rep = "WHITE"
 
+contador=0
 # Posiciones: Grafica, SocioGraph y Reproductor
 
 l_gr = 640

@@ -2,6 +2,7 @@ import Variables as vb
 import Previsualizar as pr
 import wx
 from functools import partial
+import Columnas as col
 
 
 def valores_choice(e):
@@ -87,14 +88,14 @@ def cargar_archivo(e, numero, texto):
     dlg = wx.FileDialog(cargar, texto)
 
     if dlg.ShowModal() == wx.ID_OK:
-        # return dlg.GetPath()
         if numero == 1:
             vb.video = dlg.GetPath()
-            print(vb.video)
-            cuadro1.write(dlg.GetPath())
+            cuadro1.SetValue(dlg.GetPath())
         else:
             vb.csv = dlg.GetPath()
-            cuadro2.write(dlg.GetPath())
+            # Obtenemos el numero de columnas del csv
+            vb.contador=col.columnas()
+            cuadro2.SetValue(dlg.GetPath())
 
 
 colores = ["aqua", "aquamarine", "azure", "beige", "black", "blue", "brown", "chartreuse", "chocolate", "coral",
