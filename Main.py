@@ -80,6 +80,9 @@ def cambiar(e):
         cl_titulo_gr.Hide()
         vb.numero = 1
 
+def cambiar_titulos(e,lista):
+    for tit in range(len(lista)):
+        vb.titulos[tit]=lista[tit].GetValue()
 
 def cargar_archivo(e, numero, texto):
     cargar = wx.Frame(None, -1, 'win.py')
@@ -94,7 +97,13 @@ def cargar_archivo(e, numero, texto):
         else:
             vb.csv = dlg.GetPath()
             # Obtenemos el numero de columnas del csv
-            vb.contador=col.columnas()
+            vb.contador_col=col.columnas()
+            titulos = []
+            titulos_input = []
+            for columna in range(vb.contador_col - 1):
+                titulos.append(wx.StaticText(panel_principal, label=f"titulo {columna+1}", pos=(800, 0 + columna * 40)))
+                titulos_input.append(wx.TextCtrl(panel_principal, pos=(840, 0 + columna * 40)))
+                titulos_input[columna].Bind(wx.EVT_TEXT, partial(cambiar_titulos,lista=titulos_input))
             cuadro2.SetValue(dlg.GetPath())
 
 
@@ -104,7 +113,7 @@ tamannos = ["xx-small", "x-small", "small", "medium", "large", "x-large", "xx-la
 # familias=["serif","sans-serif","cursive","fantasy","monospace"]
 app = wx.App()
 # El estilo que se le aplica a la ventana es el de por defecto pero quitandole la posibilidad de modificar el tamaño
-menu_principal = wx.Frame(None, size=(800, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
+menu_principal = wx.Frame(None, size=(1200, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
 menu_principal.Bind(wx.EVT_CLOSE, vb.cerrar)
 
 panel_principal = wx.Panel(menu_principal)

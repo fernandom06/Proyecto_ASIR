@@ -24,7 +24,11 @@ titulo2 = "Emoción"
 
 back_rep = "WHITE"
 
-contador=0
+contador_col=0
+titulos=[]
+for i in range(contador_col-1):
+    titulos.append("hola")
+
 # Posiciones: Grafica, SocioGraph y Reproductor
 
 l_gr = 640
