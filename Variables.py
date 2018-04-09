@@ -13,7 +13,7 @@ background_gr = "white"  # Color de fondo de la imagen
 label = "black"  # Color de las etiquetas
 etiquetas = 30
 grosor = 1.5
-fuente_tit = "sans-serif"
+fuente_tit = "Arial"
 tamanno_tit = "large"
 titulo_gr = "black"
 
