@@ -33,7 +33,7 @@ def grafica():
     # Cambia el color del fondo de la figura
     # fig = plt.figure(facecolor='red')
     fig = plt.figure()
-    fig.subplots_adjust(top=0.95, bottom=0.15, left=0.11, right=0.97, hspace=0)
+    fig.subplots_adjust(top=0.95, bottom=0.15, left=0.18, right=0.97, hspace=0.1)
 
     gra1 = fig.add_subplot(2, 1, 1)
     gra1.plot(tiempo, y, color=vb.color_linea, linewidth=vb.grosor)
@@ -44,7 +44,8 @@ def grafica():
     # gra1.set_title(vb.titulo1, family=vb.fuente_tit, color=vb.titulo_gr,size=vb.tamanno_tit)
     gra1.set_ylabel(vb.titulo1, family=vb.fuente_tit, color=vb.titulo_gr,size=vb.tamanno_tit)
     gra1.spines['bottom'].set_color(vb.contorno)
-    gra1.spines['top'].set_color(vb.contorno)
+    #gra1.spines['top'].set_color(vb.contorno)
+    gra1.spines['top'].set_visible(False)
     gra1.spines['right'].set_color(vb.contorno)
     gra1.spines['left'].set_color(vb.contorno)
     gra1.tick_params(axis='both', colors=vb.label,labelbottom="off")
@@ -58,7 +59,7 @@ def grafica():
     # gra2.set_title(vb.titulo2, family=vb.fuente_tit,color=vb.titulo_gr,size=vb.tamanno_tit)
     gra2.set_ylabel(vb.titulo2, family=vb.fuente_tit,color=vb.titulo_gr,size=vb.tamanno_tit)
     gra2.spines['bottom'].set_color(vb.contorno)
-    gra2.spines['top'].set_color(vb.contorno)
+    gra2.spines['top'].set_visible(False)
     gra2.spines['right'].set_color(vb.contorno)
     gra2.spines['left'].set_color(vb.contorno)
     gra2.tick_params(axis='both', colors=vb.label)

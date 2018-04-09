@@ -21,9 +21,9 @@ def previsualizar(e):
         if slider_player.GetMax() == slider_player.GetValue():
             parar_video()
         # Establecer el valor del slider segun la posicion del video
-        tiempo = 568 / (vb.s_salida - vb.s_entrada)
+        tiempo = 504 / (vb.s_salida - vb.s_entrada)
         slider_player.SetValue((player.Tell() / 1000))
-        movimiento = wx.Point(vb.l_gr + 52 + ((slider_player.GetValue() - vb.s_entrada) * tiempo), vb.t_gr + 30)
+        movimiento = wx.Point(vb.l_gr + 116 + ((slider_player.GetValue() - vb.s_entrada) * tiempo), vb.t_gr + 30)
         barra_mover.SetPosition(movimiento)
 
     def par_slider(e):
@@ -86,7 +86,7 @@ def previsualizar(e):
     timer = wx.Timer(player)
     player.Bind(wx.EVT_TIMER, actualizar, timer)
     # Introducir la barra encima del gráfico
-    barra_mover = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="barra2.png"), pos=(vb.l_gr + 52, vb.t_gr + 30))
+    barra_mover = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="barra2.png"), pos=(vb.l_gr + 116, vb.t_gr + 30))
 
     # Sizers
 
