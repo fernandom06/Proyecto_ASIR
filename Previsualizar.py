@@ -39,6 +39,7 @@ def previsualizar(e):
         vb.c_segundos = 1
 
     def atras(e):
+        pause
         vb.c_segundos = 1
         reproductor.Destroy()
 
@@ -48,7 +49,7 @@ def previsualizar(e):
     reproductor = wx.Frame(None, size=(1500, 1000))
     reproductor.SetBackgroundColour(vb.back_rep)
     reproductor.Maximize()
-    # reproductor.Bind(wx.EVT_CLOSE, vb.cerrar)
+    reproductor.Bind(wx.EVT_CLOSE, atras)
 
     main_sizer = wx.BoxSizer()
     panel_reproductor = wx.Panel(reproductor)

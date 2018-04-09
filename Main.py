@@ -48,6 +48,8 @@ def valores_texto(e):
     vb.t_log = int(t_log_input.GetValue())
     vb.s_entrada = int(s_entrada_input.GetValue())
     vb.s_salida = int(s_salida_input.GetValue())
+    vb.video=cuadro1.GetValue()
+    vb.csv=cuadro2.GetValue()
 
 
 def cambiar(e):
@@ -138,7 +140,9 @@ texto1 = wx.StaticText(panel_principal, label="Video", pos=(20, 40))
 texto2 = wx.StaticText(panel_principal, label="CSV", pos=(20, 80))
 
 cuadro1 = wx.TextCtrl(panel_principal, value=vb.video, pos=(70, 38), size=(175, -1))
+cuadro1.Bind(wx.EVT_TEXT,valores_texto)
 cuadro2 = wx.TextCtrl(panel_principal, value=vb.csv, pos=(70, 78), size=(175, -1))
+cuadro2.Bind(wx.EVT_TEXT,valores_texto)
 
 boton1 = wx.Button(panel_principal, label="Cargar video", pos=(260, 37))
 boton2 = wx.Button(panel_principal, label="Cargar CSV", pos=(260, 77))
