@@ -33,7 +33,7 @@ def grafica():
     # Cambia el color del fondo de la figura
     # fig = plt.figure(facecolor='red')
     fig = plt.figure()
-    fig.subplots_adjust(top=0.95, bottom=0.15, left=0.08, right=0.97, hspace=0.60)
+    fig.subplots_adjust(top=0.95, bottom=0.15, left=0.11, right=0.97, hspace=0)
 
     gra1 = fig.add_subplot(2, 1, 1)
     gra1.plot(tiempo, y, color=vb.color_linea, linewidth=vb.grosor)
@@ -41,12 +41,13 @@ def grafica():
     # Establece donde empieza y donde acaba el eje x, con esa formula ajusta la grafica
     gra1.set_xlim(vb.s_entrada, vb.s_salida)
     gra1.set_xticks(x)
-    gra1.set_title(vb.titulo1, family=vb.fuente_tit, color=vb.titulo_gr,size=vb.tamanno_tit)
+    # gra1.set_title(vb.titulo1, family=vb.fuente_tit, color=vb.titulo_gr,size=vb.tamanno_tit)
+    gra1.set_ylabel(vb.titulo1, family=vb.fuente_tit, color=vb.titulo_gr,size=vb.tamanno_tit)
     gra1.spines['bottom'].set_color(vb.contorno)
     gra1.spines['top'].set_color(vb.contorno)
     gra1.spines['right'].set_color(vb.contorno)
     gra1.spines['left'].set_color(vb.contorno)
-    gra1.tick_params(axis='both', colors=vb.label)
+    gra1.tick_params(axis='both', colors=vb.label,labelbottom="off")
     plt.xticks(rotation=70)
 
     gra2 = fig.add_subplot(2, 1, 2)
@@ -54,7 +55,8 @@ def grafica():
     gra2.set_facecolor(vb.background_gr)
     gra2.set_xlim(vb.s_entrada, vb.s_salida)
     gra2.set_xticks(x)
-    gra2.set_title(vb.titulo2, family=vb.fuente_tit,color=vb.titulo_gr,size=vb.tamanno_tit)
+    # gra2.set_title(vb.titulo2, family=vb.fuente_tit,color=vb.titulo_gr,size=vb.tamanno_tit)
+    gra2.set_ylabel(vb.titulo2, family=vb.fuente_tit,color=vb.titulo_gr,size=vb.tamanno_tit)
     gra2.spines['bottom'].set_color(vb.contorno)
     gra2.spines['top'].set_color(vb.contorno)
     gra2.spines['right'].set_color(vb.contorno)
