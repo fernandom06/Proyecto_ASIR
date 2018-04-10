@@ -16,6 +16,20 @@ def previsualizar(e):
         player.Pause()
         timer.Stop()
 
+    def grabar_video(e):
+        player.Stop()
+        boton_play.Hide()
+        boton_pause.Hide()
+        boton_atras.Hide()
+        boton_grabar.Hide()
+        slider_player.Hide()
+        timer_grabar.Start(5000,True)
+        barra_mover.SetPosition((vb.l_gr + 116, vb.t_gr + 30))
+        vb.c_segundos=1
+
+    def grabar_video_timer(e):
+        player.Play()
+
     def actualizar(e):
         # Si slider valor maximo se para el video
         if slider_player.GetMax() == slider_player.GetValue():
@@ -63,6 +77,8 @@ def previsualizar(e):
     boton_play.Bind(wx.EVT_BUTTON, cargado)
     boton_pause.Bind(wx.EVT_BUTTON, pause)
     boton_atras.Bind(wx.EVT_BUTTON, atras)
+    boton_grabar = wx.Button(panel_reproductor, label="Grabar Video",pos=(vb.l_rep + 185, vb.t_rep + 464))
+    boton_grabar.Bind(wx.EVT_BUTTON, grabar_video)
 
     player = wx.media.MediaCtrl(panel_reproductor, pos=(vb.l_rep, vb.t_rep), size=(640, 400))
     # player.ShowPlayerControls(flags=wx.media.MEDIACTRLPLAYERCONTROLS_VOLUME)
@@ -86,8 +102,15 @@ def previsualizar(e):
     # Timer que se lanza cada 250 ms para actualizar la barra que se mueve por el gráfico
     timer = wx.Timer(player)
     player.Bind(wx.EVT_TIMER, actualizar, timer)
+
+    # Timer que al dar al boton de grabar tendra que lanzar el video para grabar
+    timer_grabar = wx.Timer(player)
+    player.Bind(wx.EVT_TIMER, cargado, timer_grabar)
+
+
     # Introducir la barra encima del gráfico
-    barra_mover = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="barra2.png"), pos=(vb.l_gr + 116, vb.t_gr + 30))
+    barra_mover = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="barra2.png"),
+                                  pos=(vb.l_gr + 116, vb.t_gr + 30))
 
     # Sizers
 
