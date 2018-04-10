@@ -14,6 +14,8 @@ def valores_choice(e):
     vb.tamanno_tit = ch_titulo_tam.GetString(ch_titulo_tam.GetCurrentSelection())
     vb.titulo_gr = ch_titulo_gr.GetString(ch_titulo_gr.GetCurrentSelection())
     vb.fuente_tit = ch_titulo_fam.GetString(ch_titulo_fam.GetCurrentSelection())
+    vb.fuente_label = ch_fuente_etiqueta.GetString(ch_fuente_etiqueta.GetCurrentSelection())
+    vb.tamanno_label = ch_tamannos_etiqueta.GetString(ch_tamannos_etiqueta.GetCurrentSelection())
 
 
 def valores_color(e):
@@ -48,9 +50,10 @@ def valores_texto(e):
     vb.t_log = int(t_log_input.GetValue())
     vb.s_entrada = int(s_entrada_input.GetValue())
     vb.s_salida = int(s_salida_input.GetValue())
-    vb.video=cuadro1.GetValue()
-    vb.csv=cuadro2.GetValue()
-    vb.angulo_gr=int(angulo_input.GetValue())
+    vb.video = cuadro1.GetValue()
+    vb.csv = cuadro2.GetValue()
+    vb.angulo_gr = int(angulo_input.GetValue())
+
 
 def cambiar(e):
     if vb.numero == 1:
@@ -127,7 +130,7 @@ tamannos = ["xx-small", "x-small", "small", "medium", "large", "x-large", "xx-la
 fonts = ["Arial", "Times New Roman", "Verdana ", "Courier New", "Comic Sans MS", "Impact", "Tahoma", "Trebuchet MS",
          "Georgia", "Century Gothic", "Garamond", "Lucida Console", "Bookman Old Style", "Book Antiqua", "Lucida Sans",
          "Monotype Corsiva", "Palatino Linotype"]
-# familias=["serif","sans-serif","cursive","fantasy","monospace"]
+
 app = wx.App()
 # El estilo que se le aplica a la ventana es el de por defecto pero quitandole la posibilidad de modificar el tamaño
 menu_principal = wx.Frame(None, size=(1200, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
@@ -140,15 +143,14 @@ texto1 = wx.StaticText(panel_principal, label="Video", pos=(20, 40))
 texto2 = wx.StaticText(panel_principal, label="CSV", pos=(20, 80))
 
 cuadro1 = wx.TextCtrl(panel_principal, value=vb.video, pos=(70, 38), size=(175, -1))
-cuadro1.Bind(wx.EVT_TEXT,valores_texto)
+cuadro1.Bind(wx.EVT_TEXT, valores_texto)
 cuadro2 = wx.TextCtrl(panel_principal, value=vb.csv, pos=(70, 78), size=(175, -1))
-cuadro2.Bind(wx.EVT_TEXT,valores_texto)
+cuadro2.Bind(wx.EVT_TEXT, valores_texto)
 
 boton1 = wx.Button(panel_principal, label="Cargar video", pos=(260, 37))
 boton2 = wx.Button(panel_principal, label="Cargar CSV", pos=(260, 77))
 boton_salir = wx.Button(panel_principal, label="Salir", pos=(150, 500))
 boton_previsualizar = wx.Button(panel_principal, label="Previsualizar video", pos=(20, 500))
-# boton_gen = wx.Button(panel_principal, label="Generar video", pos=(250, 120))
 
 boton1.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el video", numero=1))
 boton2.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el CSV", numero=2))
@@ -162,7 +164,7 @@ check.Bind(wx.EVT_CHECKBOX, cambiar)
 # Colores
 texto_back_rep = wx.StaticText(panel_principal, label="Color de fondo", pos=(20, 150))
 ch_back_rep = wx.Choice(panel_principal, choices=colores_wx, pos=(120, 145))
-cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 145),colour=(wx.WHITE))
+cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 145), colour=(wx.WHITE))
 cl_back_rep.Hide()
 ch_back_rep.SetSelection(54)
 ch_back_rep.Bind(wx.EVT_CHOICE, valores_choice)
@@ -170,7 +172,7 @@ cl_back_rep.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_back_con = wx.StaticText(panel_principal, label="Color del contorno de las gráficas", pos=(20, 190))
 ch_back_con = wx.Choice(panel_principal, choices=colores_mat, pos=(200, 185))
-cl_back_con = wx.ColourPickerCtrl(panel_principal, pos=(200, 185),colour=(wx.BLACK))
+cl_back_con = wx.ColourPickerCtrl(panel_principal, pos=(200, 185), colour=(wx.BLACK))
 cl_back_con.Hide()
 ch_back_con.SetSelection(4)
 ch_back_con.Bind(wx.EVT_CHOICE, valores_choice)
@@ -178,7 +180,7 @@ cl_back_con.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_back_gr = wx.StaticText(panel_principal, label="Color de fondo de la gráfica", pos=(20, 230))
 ch_back_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(180, 225))
-cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225),colour=(wx.WHITE))
+cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225), colour=(wx.WHITE))
 cl_back_gr.Hide()
 ch_back_gr.SetSelection(46)
 ch_back_gr.Bind(wx.EVT_CHOICE, valores_choice)
@@ -186,7 +188,7 @@ cl_back_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_linea_gr = wx.StaticText(panel_principal, label="Color de las líneas de la gráfica", pos=(20, 270))
 ch_linea_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(190, 265))
-cl_linea_gr = wx.ColourPickerCtrl(panel_principal, pos=(190, 265),colour=(wx.BLUE))
+cl_linea_gr = wx.ColourPickerCtrl(panel_principal, pos=(190, 265), colour=(wx.BLUE))
 cl_linea_gr.Hide()
 ch_linea_gr.SetSelection(5)
 ch_linea_gr.Bind(wx.EVT_CHOICE, valores_choice)
@@ -194,7 +196,7 @@ cl_linea_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_label_gr = wx.StaticText(panel_principal, label="Color de las etiquetas de la gráfica", pos=(20, 310))
 ch_label_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(210, 305))
-cl_label_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 305),colour=(wx.BLACK))
+cl_label_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 305), colour=(wx.BLACK))
 cl_label_gr.Hide()
 ch_label_gr.SetSelection(4)
 ch_label_gr.Bind(wx.EVT_CHOICE, valores_choice)
@@ -202,7 +204,7 @@ cl_label_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_titulo_gr = wx.StaticText(panel_principal, label="Color de los títulos de la gráfica", pos=(20, 350))
 ch_titulo_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(210, 345))
-cl_titulo_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 345),colour=(wx.BLACK))
+cl_titulo_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 345), colour=(wx.BLACK))
 cl_titulo_gr.Hide()
 ch_titulo_gr.SetSelection(4)
 ch_titulo_gr.Bind(wx.EVT_CHOICE, valores_choice)
@@ -228,7 +230,6 @@ titulo_fam = wx.StaticText(panel_principal, label="Fuente para el titulo", pos=(
 ch_titulo_fam = wx.Choice(panel_principal, choices=fonts, pos=(530, 158))
 ch_titulo_fam.SetSelection(0)
 ch_titulo_fam.Bind(wx.EVT_CHOICE, valores_choice)
-# ch_titulo_fam = wx.Choice(panel_principal, choices=familias, pos=(530, 158))
 
 # Anchura y Altura de Grafica Reproductor y Logotipo
 
@@ -274,8 +275,18 @@ s_salida_input.Bind(wx.EVT_TEXT, valores_texto)
 # Angulo de rotacion de las etiquetas
 angulo = wx.StaticText(panel_principal, label="Angulo de rotacion de las etiquetas", pos=(750, 480))
 angulo_input = wx.TextCtrl(panel_principal, value="70", pos=(950, 478), size=(80, -1))
-angulo_input.Bind(wx.EVT_TEXT,valores_texto)
+angulo_input.Bind(wx.EVT_TEXT, valores_texto)
 
+# Fuente y Tamaño de las etiquetas
+fuente_etiqueta = wx.StaticText(panel_principal, label="Fuente de las etiquetas", pos=(750, 400))
+ch_fuente_etiqueta = wx.Choice(panel_principal, choices=fonts, pos=(880, 398))
+ch_fuente_etiqueta.SetSelection(0)
+ch_fuente_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
+
+tamannos_etiqueta = wx.StaticText(panel_principal, label="Tamaño de las etiquetas", pos=(750, 440))
+ch_tamannos_etiqueta = wx.Choice(panel_principal, choices=tamannos, pos=(885, 438))
+ch_tamannos_etiqueta.SetSelection(3)
+ch_tamannos_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
 
 # Titulos de las graficas
 texto_titulo1 = wx.StaticText(panel_principal, label="Titulo 1", pos=(20, 395))

@@ -24,9 +24,9 @@ titulo2 = "Emoción"
 
 back_rep = "WHITE"
 
-contador_col=0
-titulos=[]
-for i in range(contador_col-1):
+contador_col = 0
+titulos = []
+for i in range(contador_col - 1):
     titulos.append("hola")
 
 # Posiciones: Grafica, SocioGraph y Reproductor
@@ -42,13 +42,16 @@ t_soc = 0
 
 # Angulo de etiquetas
 
-angulo_gr=70
+angulo_gr = 70
+fuente_label = "arial"
+tamanno_label = "medium"
 
-barra_tiempo=[]
+barra_tiempo = []
 # Teimpo entrada y salida de video
-s_entrada=0
-s_salida=len(barra_tiempo)
-c_segundos=1
+s_entrada = 0
+s_salida = len(barra_tiempo)
+c_segundos = 1
+
 
 def cerrar(e):
     # Funcion para cerrar el programa

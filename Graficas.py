@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import Variables as vb
 
+
 def grafica():
     # Aqui se genera la imagen con la grafica
 
@@ -51,7 +52,7 @@ def grafica():
     # labelbottom para las etiquetas del eje x y bottom para el rabillo que deja la propia etiqueta
     gra1.tick_params(axis='both', colors=vb.label,labelbottom="off", bottom='off')
     gra1.get_yaxis().set_label_coords(-0.1,0.5)
-    plt.xticks(rotation=70)
+    plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
 
     gra2 = fig.add_subplot(2, 1, 2)
     gra2.plot(tiempo, z, color=vb.color_linea, linewidth=vb.grosor)
@@ -66,7 +67,8 @@ def grafica():
     gra2.spines['left'].set_color(vb.contorno)
     gra2.tick_params(axis='both', colors=vb.label)
     gra2.get_yaxis().set_label_coords(-0.1,0.5)
-    plt.xticks(rotation=vb.angulo_gr)
+    plt.xticks(rotation=vb.angulo_gr, fontsize=vb.tamanno_label, fontname=vb.fuente_label)
+    plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
 
     # plt.show()
     fig.set_facecolor(vb.background_gr)
