@@ -50,7 +50,7 @@ def valores_texto(e):
     vb.s_salida = int(s_salida_input.GetValue())
     vb.video=cuadro1.GetValue()
     vb.csv=cuadro2.GetValue()
-
+    vb.angulo_gr=int(angulo_input.GetValue())
 
 def cambiar(e):
     if vb.numero == 1:
@@ -162,7 +162,7 @@ check.Bind(wx.EVT_CHECKBOX, cambiar)
 # Colores
 texto_back_rep = wx.StaticText(panel_principal, label="Color de fondo", pos=(20, 150))
 ch_back_rep = wx.Choice(panel_principal, choices=colores_wx, pos=(120, 145))
-cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 145))
+cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 145),colour=(wx.WHITE))
 cl_back_rep.Hide()
 ch_back_rep.SetSelection(54)
 ch_back_rep.Bind(wx.EVT_CHOICE, valores_choice)
@@ -170,7 +170,7 @@ cl_back_rep.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_back_con = wx.StaticText(panel_principal, label="Color del contorno de las gráficas", pos=(20, 190))
 ch_back_con = wx.Choice(panel_principal, choices=colores_mat, pos=(200, 185))
-cl_back_con = wx.ColourPickerCtrl(panel_principal, pos=(200, 185))
+cl_back_con = wx.ColourPickerCtrl(panel_principal, pos=(200, 185),colour=(wx.BLACK))
 cl_back_con.Hide()
 ch_back_con.SetSelection(4)
 ch_back_con.Bind(wx.EVT_CHOICE, valores_choice)
@@ -178,7 +178,7 @@ cl_back_con.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_back_gr = wx.StaticText(panel_principal, label="Color de fondo de la gráfica", pos=(20, 230))
 ch_back_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(180, 225))
-cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225))
+cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225),colour=(wx.WHITE))
 cl_back_gr.Hide()
 ch_back_gr.SetSelection(46)
 ch_back_gr.Bind(wx.EVT_CHOICE, valores_choice)
@@ -186,7 +186,7 @@ cl_back_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_linea_gr = wx.StaticText(panel_principal, label="Color de las líneas de la gráfica", pos=(20, 270))
 ch_linea_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(190, 265))
-cl_linea_gr = wx.ColourPickerCtrl(panel_principal, pos=(190, 265))
+cl_linea_gr = wx.ColourPickerCtrl(panel_principal, pos=(190, 265),colour=(wx.BLUE))
 cl_linea_gr.Hide()
 ch_linea_gr.SetSelection(5)
 ch_linea_gr.Bind(wx.EVT_CHOICE, valores_choice)
@@ -194,7 +194,7 @@ cl_linea_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_label_gr = wx.StaticText(panel_principal, label="Color de las etiquetas de la gráfica", pos=(20, 310))
 ch_label_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(210, 305))
-cl_label_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 305))
+cl_label_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 305),colour=(wx.BLACK))
 cl_label_gr.Hide()
 ch_label_gr.SetSelection(4)
 ch_label_gr.Bind(wx.EVT_CHOICE, valores_choice)
@@ -202,7 +202,7 @@ cl_label_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_titulo_gr = wx.StaticText(panel_principal, label="Color de los títulos de la gráfica", pos=(20, 350))
 ch_titulo_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(210, 345))
-cl_titulo_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 345))
+cl_titulo_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 345),colour=(wx.BLACK))
 cl_titulo_gr.Hide()
 ch_titulo_gr.SetSelection(4)
 ch_titulo_gr.Bind(wx.EVT_CHOICE, valores_choice)
@@ -270,6 +270,12 @@ s_salida = wx.StaticText(panel_principal, label="Tiempo salida del video (segund
 # Poner que si se deja a 0 se tomara el valor total del video
 s_salida_input = wx.TextCtrl(panel_principal, value="0", pos=(590, 478), size=(80, -1))
 s_salida_input.Bind(wx.EVT_TEXT, valores_texto)
+
+# Angulo de rotacion de las etiquetas
+angulo = wx.StaticText(panel_principal, label="Angulo de rotacion de las etiquetas", pos=(750, 480))
+angulo_input = wx.TextCtrl(panel_principal, value="70", pos=(950, 478), size=(80, -1))
+angulo_input.Bind(wx.EVT_TEXT,valores_texto)
+
 
 # Titulos de las graficas
 texto_titulo1 = wx.StaticText(panel_principal, label="Titulo 1", pos=(20, 395))

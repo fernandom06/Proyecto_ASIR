@@ -39,7 +39,7 @@ def previsualizar(e):
         vb.c_segundos = 1
 
     def atras(e):
-        pause
+        timer.Stop()
         vb.c_segundos = 1
         reproductor.Destroy()
 

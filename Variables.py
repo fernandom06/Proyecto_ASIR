@@ -40,6 +40,10 @@ t_rep = 0
 l_soc = 1400
 t_soc = 0
 
+# Angulo de etiquetas
+
+angulo_gr=70
+
 barra_tiempo=[]
 # Teimpo entrada y salida de video
 s_entrada=0

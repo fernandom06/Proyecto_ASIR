@@ -48,7 +48,8 @@ def grafica():
     gra1.spines['top'].set_visible(False)
     gra1.spines['right'].set_color(vb.contorno)
     gra1.spines['left'].set_color(vb.contorno)
-    gra1.tick_params(axis='both', colors=vb.label,labelbottom="off")
+    # labelbottom para las etiquetas del eje x y bottom para el rabillo que deja la propia etiqueta
+    gra1.tick_params(axis='both', colors=vb.label,labelbottom="off", bottom='off')
     gra1.get_yaxis().set_label_coords(-0.1,0.5)
     plt.xticks(rotation=70)
 
@@ -65,7 +66,7 @@ def grafica():
     gra2.spines['left'].set_color(vb.contorno)
     gra2.tick_params(axis='both', colors=vb.label)
     gra2.get_yaxis().set_label_coords(-0.1,0.5)
-    plt.xticks(rotation=70)
+    plt.xticks(rotation=vb.angulo_gr)
 
     # plt.show()
     fig.set_facecolor(vb.background_gr)
