@@ -16,8 +16,6 @@ def grafica():
         for i in range(len(vb.titulos)):
             letras[i]=[]
             eje_y.append(letras[i])
-        #y = []
-        #z = []
         barra = []
 
         for line in leido:
@@ -25,8 +23,6 @@ def grafica():
             barra.append(datetime.strptime(line[0], '%H:%M:%S'))
             for i in range(len(vb.titulos)):
                 eje_y[i].append(float(line[i+1]))
-            #y.append(float(line[1]))
-            #z.append(float(line[2]))
 
     # tiempo tiene todos los valores del tiempo del csv
 
@@ -60,6 +56,8 @@ def grafica():
         # si no es la ultima gra.tick_params(axis='both', colors=vb.label, labelbottom="off", bottom='off')
         if i != len(vb.titulos_input) - 1:
             gra.tick_params(axis='both', colors=vb.label, labelbottom="off", bottom='off')
+        else:
+            gra.tick_params(axis='both', colors=vb.label)
         gra.get_yaxis().set_label_coords(-0.1, 0.5)
         plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
 
