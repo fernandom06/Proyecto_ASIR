@@ -10,6 +10,6 @@ def columnas():
         vb.titulos = []
         #if vb.c_col==0:
         for i in range(contador - 1):
-            vb.titulos.append("Titulo")
+            vb.titulos.append(f"Titulo {i+1}")
         #vb.c_col=1
     return contador

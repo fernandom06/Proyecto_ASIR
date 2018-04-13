@@ -133,7 +133,7 @@ colores_wx = ["Aquamarine", "Black", "Blue", "Blue Violet", "Brown", "Cadet Blue
               "Purple", "Red", "Salmon", "Sea Green", "Sienna", "Sky Blue", "Slate Blue", "Spring Green", "Steel Blue",
               "Tan", "Thistle", "Tuquoise", "Violet", "Violet Red", "Wheat", "White", "Yellow", "Yellow Green"]
 tamannos = ["xx-small", "x-small", "small", "medium", "large", "x-large", "xx-large"]
-fonts = ["Arial", "Times New Roman", "Verdana ", "Courier New", "Comic Sans MS", "Impact", "Tahoma", "Trebuchet MS",
+fonts = ["Arial", "Times New Roman", "Verdana", "Courier New", "Comic Sans MS", "Impact", "Tahoma", "Trebuchet MS",
          "Georgia", "Century Gothic", "Garamond", "Lucida Console", "Bookman Old Style", "Book Antiqua", "Lucida Sans",
          "Monotype Corsiva", "Palatino Linotype"]
 

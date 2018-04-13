@@ -9,24 +9,30 @@ def grafica():
 
     with open(vb.csv) as fichero:
         leido = csv.reader(fichero, delimiter=';')
-
+        letras=["y","z","t","u","v","w"]
+        eje_y=[]
         tiempo = []
         x = []
-        y = []
-        z = []
+        for i in range(len(vb.titulos)):
+            letras[i]=[]
+            eje_y.append(letras[i])
+        #y = []
+        #z = []
         barra = []
 
         for line in leido:
             tiempo.append(line[0])
             barra.append(datetime.strptime(line[0], '%H:%M:%S'))
-            y.append(float(line[1]))
-            z.append(float(line[2]))
+            for i in range(len(vb.titulos)):
+                eje_y[i].append(float(line[i+1]))
+            #y.append(float(line[1]))
+            #z.append(float(line[2]))
 
     # tiempo tiene todos los valores del tiempo del csv
 
     # Elegir cada cuanto quieres las etiquetas en la grafica
-    if vb.s_salida==0:
-        vb.s_salida=len(tiempo)
+    if vb.s_salida == 0:
+        vb.s_salida = len(tiempo)
     # for para guardar solo los tiempos que interesan
     for i in range(vb.s_entrada, vb.s_salida, vb.etiquetas):
         x.append(tiempo[i])
@@ -36,43 +42,31 @@ def grafica():
     fig = plt.figure()
     fig.subplots_adjust(top=0.95, bottom=0.15, left=0.18, right=0.97, hspace=0.1)
 
-    gra1 = fig.add_subplot(2, 1, 1)
-    gra1.plot(tiempo, y, color=vb.color_linea, linewidth=vb.grosor)
-    gra1.set_facecolor(vb.background_gr)
-    # Establece donde empieza y donde acaba el eje x, con esa formula ajusta la grafica
-    gra1.set_xlim(vb.s_entrada, vb.s_salida)
-    gra1.set_xticks(x)
-    # gra1.set_title(vb.titulo1, family=vb.fuente_tit, color=vb.titulo_gr,size=vb.tamanno_tit)
-    gra1.set_ylabel(vb.titulo1, family=vb.fuente_tit, color=vb.titulo_gr,size=vb.tamanno_tit)
-    gra1.spines['bottom'].set_color(vb.contorno)
-    #gra1.spines['top'].set_color(vb.contorno)
-    gra1.spines['top'].set_visible(False)
-    gra1.spines['right'].set_color(vb.contorno)
-    gra1.spines['left'].set_color(vb.contorno)
-    # labelbottom para las etiquetas del eje x y bottom para el rabillo que deja la propia etiqueta
-    gra1.tick_params(axis='both', colors=vb.label,labelbottom="off", bottom='off')
-    gra1.get_yaxis().set_label_coords(-0.1,0.5)
-    plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
+    for i in range(len(vb.titulos_input)):
+        gra = fig.add_subplot(len(vb.titulos_input), 1, i + 1)
+        gra.plot(tiempo, eje_y[i], color=vb.color_linea, linewidth=vb.grosor)
+        gra.set_facecolor(vb.background_gr)
+        # Establece donde empieza y donde acaba el eje x, con esa formula ajusta la grafica
+        gra.set_xlim(vb.s_entrada, vb.s_salida)
+        # Las etiquetas solo para la ultima
+        if i == len(vb.titulos_input) - 1:
+            gra.set_xticks(x)
+            plt.xticks(rotation=vb.angulo_gr, fontsize=vb.tamanno_label, fontname=vb.fuente_label)
+        gra.set_ylabel(vb.titulos[i], family=vb.fuente_tit, color=vb.titulo_gr, size=vb.tamanno_tit)
+        gra.spines['bottom'].set_color(vb.contorno)
+        gra.spines['top'].set_visible(False)
+        gra.spines['right'].set_color(vb.contorno)
+        gra.spines['left'].set_color(vb.contorno)
+        # si no es la ultima gra.tick_params(axis='both', colors=vb.label, labelbottom="off", bottom='off')
+        if i != len(vb.titulos_input) - 1:
+            gra.tick_params(axis='both', colors=vb.label, labelbottom="off", bottom='off')
+        gra.get_yaxis().set_label_coords(-0.1, 0.5)
+        plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
 
-    gra2 = fig.add_subplot(2, 1, 2)
-    gra2.plot(tiempo, z, color=vb.color_linea, linewidth=vb.grosor)
-    gra2.set_facecolor(vb.background_gr)
-    gra2.set_xlim(vb.s_entrada, vb.s_salida)
-    gra2.set_xticks(x)
-    # gra2.set_title(vb.titulo2, family=vb.fuente_tit,color=vb.titulo_gr,size=vb.tamanno_tit)
-    gra2.set_ylabel(vb.titulo2, family=vb.fuente_tit,color=vb.titulo_gr,size=vb.tamanno_tit)
-    gra2.spines['bottom'].set_color(vb.contorno)
-    gra2.spines['top'].set_visible(False)
-    gra2.spines['right'].set_color(vb.contorno)
-    gra2.spines['left'].set_color(vb.contorno)
-    gra2.tick_params(axis='both', colors=vb.label)
-    gra2.get_yaxis().set_label_coords(-0.1,0.5)
-    plt.xticks(rotation=vb.angulo_gr, fontsize=vb.tamanno_label, fontname=vb.fuente_label)
-    plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
 
     # plt.show()
     fig.set_facecolor(vb.background_gr)
     # Guarda el grafico con los colores especificados
-    plt.savefig("grafico.png",facecolor=fig.get_facecolor())
-    #plt.savefig("grafico.png")
+    plt.savefig("grafico.png", facecolor=fig.get_facecolor())
+    # plt.savefig("grafico.png")
     return barra
