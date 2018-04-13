@@ -87,8 +87,8 @@ def cambiar(e):
 
 
 def cambiar_titulos(e, lista):
-    for tit in range(len(lista)):
-        vb.titulos[tit] = lista[tit].GetValue()
+    for titu in range(len(lista)):
+        vb.titulos[titu] = lista[titu].GetValue()
 
 
 def cargar_archivo(e, numero, texto):
@@ -98,6 +98,11 @@ def cargar_archivo(e, numero, texto):
     dlg = wx.FileDialog(cargar, texto)
 
     if dlg.ShowModal() == wx.ID_OK:
+        # Destruir lo que haya dentro de las listas
+        for titu in vb.titulos_label:
+            titu.Destroy()
+        for titu in vb.titulos_input:
+            titu.Destroy()
         if numero == 1:
             vb.video = dlg.GetPath()
             cuadro1.SetValue(dlg.GetPath())
@@ -105,12 +110,13 @@ def cargar_archivo(e, numero, texto):
             vb.csv = dlg.GetPath()
             # Obtenemos el numero de columnas del csv
             vb.contador_col = col.columnas()
-            titulos = []
-            titulos_input = []
+            vb.titulos_label = []
+            vb.titulos_input = []
+
             for columna in range(vb.contador_col - 1):
-                titulos.append(wx.StaticText(panel_principal, label=f"titulo {columna+1}", pos=(800, 0 + columna * 40)))
-                titulos_input.append(wx.TextCtrl(panel_principal, pos=(840, 0 + columna * 40)))
-                titulos_input[columna].Bind(wx.EVT_TEXT, partial(cambiar_titulos, lista=titulos_input))
+                vb.titulos_label.append(wx.StaticText(panel_principal, label=f"titulo {columna+1}", pos=(800, 40 + columna * 40)))
+                vb.titulos_input.append(wx.TextCtrl(panel_principal, pos=(840, 40 + columna * 40)))
+                vb.titulos_input[columna].Bind(wx.EVT_TEXT, partial(cambiar_titulos, lista=vb.titulos_input))
             cuadro2.SetValue(dlg.GetPath())
 
 
