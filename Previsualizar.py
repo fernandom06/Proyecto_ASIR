@@ -93,16 +93,17 @@ def previsualizar(e):
         # Cambios al player
         vb.w_player = vb.w_player * w / vb.w_ant
         vb.h_player = vb.h_player * h / vb.h_ant
-        vb.l_rep = vb.l_player * w / vb.w_ant
-        vb.t_rep = vb.t_player * h / vb.h_ant
+        vb.l_player = vb.l_player * w / vb.w_ant
+        vb.t_player = vb.t_player * h / vb.h_ant
         player.SetSize(vb.w_player, vb.h_player)
         player.SetPosition(pt=(vb.l_player, vb.t_player))
+        print(player.GetPosition())
 
         # Cambios al logo
         vb.w_logo = vb.w_logo * w / vb.w_ant
         vb.h_logo = vb.h_logo * h / vb.h_ant
-        vb.l_soc = vb.l_logo * w / vb.w_ant
-        vb.t_soc = vb.t_logo * h / vb.h_ant
+        vb.l_logo = vb.l_logo * w / vb.w_ant
+        vb.t_logo = vb.t_logo * h / vb.h_ant
         logo.SetSize(vb.w_logo, vb.h_logo)
         logo.SetPosition(pt=(vb.l_logo, vb.t_logo))
 
@@ -143,8 +144,8 @@ def previsualizar(e):
         # Grafica
         vb.w_grafica = vb.w_grafica * w / vb.w_ant
         vb.h_grafica = vb.h_grafica * h / vb.h_ant
-        vb.l_gr = vb.l_grafica * w / vb.w_ant
-        vb.t_gr = vb.t_grafica * h / vb.h_ant
+        vb.l_grafica = vb.l_grafica * w / vb.w_ant
+        vb.t_grafica = vb.t_grafica * h / vb.h_ant
         grafica.SetSize(vb.w_grafica, vb.h_grafica)
         grafica.SetPosition(pt=(vb.l_grafica, vb.t_grafica))
 
@@ -180,13 +181,15 @@ def previsualizar(e):
                                  pos=(vb.l_player, vb.t_player + vb.t_play), size=(vb.w_play, vb.h_play))
     boton_play.Bind(wx.EVT_BUTTON, cargado)
     boton_pause = wx.BitmapButton(panel_reproductor, bitmap=wx.Bitmap("player_pause.png"),
-                                  pos=(vb.l_player + vb.l_pause, vb.t_player + vb.t_pause), size=(vb.w_pause, vb.h_pause))
+                                  pos=(vb.l_player + vb.l_pause, vb.t_player + vb.t_pause),
+                                  size=(vb.w_pause, vb.h_pause))
     boton_pause.Bind(wx.EVT_BUTTON, pause)
     boton_atras = wx.Button(panel_reproductor, label="Atrás", pos=(vb.l_player + vb.l_atras, vb.t_player + vb.t_atras),
                             size=(vb.w_grabar, vb.h_grabar))
     boton_atras.Bind(wx.EVT_BUTTON, atras)
     boton_grabar = wx.Button(panel_reproductor, label="Grabar Video",
-                             pos=(vb.l_player + vb.l_grabar, vb.t_player + vb.t_grabar), size=(vb.w_grabar, vb.h_grabar))
+                             pos=(vb.l_player + vb.l_grabar, vb.t_player + vb.t_grabar),
+                             size=(vb.w_grabar, vb.h_grabar))
     boton_grabar.Bind(wx.EVT_BUTTON, grabar_video)
 
     player = wx.media.MediaCtrl(panel_reproductor, pos=(vb.l_player, vb.t_player), size=(vb.w_player, vb.h_player))
@@ -220,7 +223,8 @@ def previsualizar(e):
 
     # Introducir la barra encima del gráfico
     barra_mover = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="barra2.png"),
-                                  pos=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra), size=(vb.w_barra, vb.h_barra))
+                                  pos=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra),
+                                  size=(vb.w_barra, vb.h_barra))
     barra_mover.Hide()
 
     # Sizers

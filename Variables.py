@@ -17,42 +17,41 @@ fuente_tit = "Arial"
 tamanno_tit = "large"
 titulo_gr = "black"
 
-
 # Responsive, variables de la ventana w=ancho h=alto
-w_ant=1920
-h_ant=1040
+w_ant = 1920
+h_ant = 1040
 
 # Variables del reproductor
-w_player=640
-h_player=400
+w_player = 640
+h_player = 400
 
 # Variables del logo
-w_logo=431
-h_logo=183
+w_logo = 431
+h_logo = 183
 
 # Variables slider
-w_slider=640
+w_slider = 640
 
-#Variables botones
-w_play=40
-h_play=40
+# Variables botones
+w_play = 40
+h_play = 40
 
-w_pause=40
-h_pause=40
+w_pause = 40
+h_pause = 40
 
-w_atras=88
-h_atras=26
+w_atras = 88
+h_atras = 26
 
-w_grabar=88
-h_grabar=26
+w_grabar = 88
+h_grabar = 26
 
 # Variables grafica
-w_grafica=800
-h_grafica=480
+w_grafica = 800
+h_grafica = 480
 
 # Variables barra
-w_barra=4
-h_barra=382
+w_barra = 4
+h_barra = 382
 
 # Reproductor
 
@@ -76,21 +75,21 @@ t_player = 0
 l_logo = 1400
 t_logo = 0
 
-t_slider=420
+t_slider = 420
 
-t_play=450
+t_play = 450
 
-l_pause=45
-t_pause=450
+l_pause = 45
+t_pause = 450
 
-l_atras=90
-t_atras=464
+l_atras = 90
+t_atras = 464
 
-l_grabar=185
-t_grabar=464
+l_grabar = 185
+t_grabar = 464
 
-l_barra=138
-t_barra=32
+l_barra = 138
+t_barra = 32
 
 # Angulo de etiquetas
 
@@ -103,7 +102,7 @@ barra_tiempo = []
 s_entrada = 0
 s_salida = len(barra_tiempo)
 c_segundos = 0
-pixeles_grafica=651
+pixeles_grafica = 651
 
 
 def cerrar(e):

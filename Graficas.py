@@ -9,15 +9,15 @@ def grafica():
 
     with open(vb.csv) as fichero:
         leido = csv.reader(fichero, delimiter=';')
-        letras=["y","z","t","u","v","w"]
-        eje_y=[]
+        letras = ["y", "z", "t", "u", "v", "w"]
+        eje_y = []
         # tiempo tiene todos los valores del tiempo del csv
         tiempo = []
         # Se crean tantas listas como columnas hay, siempre la del eje x y dinamicamente las del eje y de cada grafica,
         # dependiendo de cuantas columnas tenga el CSV
         x = []
         for i in range(len(vb.titulos)):
-            letras[i]=[]
+            letras[i] = []
             eje_y.append(letras[i])
         barra = []
 
@@ -26,7 +26,7 @@ def grafica():
             tiempo.append(line[0])
             barra.append(datetime.strptime(line[0], '%H:%M:%S'))
             for i in range(len(vb.titulos)):
-                eje_y[i].append(float(line[i+1]))
+                eje_y[i].append(float(line[i + 1]))
 
     # if que en caso de que el usuario no indique el momento de salida del video se pondra por defecto el maximo
     if vb.s_salida == 0:
@@ -35,7 +35,7 @@ def grafica():
     for i in range(vb.s_entrada, vb.s_salida, vb.etiquetas):
         x.append(tiempo[i])
 
-    fig = plt.figure(figsize=(8.3,4.8))
+    fig = plt.figure(figsize=(8.3, 4.8))
     fig.subplots_adjust(top=0.95, bottom=0.15, left=0.18, right=0.97, hspace=0.1)
 
     # For en el que se crean las graficas
@@ -61,7 +61,6 @@ def grafica():
             gra.tick_params(axis='both', colors=vb.label)
         gra.get_yaxis().set_label_coords(-0.1, 0.5)
         plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
-
 
     fig.set_facecolor(vb.background_gr)
     # Guarda el grafico con los colores especificados

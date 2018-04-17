@@ -118,7 +118,8 @@ def cargar_archivo(e, numero, texto):
             vb.titulos_input = []
 
             for columna in range(vb.contador_col - 1):
-                vb.titulos_label.append(wx.StaticText(panel_principal, label=f"titulo {columna+1}", pos=(800, 40 + columna * 40)))
+                vb.titulos_label.append(
+                    wx.StaticText(panel_principal, label=f"titulo {columna+1}", pos=(800, 40 + columna * 40)))
                 vb.titulos_input.append(wx.TextCtrl(panel_principal, pos=(840, 40 + columna * 40)))
                 vb.titulos_input[columna].Bind(wx.EVT_TEXT, partial(cambiar_titulos, lista=vb.titulos_input))
             cuadro2.SetValue(dlg.GetPath())
