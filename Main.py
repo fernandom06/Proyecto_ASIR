@@ -6,6 +6,7 @@ import Columnas as col
 
 
 def valores_choice(e):
+    # Funcion que recoge los valores de los select
     vb.back_rep = ch_back_rep.GetString(ch_back_rep.GetCurrentSelection())
     vb.contorno = ch_back_con.GetString(ch_back_con.GetCurrentSelection())
     vb.background_gr = ch_back_gr.GetString(ch_back_gr.GetCurrentSelection())
@@ -19,6 +20,7 @@ def valores_choice(e):
 
 
 def valores_color(e):
+    # Funcion que recoge los colores de los input de tipo color
     vb.back_rep = cl_back_rep.GetColour()
     vb.back_rep = vb.back_rep.GetAsString(flags=wx.C2S_HTML_SYNTAX)
     vb.contorno = cl_back_con.GetColour()
@@ -38,8 +40,7 @@ def valores_color(e):
 
 
 def valores_texto(e):
-    vb.titulo1 = titulo1.GetValue()
-    vb.titulo2 = titulo2.GetValue()
+    # Funcion que recoge los valores de los cuadros de texto
     vb.etiquetas = int(etiquetas_input.GetValue())
     vb.grosor = float(grosor_input.GetValue())
     vb.l_gr = int(l_gr_input.GetValue())
@@ -56,7 +57,8 @@ def valores_texto(e):
 
 
 def cambiar(e):
-    if vb.numero == 1:
+    # Funcion para cambiar entre los controles de lista para los colores o los input de tipo color
+    if vb.checkbox == 1:
         ch_linea_gr.Hide()
         ch_label_gr.Hide()
         ch_back_con.Hide()
@@ -69,7 +71,7 @@ def cambiar(e):
         cl_label_gr.Show()
         cl_linea_gr.Show()
         cl_titulo_gr.Show()
-        vb.numero = 0
+        vb.checkbox = 0
     else:
         ch_linea_gr.Show()
         ch_label_gr.Show()
@@ -83,30 +85,32 @@ def cambiar(e):
         cl_label_gr.Hide()
         cl_linea_gr.Hide()
         cl_titulo_gr.Hide()
-        vb.numero = 1
+        vb.checkbox = 1
 
 
 def cambiar_titulos(e, lista):
+    # Funcion que guarda los titulos que se introducen en los cuadros de texto creados dinamicamente
     for titu in range(len(lista)):
         vb.titulos[titu] = lista[titu].GetValue()
 
 
 def cargar_archivo(e, numero, texto):
+    # Funcion que abre una ventana para cargar o un video o un csv
     cargar = wx.Frame(None, -1, 'win.py')
     cargar.SetSize(0, 0, 200, 50)
 
     dlg = wx.FileDialog(cargar, texto)
 
     if dlg.ShowModal() == wx.ID_OK:
-        # Destruir lo que haya dentro de las listas
-        for titu in vb.titulos_label:
-            titu.Destroy()
-        for titu in vb.titulos_input:
-            titu.Destroy()
         if numero == 1:
             vb.video = dlg.GetPath()
             cuadro1.SetValue(dlg.GetPath())
         else:
+            # En el caso de que sea Un CSV se crearan los cuadros de texto dinamicamente y se eliminaran los anteriores
+            for titu in vb.titulos_label:
+                titu.Destroy()
+            for titu in vb.titulos_input:
+                titu.Destroy()
             vb.csv = dlg.GetPath()
             # Obtenemos el numero de columnas del csv
             vb.contador_col = col.columnas()
@@ -243,7 +247,7 @@ ch_titulo_fam.Bind(wx.EVT_CHOICE, valores_choice)
 
 # Grafica
 l_gr = wx.StaticText(panel_principal, label="Distancia desde la izquierda (Grafica)", pos=(400, 200))
-l_gr_input = wx.TextCtrl(panel_principal, value="640", pos=(600, 198), size=(80, -1))
+l_gr_input = wx.TextCtrl(panel_principal, value="495", pos=(600, 198), size=(80, -1))
 l_gr_input.Bind(wx.EVT_TEXT, valores_texto)
 
 t_gr = wx.StaticText(panel_principal, label="Distancia desde arriba(Grafica)", pos=(400, 240))
@@ -293,15 +297,6 @@ tamannos_etiqueta = wx.StaticText(panel_principal, label="Tamaño de las etiquet
 ch_tamannos_etiqueta = wx.Choice(panel_principal, choices=tamannos, pos=(885, 438))
 ch_tamannos_etiqueta.SetSelection(3)
 ch_tamannos_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
-
-# Titulos de las graficas
-texto_titulo1 = wx.StaticText(panel_principal, label="Titulo 1", pos=(20, 395))
-titulo1 = wx.TextCtrl(panel_principal, value=vb.titulo1, pos=(70, 392), size=(175, -1))
-titulo1.Bind(wx.EVT_TEXT, valores_texto)
-
-texto_titulo2 = wx.StaticText(panel_principal, label="Titulo 2", pos=(20, 435))
-titulo2 = wx.TextCtrl(panel_principal, value=vb.titulo2, pos=(70, 432), size=(175, -1))
-titulo2.Bind(wx.EVT_TEXT, valores_texto)
 
 menu_principal.Show()
 menu_principal.Centre()

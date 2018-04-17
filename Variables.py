@@ -1,7 +1,7 @@
 # Archivo que sirve para guardar los valores que no se pueden retornar con los eventos
 import sys
 
-numero = 1
+checkbox = 1
 
 csv = "real_madrid.csv"
 video = "madrid.mp4"
@@ -47,18 +47,12 @@ w_grabar=88
 h_grabar=26
 
 # Variables grafica
-w_grafica=640
+w_grafica=800
 h_grafica=480
-w_otra=640
-h_otra=480
 
 # Variables barra
 w_barra=4
 h_barra=382
-
-
-titulo1 = "Atención"
-titulo2 = "Emoción"
 
 # Reproductor
 
@@ -70,19 +64,17 @@ c_titulos = 0
 titulos = []
 titulos_input = []
 titulos_label = []
-# for i in range(contador_col - 1):
-#    titulos.append("hola")
 
 # Posiciones: Todos los elementos
 
-l_gr = 640
-t_gr = 530
+l_grafica = 495
+t_grafica = 530
 
-l_rep = 640
-t_rep = 0
+l_player = 640
+t_player = 0
 
-l_soc = 1400
-t_soc = 0
+l_logo = 1400
+t_logo = 0
 
 t_slider=420
 
@@ -97,8 +89,8 @@ t_atras=464
 l_grabar=185
 t_grabar=464
 
-l_barra=116
-t_barra=30
+l_barra=138
+t_barra=32
 
 # Angulo de etiquetas
 
@@ -111,6 +103,7 @@ barra_tiempo = []
 s_entrada = 0
 s_salida = len(barra_tiempo)
 c_segundos = 0
+pixeles_grafica=651
 
 
 def cerrar(e):
