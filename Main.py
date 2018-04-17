@@ -138,6 +138,7 @@ colores_wx = ["Aquamarine", "Black", "Blue", "Blue Violet", "Brown", "Cadet Blue
               "Purple", "Red", "Salmon", "Sea Green", "Sienna", "Sky Blue", "Slate Blue", "Spring Green", "Steel Blue",
               "Tan", "Thistle", "Tuquoise", "Violet", "Violet Red", "Wheat", "White", "Yellow", "Yellow Green"]
 tamannos = ["xx-small", "x-small", "small", "medium", "large", "x-large", "xx-large"]
+tamannos2 = ["xx-small", "x-small", "small", "medium"]
 fonts = ["Arial", "Times New Roman", "Verdana", "Courier New", "Comic Sans MS", "Impact", "Tahoma", "Trebuchet MS",
          "Georgia", "Century Gothic", "Garamond", "Lucida Console", "Bookman Old Style", "Book Antiqua", "Lucida Sans",
          "Monotype Corsiva", "Palatino Linotype"]
@@ -295,7 +296,7 @@ ch_fuente_etiqueta.SetSelection(0)
 ch_fuente_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
 
 tamannos_etiqueta = wx.StaticText(panel_principal, label="Tamaño de las etiquetas", pos=(750, 440))
-ch_tamannos_etiqueta = wx.Choice(panel_principal, choices=tamannos, pos=(885, 438))
+ch_tamannos_etiqueta = wx.Choice(panel_principal, choices=tamannos2, pos=(885, 438))
 ch_tamannos_etiqueta.SetSelection(3)
 ch_tamannos_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
 

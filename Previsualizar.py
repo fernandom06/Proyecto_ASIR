@@ -29,6 +29,7 @@ def previsualizar(e):
         boton_play.Hide()
         boton_pause.Hide()
         boton_atras.Hide()
+        boton_grafica.Hide()
         boton_grabar.Hide()
         slider_player.Hide()
         timer_grabar.Start(5000, True)
@@ -70,6 +71,11 @@ def previsualizar(e):
         vb.c_grafica = 0
         reproductor.Destroy()
 
+    def regrafica(e):
+        barra_mover.Hide()
+        gr.grafica()
+        grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
+
     def resize(e):
         # Funcion para redimensionar la imagen ajustandolo al tamaño de la ventana
         imagen = Image.open("grafico.png")
@@ -97,7 +103,6 @@ def previsualizar(e):
         vb.t_player = vb.t_player * h / vb.h_ant
         player.SetSize(vb.w_player, vb.h_player)
         player.SetPosition(pt=(vb.l_player, vb.t_player))
-        print(player.GetPosition())
 
         # Cambios al logo
         vb.w_logo = vb.w_logo * w / vb.w_ant
@@ -109,9 +114,13 @@ def previsualizar(e):
 
         # Camios Slider
         vb.w_slider = vb.w_slider * w / vb.w_ant
+        print(vb.h_slider)
+        vb.h_slider = vb.h_slider * h / vb.h_ant
+        print(vb.h_slider)
         vb.t_slider = vb.t_slider * h / vb.h_ant
-        slider_player.SetSize(vb.w_slider, -1)
+        slider_player.SetSize(vb.w_slider, vb.h_slider)
         slider_player.SetPosition(pt=(vb.l_player, vb.t_player + vb.t_slider))
+        print(slider_player.GetSize())
 
         # Cambios Botones
         vb.w_play = vb.w_play * w / vb.w_ant
@@ -141,6 +150,14 @@ def previsualizar(e):
         boton_grabar.SetSize(vb.w_grabar, vb.h_grabar)
         boton_grabar.SetPosition(pt=(vb.l_player + vb.l_grabar, vb.t_player + vb.t_grabar))
 
+        # Mover el boton de regrafica
+        vb.w_regrafica = vb.w_regrafica * w / vb.w_ant
+        vb.h_regrafica = vb.h_regrafica * h / vb.h_ant
+        vb.l_regrafica = vb.l_regrafica * w / vb.w_ant
+        vb.t_regrafica = vb.t_regrafica * h / vb.h_ant
+        boton_grafica.SetSize(vb.w_regrafica, vb.h_regrafica)
+        boton_grafica.SetPosition(pt=(vb.l_player + vb.l_regrafica, vb.t_player + vb.t_regrafica))
+
         # Grafica
         vb.w_grafica = vb.w_grafica * w / vb.w_ant
         vb.h_grafica = vb.h_grafica * h / vb.h_ant
@@ -157,15 +174,21 @@ def previsualizar(e):
         barra_mover.SetSize(vb.w_barra, vb.h_barra)
         barra_mover.SetPosition(pt=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
 
+        # Calcular pulgadas para la grafica
+        vb.w_inch = vb.w_grafica / 100
+        vb.h_inch = vb.h_grafica / 100
+
         # Guaradar los nuevos valores de ancho y alto de la ventana
         vb.w_ant = w
         vb.h_ant = h
+        vb.w_ant_grafica = vb.w_grafica
+        vb.h_ant_grafica = vb.h_grafica
 
     # LLamar a la funcion grafica para crear la grafica
     vb.barra_tiempo = gr.grafica()
 
     # Crear ventana para el video
-    reproductor = wx.Frame(None, size=(1500, 1000))
+    reproductor = wx.Frame(None, size=(1500, 800))
     reproductor.SetBackgroundColour(vb.back_rep)
     reproductor.Maximize()
     reproductor.Bind(wx.EVT_SIZE, responsive)
@@ -191,13 +214,18 @@ def previsualizar(e):
                              pos=(vb.l_player + vb.l_grabar, vb.t_player + vb.t_grabar),
                              size=(vb.w_grabar, vb.h_grabar))
     boton_grabar.Bind(wx.EVT_BUTTON, grabar_video)
+    boton_grafica = wx.Button(panel_reproductor, label="Recalcular Grafica",
+                              pos=(vb.l_player + vb.l_regrafica, vb.t_player + vb.t_regrafica),
+                              size=(vb.w_regrafica, vb.h_regrafica))
+    boton_grafica.Bind(wx.EVT_BUTTON, regrafica)
 
     player = wx.media.MediaCtrl(panel_reproductor, pos=(vb.l_player, vb.t_player), size=(vb.w_player, vb.h_player))
     # player.ShowPlayerControls(flags=wx.media.MEDIACTRLPLAYERCONTROLS_VOLUME)
     player.Load(vb.video)
 
     # Slider que llevara el tiempo del video
-    slider_player = wx.Slider(panel_reproductor, pos=(vb.l_player, vb.t_player + vb.t_slider), size=(vb.w_slider, -1))
+    slider_player = wx.Slider(panel_reproductor, pos=(vb.l_player, vb.t_player + vb.t_slider),
+                              size=(vb.w_slider, vb.h_slider))
     if vb.s_salida != 0:
         slider_player.SetRange(vb.s_entrada, vb.s_salida)
     else:

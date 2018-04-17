@@ -1,5 +1,11 @@
 # Archivo que sirve para guardar los valores que no se pueden retornar con los eventos
 import sys
+import ctypes
+
+# Obtener la resolucion de la pantalla en la que se ejecuta el programa
+user32 = ctypes.windll.user32
+user32.SetProcessDPIAware()
+ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
 checkbox = 1
 
@@ -31,6 +37,7 @@ h_logo = 183
 
 # Variables slider
 w_slider = 640
+h_slider = 24
 
 # Variables botones
 w_play = 40
@@ -46,12 +53,19 @@ w_grabar = 88
 h_grabar = 26
 
 # Variables grafica
-w_grafica = 800
+w_grafica = 830
 h_grafica = 480
+
+w_ant_grafica = 830
+h_ant_grafica = 480
 
 # Variables barra
 w_barra = 4
-h_barra = 382
+h_barra = 350
+
+# Variables Boton grafica
+w_regrafica = 100
+h_regrafica = 26
 
 # Reproductor
 
@@ -88,8 +102,11 @@ t_atras = 464
 l_grabar = 185
 t_grabar = 464
 
-l_barra = 138
-t_barra = 32
+l_regrafica = 280
+t_regrafica = 464
+
+l_barra = 151
+t_barra = 15
 
 # Angulo de etiquetas
 
@@ -102,7 +119,11 @@ barra_tiempo = []
 s_entrada = 0
 s_salida = len(barra_tiempo)
 c_segundos = 0
-pixeles_grafica = 651
+pixeles_grafica = 650
+
+# Calcular las pulgadas iniciales dependiendo de la resolucion
+w_inch = ancho * 8.3 / 1920
+h_inch = alto * 4.8 / 1080
 
 
 def cerrar(e):

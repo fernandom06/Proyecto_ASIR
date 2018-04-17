@@ -35,8 +35,8 @@ def grafica():
     for i in range(vb.s_entrada, vb.s_salida, vb.etiquetas):
         x.append(tiempo[i])
 
-    fig = plt.figure(figsize=(8.3, 4.8))
-    fig.subplots_adjust(top=0.95, bottom=0.15, left=0.18, right=0.97, hspace=0.1)
+    fig = plt.figure(figsize=(vb.w_inch, vb.h_inch))
+    fig.subplots_adjust(top=0.95, bottom=0.25, left=0.18, right=0.97, hspace=0.1)
 
     # For en el que se crean las graficas
     for i in range(len(vb.titulos_input)):
