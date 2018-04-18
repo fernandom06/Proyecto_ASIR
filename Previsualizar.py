@@ -1,8 +1,9 @@
+from functools import partial
 import wx
 import wx.media
+from PIL import Image
 import Graficas as gr
 import Variables as vb
-from PIL import Image
 
 
 def previsualizar(e):
@@ -35,6 +36,22 @@ def previsualizar(e):
         timer_grabar.Start(5000, True)
         barra_mover.SetPosition((vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
         vb.c_segundos = 0
+
+    def pinchar(e, widget):
+        x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
+        originx, originy = widget.GetPosition()
+        dx = x - originx
+        dy = y - originy
+        vb.delta = (dx, dy)
+        print(vb.delta)
+        widget.Bind(wx.EVT_MOTION, partial(arrastrar, widget=widget))
+
+    def arrastrar(e, widget):
+        if e.Dragging():
+            print("drag")
+            x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
+            fp = (x - vb.delta[0], y - vb.delta[1])
+            widget.Move(fp)
 
     def actualizar(e):
         # Funcion que actualiza la posicion de la barra en la grafica dependiendo del momento del video
@@ -114,13 +131,10 @@ def previsualizar(e):
 
         # Camios Slider
         vb.w_slider = vb.w_slider * w / vb.w_ant
-        print(vb.h_slider)
         vb.h_slider = vb.h_slider * h / vb.h_ant
-        print(vb.h_slider)
         vb.t_slider = vb.t_slider * h / vb.h_ant
         slider_player.SetSize(vb.w_slider, vb.h_slider)
         slider_player.SetPosition(pt=(vb.l_player, vb.t_player + vb.t_slider))
-        print(slider_player.GetSize())
 
         # Cambios Botones
         vb.w_play = vb.w_play * w / vb.w_ant
@@ -188,7 +202,7 @@ def previsualizar(e):
     vb.barra_tiempo = gr.grafica()
 
     # Crear ventana para el video
-    reproductor = wx.Frame(None, size=(1500, 800))
+    reproductor = wx.Frame(None, size=(1440, 900))
     reproductor.SetBackgroundColour(vb.back_rep)
     reproductor.Maximize()
     reproductor.Bind(wx.EVT_SIZE, responsive)
@@ -220,7 +234,6 @@ def previsualizar(e):
     boton_grafica.Bind(wx.EVT_BUTTON, regrafica)
 
     player = wx.media.MediaCtrl(panel_reproductor, pos=(vb.l_player, vb.t_player), size=(vb.w_player, vb.h_player))
-    # player.ShowPlayerControls(flags=wx.media.MEDIACTRLPLAYERCONTROLS_VOLUME)
     player.Load(vb.video)
 
     # Slider que llevara el tiempo del video
@@ -238,8 +251,11 @@ def previsualizar(e):
 
     grafica = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="grafico.png"), pos=(vb.l_grafica, vb.t_grafica),
                               size=(vb.w_grafica, vb.h_grafica))
+    grafica.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=grafica))
+
     logo = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="socio2.png"), pos=(vb.l_logo, vb.t_logo),
                            size=(vb.w_logo, vb.h_logo))
+    logo.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=logo))
 
     # Timer que se lanza cada 250 ms para actualizar la barra que se mueve por el gráfico
     timer = wx.Timer(player)

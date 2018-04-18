@@ -120,6 +120,7 @@ s_entrada = 0
 s_salida = len(barra_tiempo)
 c_segundos = 0
 pixeles_grafica = 650
+delta = (0, 0)
 
 # Calcular las pulgadas iniciales dependiendo de la resolucion
 w_inch = ancho * 8.3 / 1920
