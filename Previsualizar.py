@@ -26,6 +26,9 @@ def previsualizar(e):
         # lanza el video desde el principio a los 5 segundos para grabar la pantalla
         reproductor.SetWindowStyleFlag(style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
         reproductor.SetSize(reproductor.GetSize())
+        panel_player.SetBackgroundColour(vb.back_rep)
+        panel_grafica.SetBackgroundColour(vb.back_rep)
+        reproductor.Refresh()
         player.Stop()
         boton_play.Hide()
         boton_pause.Hide()
@@ -38,20 +41,27 @@ def previsualizar(e):
         vb.c_segundos = 0
 
     def pinchar(e, widget):
+        if widget.HasCapture():
+            widget.ReleaseMouse()
+        widget.CaptureMouse()
         x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
         originx, originy = widget.GetPosition()
         dx = x - originx
         dy = y - originy
         vb.delta = (dx, dy)
-        print(vb.delta)
         widget.Bind(wx.EVT_MOTION, partial(arrastrar, widget=widget))
 
     def arrastrar(e, widget):
         if e.Dragging():
-            print("drag")
             x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
             fp = (x - vb.delta[0], y - vb.delta[1])
+            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget))
             widget.Move(fp)
+
+    def soltar(e, widget):
+        if widget.HasCapture():
+            widget.ReleaseMouse()
+        reproductor.Refresh()
 
     def actualizar(e):
         # Funcion que actualiza la posicion de la barra en la grafica dependiendo del momento del video
@@ -113,13 +123,16 @@ def previsualizar(e):
         # Calcular los pixeles solo de la grafica
         vb.pixeles_grafica = vb.pixeles_grafica * w / vb.w_ant
 
-        # Cambios al player
+        # Cambios al player y a su Panel
         vb.w_player = vb.w_player * w / vb.w_ant
         vb.h_player = vb.h_player * h / vb.h_ant
-        vb.l_player = vb.l_player * w / vb.w_ant
-        vb.t_player = vb.t_player * h / vb.h_ant
+        vb.w_panel_player = vb.w_panel_player * w / vb.w_ant
+        vb.h_panel_player = vb.h_panel_player * h / vb.h_ant
+        vb.l_panel_player = vb.l_panel_player * w / vb.w_ant
+        vb.t_panel_player = vb.t_panel_player * h / vb.h_ant
         player.SetSize(vb.w_player, vb.h_player)
-        player.SetPosition(pt=(vb.l_player, vb.t_player))
+        panel_player.SetSize(vb.w_panel_player, vb.h_panel_player)
+        panel_player.SetPosition(pt=(vb.l_panel_player, vb.t_panel_player))
 
         # Cambios al logo
         vb.w_logo = vb.w_logo * w / vb.w_ant
@@ -175,10 +188,13 @@ def previsualizar(e):
         # Grafica
         vb.w_grafica = vb.w_grafica * w / vb.w_ant
         vb.h_grafica = vb.h_grafica * h / vb.h_ant
-        vb.l_grafica = vb.l_grafica * w / vb.w_ant
-        vb.t_grafica = vb.t_grafica * h / vb.h_ant
+        vb.w_panel_grafica = vb.w_panel_grafica * w / vb.w_ant
+        vb.h_panel_grafica = vb.h_panel_grafica * h / vb.h_ant
+        vb.l_panel_grafica = vb.l_panel_grafica * w / vb.w_ant
+        vb.t_panel_grafica = vb.t_panel_grafica * h / vb.h_ant
         grafica.SetSize(vb.w_grafica, vb.h_grafica)
-        grafica.SetPosition(pt=(vb.l_grafica, vb.t_grafica))
+        panel_grafica.SetSize(vb.w_panel_grafica, vb.h_panel_grafica)
+        panel_grafica.SetPosition(pt=(vb.l_panel_grafica, vb.t_panel_grafica))
 
         # Barra
         vb.w_barra = vb.w_barra * w / vb.w_ant
@@ -209,35 +225,43 @@ def previsualizar(e):
     reproductor.Bind(wx.EVT_CLOSE, atras)
     reproductor.Bind(wx.EVT_MOUSE_CAPTURE_CHANGED, resize)
 
-    main_sizer = wx.BoxSizer()
-    panel_reproductor = wx.Panel(reproductor)
-    main_sizer.Add(panel_reproductor)
+    # main_sizer = wx.BoxSizer()
+    panel_player = wx.Panel(reproductor, size=(640, 500), pos=(640, 0))
+    panel_player.Layout()
+    panel_player.SetBackgroundColour(wx.YELLOW)
+    panel_player.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=panel_player))
+    panel_grafica = wx.Panel(reproductor, size=(930, 580), pos=(445, 530))
+    panel_grafica.Layout()
+    panel_grafica.SetBackgroundColour(wx.YELLOW)
+    panel_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=panel_grafica))
+
+    # main_sizer.Add(panel_reproductor)
 
     # Video
-    boton_play = wx.BitmapButton(panel_reproductor, bitmap=wx.Bitmap("player_play.png"),
+    boton_play = wx.BitmapButton(panel_player, bitmap=wx.Bitmap("player_play.png"),
                                  pos=(vb.l_player, vb.t_player + vb.t_play), size=(vb.w_play, vb.h_play))
     boton_play.Bind(wx.EVT_BUTTON, cargado)
-    boton_pause = wx.BitmapButton(panel_reproductor, bitmap=wx.Bitmap("player_pause.png"),
+    boton_pause = wx.BitmapButton(panel_player, bitmap=wx.Bitmap("player_pause.png"),
                                   pos=(vb.l_player + vb.l_pause, vb.t_player + vb.t_pause),
                                   size=(vb.w_pause, vb.h_pause))
     boton_pause.Bind(wx.EVT_BUTTON, pause)
-    boton_atras = wx.Button(panel_reproductor, label="Atrás", pos=(vb.l_player + vb.l_atras, vb.t_player + vb.t_atras),
+    boton_atras = wx.Button(panel_player, label="Atrás", pos=(vb.l_player + vb.l_atras, vb.t_player + vb.t_atras),
                             size=(vb.w_grabar, vb.h_grabar))
     boton_atras.Bind(wx.EVT_BUTTON, atras)
-    boton_grabar = wx.Button(panel_reproductor, label="Grabar Video",
+    boton_grabar = wx.Button(panel_player, label="Grabar Video",
                              pos=(vb.l_player + vb.l_grabar, vb.t_player + vb.t_grabar),
                              size=(vb.w_grabar, vb.h_grabar))
     boton_grabar.Bind(wx.EVT_BUTTON, grabar_video)
-    boton_grafica = wx.Button(panel_reproductor, label="Recalcular Grafica",
+    boton_grafica = wx.Button(panel_player, label="Recalcular Grafica",
                               pos=(vb.l_player + vb.l_regrafica, vb.t_player + vb.t_regrafica),
                               size=(vb.w_regrafica, vb.h_regrafica))
     boton_grafica.Bind(wx.EVT_BUTTON, regrafica)
 
-    player = wx.media.MediaCtrl(panel_reproductor, pos=(vb.l_player, vb.t_player), size=(vb.w_player, vb.h_player))
+    player = wx.media.MediaCtrl(panel_player, pos=(vb.l_player, vb.t_player), size=(vb.w_player, vb.h_player))
     player.Load(vb.video)
 
     # Slider que llevara el tiempo del video
-    slider_player = wx.Slider(panel_reproductor, pos=(vb.l_player, vb.t_player + vb.t_slider),
+    slider_player = wx.Slider(panel_player, pos=(vb.l_player, vb.t_player + vb.t_slider),
                               size=(vb.w_slider, vb.h_slider))
     if vb.s_salida != 0:
         slider_player.SetRange(vb.s_entrada, vb.s_salida)
@@ -249,11 +273,10 @@ def previsualizar(e):
 
     # Grafica
 
-    grafica = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="grafico.png"), pos=(vb.l_grafica, vb.t_grafica),
+    grafica = wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name="grafico.png"), pos=(vb.l_grafica, vb.t_grafica),
                               size=(vb.w_grafica, vb.h_grafica))
-    grafica.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=grafica))
 
-    logo = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="socio2.png"), pos=(vb.l_logo, vb.t_logo),
+    logo = wx.StaticBitmap(reproductor, -1, wx.Bitmap(name="socio2.png"), pos=(vb.l_logo, vb.t_logo),
                            size=(vb.w_logo, vb.h_logo))
     logo.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=logo))
 
@@ -266,15 +289,15 @@ def previsualizar(e):
     player.Bind(wx.EVT_TIMER, cargado, timer_grabar)
 
     # Introducir la barra encima del gráfico
-    barra_mover = wx.StaticBitmap(panel_reproductor, -1, wx.Bitmap(name="barra2.png"),
+    barra_mover = wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name="barra2.png"),
                                   pos=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra),
                                   size=(vb.w_barra, vb.h_barra))
     barra_mover.Hide()
 
     # Sizers
 
-    reproductor.SetSizer(main_sizer)
-    reproductor.Layout()
+    # reproductor.SetSizer(main_sizer)
+    # reproductor.Layout()
 
     reproductor.Show()
     reproductor.Centre(wx.BOTH)

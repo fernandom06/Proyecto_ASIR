@@ -31,6 +31,9 @@ h_ant = 1040
 w_player = 640
 h_player = 400
 
+w_panel_player = 640
+h_panel_player = 500
+
 # Variables del logo
 w_logo = 431
 h_logo = 183
@@ -56,6 +59,9 @@ h_grabar = 26
 w_grafica = 830
 h_grafica = 480
 
+w_panel_grafica = 930
+h_panel_grafica = 580
+
 w_ant_grafica = 830
 h_ant_grafica = 480
 
@@ -80,11 +86,17 @@ titulos_label = []
 
 # Posiciones: Todos los elementos
 
-l_grafica = 495
-t_grafica = 530
+l_grafica = 50
+t_grafica = 50
 
-l_player = 640
+l_panel_grafica = 445
+t_panel_grafica = 530
+
+l_player = 0
 t_player = 0
+
+l_panel_player = 640
+t_panel_player = 0
 
 l_logo = 1400
 t_logo = 0

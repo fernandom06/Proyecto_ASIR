@@ -34,21 +34,11 @@ def valores_color(e):
     vb.titulo_gr = cl_titulo_gr.GetColour()
     vb.titulo_gr = vb.titulo_gr.GetAsString(flags=wx.C2S_HTML_SYNTAX)
 
-    # Conseguir el color en formato hexadecimal
-    # vb.color_prueba = elegir_color.GetColour()
-    # vb.color_prueba = vb.color_prueba.GetAsString(flags=wx.C2S_HTML_SYNTAX)
-
 
 def valores_texto(e):
     # Funcion que recoge los valores de los cuadros de texto
     vb.etiquetas = int(etiquetas_input.GetValue())
     vb.grosor = float(grosor_input.GetValue())
-    vb.l_gr = int(l_gr_input.GetValue())
-    vb.t_gr = int(t_gr_input.GetValue())
-    vb.l_rep = int(l_rep_input.GetValue())
-    vb.t_rep = int(t_rep_input.GetValue())
-    vb.l_log = int(l_log_input.GetValue())
-    vb.t_log = int(t_log_input.GetValue())
     vb.s_entrada = int(s_entrada_input.GetValue())
     vb.s_salida = int(s_salida_input.GetValue())
     vb.video = cuadro1.GetValue()
@@ -221,8 +211,8 @@ cl_titulo_gr.Hide()
 ch_titulo_gr.SetSelection(4)
 ch_titulo_gr.Bind(wx.EVT_CHOICE, valores_choice)
 cl_titulo_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
-# Intervalos de etiquetas
 
+# Intervalos de etiquetas
 etiquetas = wx.StaticText(panel_principal, label="Intervalos de etiquetas", pos=(400, 40))
 etiquetas_input = wx.TextCtrl(panel_principal, value="30", pos=(540, 38), size=(175, -1))
 etiquetas_input.Bind(wx.EVT_TEXT, valores_texto)
@@ -242,37 +232,6 @@ titulo_fam = wx.StaticText(panel_principal, label="Fuente para el titulo", pos=(
 ch_titulo_fam = wx.Choice(panel_principal, choices=fonts, pos=(530, 158))
 ch_titulo_fam.SetSelection(0)
 ch_titulo_fam.Bind(wx.EVT_CHOICE, valores_choice)
-
-# Anchura y Altura de Grafica Reproductor y Logotipo
-
-# Poner un titulo
-
-# Grafica
-l_gr = wx.StaticText(panel_principal, label="Distancia desde la izquierda (Grafica)", pos=(400, 200))
-l_gr_input = wx.TextCtrl(panel_principal, value="495", pos=(600, 198), size=(80, -1))
-l_gr_input.Bind(wx.EVT_TEXT, valores_texto)
-
-t_gr = wx.StaticText(panel_principal, label="Distancia desde arriba(Grafica)", pos=(400, 240))
-t_gr_input = wx.TextCtrl(panel_principal, value="530", pos=(565, 238), size=(80, -1))
-t_gr_input.Bind(wx.EVT_TEXT, valores_texto)
-
-# Reproductor
-l_rep = wx.StaticText(panel_principal, label="Distancia desde la izquierda (Reproductor)", pos=(400, 280))
-l_rep_input = wx.TextCtrl(panel_principal, value="640", pos=(630, 278), size=(80, -1))
-l_rep_input.Bind(wx.EVT_TEXT, valores_texto)
-
-t_rep = wx.StaticText(panel_principal, label="Distancia desde arriba (Reproductor)", pos=(400, 320))
-t_rep_input = wx.TextCtrl(panel_principal, value="0", pos=(600, 318), size=(80, -1))
-t_rep_input.Bind(wx.EVT_TEXT, valores_texto)
-
-# Logotipo
-l_log = wx.StaticText(panel_principal, label="Distancia desde la izquierda (Logotipo)", pos=(400, 360))
-l_log_input = wx.TextCtrl(panel_principal, value="1400", pos=(610, 358), size=(80, -1))
-l_log_input.Bind(wx.EVT_TEXT, valores_texto)
-
-t_log = wx.StaticText(panel_principal, label="Distancia desde arriba (Logotipo)", pos=(400, 400))
-t_log_input = wx.TextCtrl(panel_principal, value="0", pos=(580, 398), size=(80, -1))
-t_log_input.Bind(wx.EVT_TEXT, valores_texto)
 
 # Tiempo entrada y salida
 s_entrada = wx.StaticText(panel_principal, label="Tiempo entrada del video (segundos)", pos=(400, 440))
