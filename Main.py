@@ -84,6 +84,33 @@ def cambiar_titulos(e, lista):
         vb.titulos[titu] = lista[titu].GetValue()
 
 
+def ck_col(e):
+    # Funcion que modifica el checkbox que determina si se quieren todas las columnas del CSV o no
+    if vb.c_titulos == 1:
+        # Si se quieren todas
+        vb.titulos_col.Hide()
+        vb.c_titulos = 0
+    else:
+        # No se quieren todas
+        vb.col_checked = []
+        list_col = []
+        vb.titulos_col.Clear()
+        for i in range(vb.contador_col - 1):
+            list_col.append(f"Columna {i+1}")
+            vb.col_checked.append(False)
+        vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)
+        vb.titulos_col.Bind(wx.EVT_CHECKLISTBOX, lista_col)
+        vb.c_titulos = 1
+
+
+def lista_col(e):
+    # Funcion para determinar que columnas se quieren del CSV
+    for i in range(vb.contador_col - 1):
+        print(vb.titulos_col.IsChecked(i))
+        vb.col_checked[i] = vb.titulos_col.IsChecked(i)
+    print(vb.col_checked)
+
+
 def cargar_archivo(e, numero, texto):
     # Funcion que abre una ventana para cargar o un video o un csv
     cargar = wx.Frame(None, -1, 'win.py')
@@ -115,6 +142,7 @@ def cargar_archivo(e, numero, texto):
             cuadro2.SetValue(dlg.GetPath())
 
 
+list_col = []
 colores_mat = ["Aqua", "Aquamarine", "Azure", "Beige", "Black", "Blue", "Brown", "Chartreuse", "Chocolate", "Coral",
                "Crimson", "Cyan", "Darkblue", "Darkgreen", "Fuchsia", "Gold", "Goldenrod", "Green", "Grey", "Indigo",
                "Ivory", "Khaki", "Lavander", "Lightblue", "Lightfreen", "Lime", "Magenta", "Matoon", "Navy", "Olive",
@@ -233,6 +261,10 @@ ch_titulo_fam = wx.Choice(panel_principal, choices=fonts, pos=(530, 158))
 ch_titulo_fam.SetSelection(0)
 ch_titulo_fam.Bind(wx.EVT_CHOICE, valores_choice)
 
+# Checkbox para si se quieren todas las columnas del CSV
+check_col = wx.CheckBox(panel_principal, label="Elegir Columnas", pos=(400, 198))
+check_col.Bind(wx.EVT_CHECKBOX, ck_col)
+
 # Tiempo entrada y salida
 s_entrada = wx.StaticText(panel_principal, label="Tiempo entrada del video (segundos)", pos=(400, 440))
 s_entrada_input = wx.TextCtrl(panel_principal, value="0", pos=(600, 438), size=(80, -1))
@@ -258,6 +290,9 @@ tamannos_etiqueta = wx.StaticText(panel_principal, label="Tamaño de las etiquet
 ch_tamannos_etiqueta = wx.Choice(panel_principal, choices=tamannos2, pos=(885, 438))
 ch_tamannos_etiqueta.SetSelection(3)
 ch_tamannos_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
+
+vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)
+vb.titulos_col.Hide()
 
 menu_principal.Show()
 menu_principal.Centre()
