@@ -5,6 +5,7 @@ import Variables as vb
 
 
 def grafica():
+    print(vb.col_checked)
     # Aqui se genera la imagen con la grafica
 
     with open(vb.csv) as fichero:
@@ -30,7 +31,7 @@ def grafica():
 
     # if que en caso de que el usuario no indique el momento de salida del video se pondra por defecto el maximo
     if vb.s_salida == 0:
-        vb.s_salida = len(tiempo)
+        vb.s_salida = len(tiempo)-1
     # for para guardar solo los tiempos que se mostraran en las etiquetas del eje x
     for i in range(vb.s_entrada, vb.s_salida, vb.etiquetas):
         x.append(tiempo[i])

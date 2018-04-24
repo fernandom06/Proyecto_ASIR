@@ -41,8 +41,6 @@ def valores_texto(e):
     vb.grosor = float(grosor_input.GetValue())
     vb.s_entrada = int(s_entrada_input.GetValue())
     vb.s_salida = int(s_salida_input.GetValue())
-    vb.video = cuadro1.GetValue()
-    vb.csv = cuadro2.GetValue()
     vb.angulo_gr = int(angulo_input.GetValue())
 
 
@@ -172,9 +170,9 @@ panel_principal = wx.Panel(menu_principal)
 texto1 = wx.StaticText(panel_principal, label="Video", pos=(20, 40))
 texto2 = wx.StaticText(panel_principal, label="CSV", pos=(20, 80))
 
-cuadro1 = wx.TextCtrl(panel_principal, value=vb.video, pos=(70, 38), size=(175, -1))
+cuadro1 = wx.TextCtrl(panel_principal, value=vb.video, pos=(70, 38), size=(175, -1),style=wx.TE_READONLY)
 cuadro1.Bind(wx.EVT_TEXT, valores_texto)
-cuadro2 = wx.TextCtrl(panel_principal, value=vb.csv, pos=(70, 78), size=(175, -1))
+cuadro2 = wx.TextCtrl(panel_principal, value=vb.csv, pos=(70, 78), size=(175, -1),style=wx.TE_READONLY)
 cuadro2.Bind(wx.EVT_TEXT, valores_texto)
 
 boton1 = wx.Button(panel_principal, label="Cargar video", pos=(260, 37))
