@@ -67,14 +67,16 @@ def previsualizar(e):
         # Funcion que actualiza la posicion de la barra en la grafica dependiendo del momento del video
         barra_mover.Show()
         # Si slider valor maximo se para el video
-        if slider_player.GetMax() == slider_player.GetValue():
-            parar_video()
         # Establecer el valor del slider segun la posicion del video
         tiempo = vb.pixeles_grafica / (vb.s_salida - vb.s_entrada)
         slider_player.SetValue((player.Tell() / 1000))
         movimiento = wx.Point(vb.l_grafica + vb.l_barra + ((player.Tell()/1000 - vb.s_entrada) * tiempo),
                               vb.t_grafica + vb.t_barra)
         barra_mover.SetPosition(movimiento)
+        print(slider_player.GetMax())
+        print(player.Tell()/1000)
+        if slider_player.GetMax() == int(player.Tell()/1000):
+            parar_video()
 
     def par_slider(e):
         # Cuando se quiere mover el slider se para el timer
@@ -96,12 +98,13 @@ def previsualizar(e):
         timer.Stop()
         vb.c_segundos = 0
         vb.c_grafica = 0
+        reproductor.Maximize()
         reproductor.Destroy()
 
     def regrafica(e):
         barra_mover.Hide()
-        gr.grafica()
-        grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
+        gr.grafica(numero=1)
+        grafica.SetBitmap(wx.Bitmap(name="otra.png"))
 
     def resize(e):
         # Funcion para redimensionar la imagen ajustandolo al tamaño de la ventana
@@ -119,7 +122,10 @@ def previsualizar(e):
         barra_mover.Hide()
         # Obtener ancho y alto de la ventana
         w, h = reproductor.GetSize()
-
+        if reproductor.IsMaximized():
+            print("hola")
+            grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
+            logo.SetBitmap(wx.Bitmap(name="socio2.png"))
         # Calcular los pixeles solo de la grafica
         vb.pixeles_grafica = vb.pixeles_grafica * w / vb.w_ant
 
@@ -215,7 +221,7 @@ def previsualizar(e):
         vb.h_ant_grafica = vb.h_grafica
 
     # LLamar a la funcion grafica para crear la grafica
-    vb.barra_tiempo = gr.grafica()
+    vb.barra_tiempo = gr.grafica(numero=0)
 
     # Crear ventana para el video
     reproductor = wx.Frame(None, size=(1440, 900))

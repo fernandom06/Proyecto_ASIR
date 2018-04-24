@@ -107,12 +107,12 @@ def lista_col(e):
         vb.col_checked[i] = vb.titulos_col.IsChecked(i)
 
 
-def cargar_archivo(e, numero, texto):
+def cargar_archivo(e, numero, texto, tipo):
     # Funcion que abre una ventana para cargar o un video o un csv
     cargar = wx.Frame(None, -1, 'win.py')
     cargar.SetSize(0, 0, 200, 50)
 
-    dlg = wx.FileDialog(cargar, texto)
+    dlg = wx.FileDialog(cargar, texto, wildcard=tipo)
 
     if dlg.ShowModal() == wx.ID_OK:
         if numero == 1:
@@ -178,8 +178,8 @@ boton2 = wx.Button(panel_principal, label="Cargar CSV", pos=(260, 77))
 boton_salir = wx.Button(panel_principal, label="Salir", pos=(150, 500))
 boton_previsualizar = wx.Button(panel_principal, label="Previsualizar video", pos=(20, 500))
 
-boton1.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el video", numero=1))
-boton2.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el CSV", numero=2))
+boton1.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el video", numero=1, tipo=""))
+boton2.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el CSV", numero=2, tipo="CSV files (.csv)|*.csv"))
 boton_salir.Bind(wx.EVT_BUTTON, vb.cerrar)
 boton_previsualizar.Bind(wx.EVT_BUTTON, pr.previsualizar)
 
@@ -273,7 +273,7 @@ s_salida_input.Bind(wx.EVT_TEXT, valores_texto)
 
 # Angulo de rotacion de las etiquetas
 angulo = wx.StaticText(panel_principal, label="Angulo de rotacion de las etiquetas", pos=(750, 480))
-angulo_input = wx.TextCtrl(panel_principal, value="70", pos=(950, 478), size=(80, -1))
+angulo_input = wx.TextCtrl(panel_principal, value="90", pos=(950, 478), size=(80, -1))
 angulo_input.Bind(wx.EVT_TEXT, valores_texto)
 
 # Fuente y Tamaño de las etiquetas

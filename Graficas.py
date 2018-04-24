@@ -4,7 +4,7 @@ from datetime import datetime
 import Variables as vb
 
 
-def grafica():
+def grafica(numero):
     # Aqui se genera la imagen con la grafica
 
     with open(vb.csv) as fichero:
@@ -92,5 +92,8 @@ def grafica():
                 contador += 1
     fig.set_facecolor(vb.background_gr)
     # Guarda el grafico con los colores especificados
-    plt.savefig("grafico.png", facecolor=fig.get_facecolor())
+    if numero==0:
+        plt.savefig("grafico.png", facecolor=fig.get_facecolor())
+    else:
+        plt.savefig("otra.png", facecolor=fig.get_facecolor())
     return barra

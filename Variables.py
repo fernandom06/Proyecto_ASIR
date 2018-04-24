@@ -9,8 +9,8 @@ ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
 checkbox = 1
 
-csv = "real_madrid.csv"
-video = "madrid.mp4"
+csv = ""
+video = ""
 
 # Variables de las graficas
 color_linea = "blue"  # Color de la lina de la grafica
@@ -122,7 +122,7 @@ t_barra = 15
 
 # Angulo de etiquetas
 
-angulo_gr = 70
+angulo_gr = 90
 fuente_label = "arial"
 tamanno_label = "medium"
 
