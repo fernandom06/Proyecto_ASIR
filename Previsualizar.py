@@ -72,8 +72,6 @@ def previsualizar(e):
         # Establecer el valor del slider segun la posicion del video
         tiempo = vb.pixeles_grafica / (vb.s_salida - vb.s_entrada)
         slider_player.SetValue((player.Tell() / 1000))
-        print(slider_player.GetValue())
-        print(player.Tell())
         movimiento = wx.Point(vb.l_grafica + vb.l_barra + ((player.Tell()/1000 - vb.s_entrada) * tiempo),
                               vb.t_grafica + vb.t_barra)
         barra_mover.SetPosition(movimiento)

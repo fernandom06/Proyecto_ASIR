@@ -95,7 +95,7 @@ def ck_col(e):
         vb.titulos_col.Clear()
         for i in range(vb.contador_col - 1):
             list_col.append(f"Columna {i+1}")
-            vb.col_checked.append(False)
+            vb.col_checked.append(True)
         vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)
         vb.titulos_col.Bind(wx.EVT_CHECKLISTBOX, lista_col)
         vb.c_titulos = 1
@@ -104,9 +104,7 @@ def ck_col(e):
 def lista_col(e):
     # Funcion para determinar que columnas se quieren del CSV
     for i in range(vb.contador_col - 1):
-        print(vb.titulos_col.IsChecked(i))
         vb.col_checked[i] = vb.titulos_col.IsChecked(i)
-    print(vb.col_checked)
 
 
 def cargar_archivo(e, numero, texto):
