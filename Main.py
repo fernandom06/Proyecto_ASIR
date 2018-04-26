@@ -3,6 +3,7 @@ import Previsualizar as pr
 import wx
 from functools import partial
 import Columnas as col
+import json
 
 
 def valores_choice(e):
@@ -82,6 +83,10 @@ def cambiar_titulos(e, lista):
         vb.titulos[titu] = lista[titu].GetValue()
 
 
+def predeterminados(widget, texto, lista):
+    widget.SetSelection(lista.index(texto))
+
+
 def ck_col(e):
     # Funcion que modifica el checkbox que determina si se quieren todas las columnas del CSV o no
     if vb.c_titulos == 1:
@@ -138,6 +143,7 @@ def cargar_archivo(e, numero, texto, tipo):
             cuadro2.SetValue(dlg.GetPath())
 
 
+data = json.load(open("settings.json"))
 list_col = []
 colores_mat = ["Aqua", "Aquamarine", "Azure", "Beige", "Black", "Blue", "Brown", "Chartreuse", "Chocolate", "Coral",
                "Crimson", "Cyan", "Darkblue", "Darkgreen", "Fuchsia", "Gold", "Goldenrod", "Green", "Grey", "Indigo",
@@ -168,9 +174,9 @@ panel_principal = wx.Panel(menu_principal)
 texto1 = wx.StaticText(panel_principal, label="Video", pos=(20, 40))
 texto2 = wx.StaticText(panel_principal, label="CSV", pos=(20, 80))
 
-cuadro1 = wx.TextCtrl(panel_principal, value=vb.video, pos=(70, 38), size=(175, -1),style=wx.TE_READONLY)
+cuadro1 = wx.TextCtrl(panel_principal, value=vb.video, pos=(70, 38), size=(175, -1), style=wx.TE_READONLY)
 cuadro1.Bind(wx.EVT_TEXT, valores_texto)
-cuadro2 = wx.TextCtrl(panel_principal, value=vb.csv, pos=(70, 78), size=(175, -1),style=wx.TE_READONLY)
+cuadro2 = wx.TextCtrl(panel_principal, value=vb.csv, pos=(70, 78), size=(175, -1), style=wx.TE_READONLY)
 cuadro2.Bind(wx.EVT_TEXT, valores_texto)
 
 boton1 = wx.Button(panel_principal, label="Cargar video", pos=(260, 37))
@@ -192,7 +198,7 @@ texto_back_rep = wx.StaticText(panel_principal, label="Color de fondo", pos=(20,
 ch_back_rep = wx.Choice(panel_principal, choices=colores_wx, pos=(120, 145))
 cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 145), colour=(wx.WHITE))
 cl_back_rep.Hide()
-ch_back_rep.SetSelection(54)
+predeterminados(ch_back_rep, data["colores"]["color_fondo"], colores_wx)
 ch_back_rep.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_rep.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
@@ -200,7 +206,7 @@ texto_back_con = wx.StaticText(panel_principal, label="Color del contorno de las
 ch_back_con = wx.Choice(panel_principal, choices=colores_mat, pos=(200, 185))
 cl_back_con = wx.ColourPickerCtrl(panel_principal, pos=(200, 185), colour=(wx.BLACK))
 cl_back_con.Hide()
-ch_back_con.SetSelection(4)
+predeterminados(ch_back_con, data["colores"]["color_contorno_grafica"], colores_mat)
 ch_back_con.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_con.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
@@ -208,7 +214,7 @@ texto_back_gr = wx.StaticText(panel_principal, label="Color de fondo de la gráf
 ch_back_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(180, 225))
 cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225), colour=(wx.WHITE))
 cl_back_gr.Hide()
-ch_back_gr.SetSelection(46)
+predeterminados(ch_back_gr, data["colores"]["color_fondo_grafica"], colores_mat)
 ch_back_gr.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
@@ -216,7 +222,7 @@ texto_linea_gr = wx.StaticText(panel_principal, label="Color de las líneas de l
 ch_linea_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(190, 265))
 cl_linea_gr = wx.ColourPickerCtrl(panel_principal, pos=(190, 265), colour=(wx.BLUE))
 cl_linea_gr.Hide()
-ch_linea_gr.SetSelection(5)
+predeterminados(ch_linea_gr, data["colores"]["color_lineas_grafica"], colores_mat)
 ch_linea_gr.Bind(wx.EVT_CHOICE, valores_choice)
 cl_linea_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
@@ -224,7 +230,7 @@ texto_label_gr = wx.StaticText(panel_principal, label="Color de las etiquetas de
 ch_label_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(210, 305))
 cl_label_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 305), colour=(wx.BLACK))
 cl_label_gr.Hide()
-ch_label_gr.SetSelection(4)
+predeterminados(ch_label_gr, data["colores"]["color_etiquetas"], colores_mat)
 ch_label_gr.Bind(wx.EVT_CHOICE, valores_choice)
 cl_label_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
@@ -232,29 +238,29 @@ texto_titulo_gr = wx.StaticText(panel_principal, label="Color de los títulos de
 ch_titulo_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(210, 345))
 cl_titulo_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 345), colour=(wx.BLACK))
 cl_titulo_gr.Hide()
-ch_titulo_gr.SetSelection(4)
+predeterminados(ch_titulo_gr, data["colores"]["color_titulos"], colores_mat)
 ch_titulo_gr.Bind(wx.EVT_CHOICE, valores_choice)
 cl_titulo_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 # Intervalos de etiquetas
 etiquetas = wx.StaticText(panel_principal, label="Intervalos de etiquetas", pos=(400, 40))
-etiquetas_input = wx.TextCtrl(panel_principal, value="30", pos=(540, 38), size=(175, -1))
+etiquetas_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["intervalos"]), pos=(540, 38), size=(175, -1))
 etiquetas_input.Bind(wx.EVT_TEXT, valores_texto)
 
 # Grosor linea, fuente y tamaño del titulo de la grafica
 
 grosor = wx.StaticText(panel_principal, label="Pixeles de tamaño de la línea del gráfico", pos=(400, 80))
-grosor_input = wx.TextCtrl(panel_principal, value="1.5", pos=(630, 78), size=(80, -1))
+grosor_input = wx.TextCtrl(panel_principal, value=str(data["grafica"]["pixeles_linea"]), pos=(630, 78), size=(80, -1))
 grosor_input.Bind(wx.EVT_TEXT, valores_texto)
 
 titulo_tam = wx.StaticText(panel_principal, label="Tamaño del título del gráfico", pos=(400, 120))
 ch_titulo_tam = wx.Choice(panel_principal, choices=tamannos, pos=(630, 118))
-ch_titulo_tam.SetSelection(4)
+predeterminados(ch_titulo_tam, data["grafica"]["tamanno_titulo"], tamannos)
 ch_titulo_tam.Bind(wx.EVT_CHOICE, valores_choice)
 
 titulo_fam = wx.StaticText(panel_principal, label="Fuente para el titulo", pos=(400, 160))
 ch_titulo_fam = wx.Choice(panel_principal, choices=fonts, pos=(530, 158))
-ch_titulo_fam.SetSelection(0)
+predeterminados(ch_titulo_fam, data["grafica"]["fuente_titulo"], fonts)
 ch_titulo_fam.Bind(wx.EVT_CHOICE, valores_choice)
 
 # Checkbox para si se quieren todas las columnas del CSV
@@ -273,18 +279,18 @@ s_salida_input.Bind(wx.EVT_TEXT, valores_texto)
 
 # Angulo de rotacion de las etiquetas
 angulo = wx.StaticText(panel_principal, label="Angulo de rotacion de las etiquetas", pos=(750, 480))
-angulo_input = wx.TextCtrl(panel_principal, value="90", pos=(950, 478), size=(80, -1))
+angulo_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["rotacion"]), pos=(950, 478), size=(80, -1))
 angulo_input.Bind(wx.EVT_TEXT, valores_texto)
 
 # Fuente y Tamaño de las etiquetas
 fuente_etiqueta = wx.StaticText(panel_principal, label="Fuente de las etiquetas", pos=(750, 400))
 ch_fuente_etiqueta = wx.Choice(panel_principal, choices=fonts, pos=(880, 398))
-ch_fuente_etiqueta.SetSelection(0)
+predeterminados(ch_fuente_etiqueta, data["grafica"]["fuente_etiqueta"], fonts)
 ch_fuente_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
 
 tamannos_etiqueta = wx.StaticText(panel_principal, label="Tamaño de las etiquetas", pos=(750, 440))
 ch_tamannos_etiqueta = wx.Choice(panel_principal, choices=tamannos2, pos=(885, 438))
-ch_tamannos_etiqueta.SetSelection(3)
+predeterminados(ch_tamannos_etiqueta, data["grafica"]["tamanno_etiqueta"], tamannos)
 ch_tamannos_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
 
 vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)

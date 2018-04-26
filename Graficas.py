@@ -92,7 +92,7 @@ def grafica(numero):
                 contador += 1
     fig.set_facecolor(vb.background_gr)
     # Guarda el grafico con los colores especificados
-    if numero==0:
+    if numero == 0:
         plt.savefig("grafico.png", facecolor=fig.get_facecolor())
     else:
         plt.savefig("otra.png", facecolor=fig.get_facecolor())

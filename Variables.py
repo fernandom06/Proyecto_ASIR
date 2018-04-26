@@ -1,11 +1,14 @@
 # Archivo que sirve para guardar los valores que no se pueden retornar con los eventos
 import sys
 import ctypes
+import json
 
 # Obtener la resolucion de la pantalla en la que se ejecuta el programa
 user32 = ctypes.windll.user32
 user32.SetProcessDPIAware()
 ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+
+data = json.load(open("settings.json"))
 
 checkbox = 1
 
@@ -13,15 +16,15 @@ csv = ""
 video = ""
 
 # Variables de las graficas
-color_linea = "blue"  # Color de la lina de la grafica
-contorno = "black"  # color del contorno que rodea a la grafica
-background_gr = "white"  # Color de fondo de la imagen
-label = "black"  # Color de las etiquetas
-etiquetas = 30
-grosor = 1.5
-fuente_tit = "Arial"
-tamanno_tit = "large"
-titulo_gr = "black"
+color_linea = data["colores"]["color_lineas_grafica"]  # Color de la lina de la grafica
+contorno = data["colores"]["color_contorno_grafica"]  # color del contorno que rodea a la grafica
+background_gr = data["colores"]["color_fondo_grafica"]  # Color de fondo de la imagen
+label = data["colores"]["color_etiquetas"]  # Color de las etiquetas
+etiquetas = data["etiquetas"]["intervalos"]
+grosor = data["grafica"]["pixeles_linea"]
+fuente_tit = data["grafica"]["fuente_titulo"]
+tamanno_tit = data["grafica"]["tamanno_titulo"]
+titulo_gr = data["colores"]["color_titulos"]
 
 # Responsive, variables de la ventana w=ancho h=alto
 w_ant = 1920
@@ -75,7 +78,7 @@ h_regrafica = 26
 
 # Reproductor
 
-back_rep = "WHITE"
+back_rep = data["colores"]["color_fondo"]
 
 contador_col = 0
 c_col = 0
@@ -122,9 +125,9 @@ t_barra = 15
 
 # Angulo de etiquetas
 
-angulo_gr = 90
-fuente_label = "arial"
-tamanno_label = "medium"
+angulo_gr = data["etiquetas"]["rotacion"]
+fuente_label = data["grafica"]["fuente_etiqueta"]
+tamanno_label = data["grafica"]["tamanno_etiqueta"]
 
 barra_tiempo = []
 # Teimpo entrada y salida de video

@@ -70,12 +70,10 @@ def previsualizar(e):
         # Establecer el valor del slider segun la posicion del video
         tiempo = vb.pixeles_grafica / (vb.s_salida - vb.s_entrada)
         slider_player.SetValue((player.Tell() / 1000))
-        movimiento = wx.Point(vb.l_grafica + vb.l_barra + ((player.Tell()/1000 - vb.s_entrada) * tiempo),
+        movimiento = wx.Point(vb.l_grafica + vb.l_barra + ((player.Tell() / 1000 - vb.s_entrada) * tiempo),
                               vb.t_grafica + vb.t_barra)
         barra_mover.SetPosition(movimiento)
-        print(slider_player.GetMax())
-        print(player.Tell()/1000)
-        if slider_player.GetMax() == int(player.Tell()/1000):
+        if slider_player.GetMax() == int(player.Tell() / 1000):
             parar_video()
 
     def par_slider(e):
@@ -120,10 +118,11 @@ def previsualizar(e):
     def responsive(e):
         # Funcion para redimensionar todos los elementos y ajustarlos al tamaño de la ventana
         barra_mover.Hide()
+
+        reproductor.Freeze()
         # Obtener ancho y alto de la ventana
         w, h = reproductor.GetSize()
         if reproductor.IsMaximized():
-            print("hola")
             grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
             logo.SetBitmap(wx.Bitmap(name="socio2.png"))
         # Calcular los pixeles solo de la grafica
@@ -219,6 +218,8 @@ def previsualizar(e):
         vb.h_ant = h
         vb.w_ant_grafica = vb.w_grafica
         vb.h_ant_grafica = vb.h_grafica
+
+        reproductor.Thaw()
 
     # LLamar a la funcion grafica para crear la grafica
     vb.barra_tiempo = gr.grafica(numero=0)
