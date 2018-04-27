@@ -134,6 +134,7 @@ barra_tiempo = []
 s_entrada = 0
 s_salida = len(barra_tiempo)
 c_segundos = 0
+c_yticks = 0
 pixeles_grafica = 650
 delta = (0, 0)
 col_checked = []
@@ -141,6 +142,15 @@ col_checked = []
 # Calcular las pulgadas iniciales dependiendo de la resolucion
 w_inch = ancho * 8.3 / 1920
 h_inch = alto * 4.8 / 1080
+
+# yticks
+ytick_label = []
+ytick_entrada = []
+ytick_entrada_fin = []
+ytick_salida = []
+ytick_salida_fin = []
+ytick_salto = []
+ytick_salto_fin = []
 
 
 def cerrar(e):

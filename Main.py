@@ -87,6 +87,53 @@ def predeterminados(widget, texto, lista):
     widget.SetSelection(lista.index(texto))
 
 
+def cambiar_ytick_entrada(e, entrada):
+    for ytick in range(len(entrada)):
+        vb.ytick_entrada_fin[ytick] = float(entrada[ytick].GetValue())
+
+
+def cambiar_ytick_salida(e, entrada):
+    for ytick in range(len(entrada)):
+        vb.ytick_salida_fin[ytick] = float(entrada[ytick].GetValue())
+
+
+def cambiar_ytick_salto(e, entrada):
+    for ytick in range(len(entrada)):
+        vb.ytick_salto_fin[ytick] = float(entrada[ytick].GetValue())
+
+
+def ck_ytick(e):
+    if vb.c_yticks == 0:
+        for i in range(vb.contador_col - 1):
+            vb.ytick_label.append(
+                wx.StaticText(panel_principal, label=f"Columna {i+1}", pos=(800, 230 + i * 40)))
+            vb.ytick_entrada.append(wx.TextCtrl(panel_principal, pos=(860, 230 + i * 40), size=(40, -1)))
+            vb.ytick_entrada[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_entrada, entrada=vb.ytick_entrada))
+            vb.ytick_entrada_fin.append(0)
+            vb.ytick_salida.append(wx.TextCtrl(panel_principal, pos=(910, 230 + i * 40), size=(40, -1)))
+            vb.ytick_salida[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_salida, entrada=vb.ytick_salida))
+            vb.ytick_salida_fin.append(0)
+            vb.ytick_salto.append(wx.TextCtrl(panel_principal, pos=(960, 230 + i * 40), size=(40, -1)))
+            vb.ytick_salto[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_salto, entrada=vb.ytick_salto))
+            vb.ytick_salto_fin.append(0)
+
+        vb.c_yticks = 1
+    else:
+        for ytick in vb.ytick_label:
+            ytick.Destroy()
+        for ytick in vb.ytick_entrada:
+            ytick.Destroy()
+        for ytick in vb.ytick_salida:
+            ytick.Destroy()
+        for ytick in vb.ytick_salto:
+            ytick.Destroy()
+        vb.ytick_label = []
+        vb.ytick_entrada = []
+        vb.ytick_salida = []
+        vb.ytick_salto = []
+        vb.c_yticks = 0
+
+
 def ck_col(e):
     # Funcion que modifica el checkbox que determina si se quieren todas las columnas del CSV o no
     if vb.c_titulos == 1:
@@ -244,7 +291,8 @@ cl_titulo_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 # Intervalos de etiquetas
 etiquetas = wx.StaticText(panel_principal, label="Intervalos de etiquetas", pos=(400, 40))
-etiquetas_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["intervalos"]), pos=(540, 38), size=(175, -1))
+etiquetas_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["intervalos"]), pos=(540, 38),
+                              size=(175, -1))
 etiquetas_input.Bind(wx.EVT_TEXT, valores_texto)
 
 # Grosor linea, fuente y tamaño del titulo de la grafica
@@ -295,6 +343,9 @@ ch_tamannos_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
 
 vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)
 vb.titulos_col.Hide()
+
+check_ytick = wx.CheckBox(panel_principal, label="Elegir etiquetas del eje y", pos=(800, 198))
+check_ytick.Bind(wx.EVT_CHECKBOX, ck_ytick)
 
 menu_principal.Show()
 menu_principal.Centre()

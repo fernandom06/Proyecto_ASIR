@@ -1,4 +1,5 @@
 import csv
+import numpy
 import matplotlib.pyplot as plt
 from datetime import datetime
 import Variables as vb
@@ -10,7 +11,9 @@ def grafica(numero):
     with open(vb.csv) as fichero:
         leido = csv.reader(fichero, delimiter=';')
         letras = ["y", "z", "t", "u", "v", "w"]
+        # Se crean tantas listas vacias dentro de eje_y como columnas hay
         eje_y = []
+        eje_y_ticks = []
         # tiempo tiene todos los valores del tiempo del csv
         tiempo = []
         # Se crean tantas listas como columnas hay, siempre la del eje x y dinamicamente las del eje y de cada grafica,
@@ -27,13 +30,18 @@ def grafica(numero):
             barra.append(datetime.strptime(line[0], '%H:%M:%S'))
             for i in range(len(vb.titulos)):
                 eje_y[i].append(float(line[i + 1]))
-
     # if que en caso de que el usuario no indique el momento de salida del video se pondra por defecto el maximo
     if vb.s_salida == 0:
         vb.s_salida = len(tiempo) - 1
     # for para guardar solo los tiempos que se mostraran en las etiquetas del eje x
     for i in range(vb.s_entrada, vb.s_salida, vb.etiquetas):
         x.append(tiempo[i])
+
+    # Si si que se quieren elegir las etiquetas se crean arrays con la ayuda de la libreria numpy para poder introducir
+    # valores de tipo float
+    if vb.c_yticks == 1:
+        for j in range(len(vb.titulos)):
+            eje_y_ticks.append(numpy.arange(vb.ytick_entrada_fin[j], vb.ytick_salida_fin[j], vb.ytick_salto_fin[j]))
 
     fig = plt.figure(figsize=(vb.w_inch, vb.h_inch))
     fig.subplots_adjust(top=0.95, bottom=0.25, left=0.18, right=0.97, hspace=0.1)
@@ -61,6 +69,9 @@ def grafica(numero):
             else:
                 gra.tick_params(axis='both', colors=vb.label)
             gra.get_yaxis().set_label_coords(-0.1, 0.5)
+            if vb.c_yticks == 1:
+                gra.set_ylim(min(eje_y_ticks[i]), max(eje_y_ticks[i]))
+                gra.set_yticks(eje_y_ticks[i])
             plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
     if vb.c_titulos == 1:
         # For en el que se crean las graficas
@@ -88,6 +99,9 @@ def grafica(numero):
                 else:
                     gra.tick_params(axis='both', colors=vb.label)
                 gra.get_yaxis().set_label_coords(-0.1, 0.5)
+                if vb.c_yticks == 1:
+                    gra.set_ylim(min(eje_y_ticks[i]), max(eje_y_ticks[i]))
+                    gra.set_yticks(eje_y_ticks[i])
                 plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
                 contador += 1
     fig.set_facecolor(vb.background_gr)
