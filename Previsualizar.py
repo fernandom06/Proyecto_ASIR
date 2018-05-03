@@ -21,6 +21,34 @@ def previsualizar(e):
         player.Pause()
         timer.Stop()
 
+    def actualizar(e):
+        # Funcion que actualiza la posicion de la barra en la grafica dependiendo del momento del video
+        barra_mover.Show()
+        # Si slider valor maximo se para el video
+        # Establecer el valor del slider segun la posicion del video
+        tiempo = vb.pixeles_grafica / (vb.s_salida - vb.s_entrada)
+        slider_player.SetValue((player.Tell() / 1000))
+        movimiento = wx.Point(vb.l_grafica + vb.l_barra + ((player.Tell() / 1000 - vb.s_entrada) * tiempo),
+                              vb.t_grafica + vb.t_barra)
+        barra_mover.SetPosition(movimiento)
+        if slider_player.GetMax() == int(player.Tell() / 1000):
+            parar_video()
+
+    def par_slider(e):
+        # Cuando se quiere mover el slider se para el timer
+        timer.Stop()
+
+    def mov_slider(e):
+        # Cuando se suelta para reubicar el slider hay que avanzar o retroceder el video y volver a lanzar el timer
+        player.Seek(slider_player.GetValue() * 1000)
+        timer.Start(50)
+
+    def parar_video():
+        # Cuando se llega al final del video se para el video y se para el timer
+        player.Pause()
+        timer.Stop()
+        vb.c_segundos = 0
+
     def grabar_video(e):
         # Esconde los controles no permite redimensionar la pantalla y
         # lanza el video desde el principio a los 5 segundos para grabar la pantalla
@@ -63,39 +91,23 @@ def previsualizar(e):
             widget.ReleaseMouse()
         reproductor.Refresh()
 
-    def actualizar(e):
-        # Funcion que actualiza la posicion de la barra en la grafica dependiendo del momento del video
-        barra_mover.Show()
-        # Si slider valor maximo se para el video
-        # Establecer el valor del slider segun la posicion del video
-        tiempo = vb.pixeles_grafica / (vb.s_salida - vb.s_entrada)
-        slider_player.SetValue((player.Tell() / 1000))
-        movimiento = wx.Point(vb.l_grafica + vb.l_barra + ((player.Tell() / 1000 - vb.s_entrada) * tiempo),
-                              vb.t_grafica + vb.t_barra)
-        barra_mover.SetPosition(movimiento)
-        if slider_player.GetMax() == int(player.Tell() / 1000):
-            parar_video()
-
-    def par_slider(e):
-        # Cuando se quiere mover el slider se para el timer
-        timer.Stop()
-
-    def mov_slider(e):
-        # Cuando se suelta para reubicar el slider hay que avanzar o retroceder el video y volver a lanzar el timer
-        player.Seek(slider_player.GetValue() * 1000)
-        timer.Start(50)
-
-    def parar_video():
-        # Cuando se llega al final del video se para el video y se para el timer
-        player.Pause()
-        timer.Stop()
-        vb.c_segundos = 0
-
     def atras(e):
         # Funcion para volver al formulario principal
         timer.Stop()
         vb.c_segundos = 0
         vb.c_grafica = 0
+        vb.w_player = 640
+        vb.h_player = 400
+        vb.w_slider = 640
+        vb.h_slider = 24
+        vb.w_panel_player = 640
+        vb.h_panel_player = 500
+        vb.w_panel_grafica = 930
+        vb.h_panel_grafica = 580
+        panel_grafica.SetSize(930, 580)
+        vb.w_grafica = 830
+        vb.h_grafica = 480
+        grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
         reproductor.Maximize()
         reproductor.Destroy()
 
@@ -103,6 +115,98 @@ def previsualizar(e):
         barra_mover.Hide()
         gr.grafica(numero=1)
         grafica.SetBitmap(wx.Bitmap(name="otra.png"))
+        reproductor.SetFocus()
+
+    def dentro(e, widget):
+        if widget.Name == "grafica":
+            vb.c_resize_grafica = 1
+        elif widget.Name == "player":
+            vb.c_resize_player = 1
+        else:
+            vb.c_resize_logo = 1
+
+    def fuera(e, widget):
+        if widget.Name == "grafica":
+            vb.c_resize_grafica = 0
+        elif widget.Name == "player":
+            vb.c_resize_player = 0
+        else:
+            vb.c_resize_logo = 0
+
+    def resize_componentes(e):
+        if vb.c_resize_player == 1:
+            # Se obtiene la relacion de tamaño entre el panel y la vetana
+            w_panel, h_panel = panel_player.GetSize()
+            relacion_w = vb.w_ant / w_panel
+            relacion_h = vb.h_ant / h_panel
+            # Se redimensioa en panel
+            if e.WheelRotation > 0:
+                panel_player.SetSize(panel_player.GetSize()[0] + (10 * relacion_w),
+                                     panel_player.GetSize()[1] + (10 * relacion_h))
+            else:
+                panel_player.SetSize(panel_player.GetSize()[0] - (10 * relacion_w),
+                                     panel_player.GetSize()[1] - (10 * relacion_h))
+            # Se redimensionan los elementos que estan dentro del panel (player,play,pause,atras,grabar,grafica,slider)
+            vb.w_player = vb.w_player * panel_player.GetSize()[0] / w_panel
+            vb.h_player = vb.h_player * panel_player.GetSize()[1] / h_panel
+            player.SetSize(vb.w_player, vb.h_player)
+
+            boton_play.SetPosition(
+                pt=(boton_play.GetPosition()[0], boton_play.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
+
+            boton_pause.SetPosition(
+                pt=(boton_pause.GetPosition()[0], boton_pause.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
+
+            boton_atras.SetPosition(
+                pt=(boton_atras.GetPosition()[0], boton_atras.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
+
+            boton_grabar.SetPosition(
+                pt=(
+                    boton_grabar.GetPosition()[0],
+                    boton_grabar.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
+
+            boton_grafica.SetPosition(
+                pt=(
+                    boton_grafica.GetPosition()[0],
+                    boton_grafica.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
+
+            vb.w_slider = vb.w_slider * panel_player.GetSize()[0] / w_panel
+            slider_player.SetSize(vb.w_slider, vb.h_slider)
+            slider_player.SetPosition(
+                pt=(
+                    slider_player.GetPosition()[0],
+                    slider_player.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
+        elif vb.c_resize_grafica == 1:
+            # Se obtiene la relacion de tamaño entre el panel y la vetana
+            w_panel, h_panel = panel_grafica.GetSize()
+            relacion_w = vb.w_ant / w_panel
+            relacion_h = vb.h_ant / h_panel
+            # Se redimensioa en panel
+            if e.WheelRotation > 0:
+                panel_grafica.SetSize(panel_grafica.GetSize()[0] + (10 * relacion_w),
+                                      panel_grafica.GetSize()[1] + (10 * relacion_h))
+            else:
+                panel_grafica.SetSize(panel_grafica.GetSize()[0] - (10 * relacion_w),
+                                      panel_grafica.GetSize()[1] - (10 * relacion_h))
+            # Se redimensionan los elementos que estan dentro del panel (grafica,barra)
+            vb.w_grafica = vb.w_grafica * panel_grafica.GetSize()[0] / w_panel
+            vb.h_grafica = vb.h_grafica * panel_grafica.GetSize()[1] / h_panel
+            grafica.SetSize(vb.w_grafica, vb.h_grafica)
+            vb.w_inch = vb.w_grafica / 100
+            vb.h_inch = vb.h_grafica / 100
+            imagen = Image.open("grafico.png")
+            guardar = imagen.resize((int(vb.w_grafica), int(vb.h_grafica)))
+            guardar.save("otra.png")
+            grafica.SetBitmap(wx.Bitmap(name="otra.png"))
+
+            vb.w_barra = vb.w_barra * panel_grafica.GetSize()[0] / w_panel
+            vb.h_barra = vb.h_barra * panel_grafica.GetSize()[1] / h_panel
+            vb.l_barra = vb.l_barra * panel_grafica.GetSize()[0] / w_panel
+            barra_mover.SetPosition(pt=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
+            imagen = Image.open("barra2.png")
+            guardar = imagen.resize((int(vb.w_barra), int(vb.h_barra)))
+            guardar.save("otra.png")
+            barra_mover.SetBitmap(wx.Bitmap(name="otra.png"))
 
     def resize(e):
         # Funcion para redimensionar la imagen ajustandolo al tamaño de la ventana
@@ -231,16 +335,22 @@ def previsualizar(e):
     reproductor.Bind(wx.EVT_SIZE, responsive)
     reproductor.Bind(wx.EVT_CLOSE, atras)
     reproductor.Bind(wx.EVT_MOUSE_CAPTURE_CHANGED, resize)
+    reproductor.Bind(wx.EVT_MOUSEWHEEL, resize_componentes)
 
     # main_sizer = wx.BoxSizer()
-    panel_player = wx.Panel(reproductor, size=(640, 500), pos=(640, 0))
+    panel_player = wx.Panel(reproductor, size=(vb.w_panel_player, vb.h_panel_player), pos=(640, 0), name="player")
     panel_player.Layout()
     panel_player.SetBackgroundColour(wx.YELLOW)
     panel_player.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=panel_player))
-    panel_grafica = wx.Panel(reproductor, size=(930, 580), pos=(445, 530))
+    panel_player.Bind(wx.EVT_ENTER_WINDOW, partial(dentro, widget=panel_player))
+    panel_player.Bind(wx.EVT_LEAVE_WINDOW, partial(fuera, widget=panel_player))
+
+    panel_grafica = wx.Panel(reproductor, size=(vb.w_panel_grafica, vb.h_panel_grafica), pos=(445, 530), name="grafica")
     panel_grafica.Layout()
     panel_grafica.SetBackgroundColour(wx.YELLOW)
     panel_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=panel_grafica))
+    panel_grafica.Bind(wx.EVT_ENTER_WINDOW, partial(dentro, widget=panel_grafica))
+    panel_grafica.Bind(wx.EVT_LEAVE_WINDOW, partial(fuera, widget=panel_grafica))
 
     # main_sizer.Add(panel_reproductor)
 
@@ -284,8 +394,10 @@ def previsualizar(e):
                               size=(vb.w_grafica, vb.h_grafica))
 
     logo = wx.StaticBitmap(reproductor, -1, wx.Bitmap(name="socio2.png"), pos=(vb.l_logo, vb.t_logo),
-                           size=(vb.w_logo, vb.h_logo))
+                           size=(vb.w_logo, vb.h_logo), name="logo")
     logo.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=logo))
+    logo.Bind(wx.EVT_ENTER_WINDOW, partial(dentro, widget=logo))
+    logo.Bind(wx.EVT_LEAVE_WINDOW, partial(fuera, widget=logo))
 
     # Timer que se lanza cada 250 ms para actualizar la barra que se mueve por el gráfico
     timer = wx.Timer(player)
@@ -300,11 +412,5 @@ def previsualizar(e):
                                   pos=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra),
                                   size=(vb.w_barra, vb.h_barra))
     barra_mover.Hide()
-
-    # Sizers
-
-    # reproductor.SetSizer(main_sizer)
-    # reproductor.Layout()
-
     reproductor.Show()
     reproductor.Centre(wx.BOTH)

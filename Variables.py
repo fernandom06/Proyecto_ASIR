@@ -89,8 +89,8 @@ titulos_label = []
 
 # Posiciones: Todos los elementos
 
-l_grafica = 50
-t_grafica = 50
+l_grafica = 25
+t_grafica = 25
 
 l_panel_grafica = 445
 t_panel_grafica = 530
@@ -138,6 +138,11 @@ c_yticks = 0
 pixeles_grafica = 650
 delta = (0, 0)
 col_checked = []
+
+# resize
+c_resize_grafica = 0
+c_resize_player = 0
+c_resize_logo = 0
 
 # Calcular las pulgadas iniciales dependiendo de la resolucion
 w_inch = ancho * 8.3 / 1920
