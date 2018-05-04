@@ -171,23 +171,41 @@ def cargar_archivo(e, numero, texto, tipo):
             vb.video = dlg.GetPath()
             cuadro1.SetValue(dlg.GetPath())
         else:
-            # En el caso de que sea Un CSV se crearan los cuadros de texto dinamicamente y se eliminaran los anteriores
-            for titu in vb.titulos_label:
-                titu.Destroy()
-            for titu in vb.titulos_input:
-                titu.Destroy()
-            vb.csv = dlg.GetPath()
-            # Obtenemos el numero de columnas del csv
-            vb.contador_col = col.columnas()
-            vb.titulos_label = []
-            vb.titulos_input = []
+            try:
+                # En el caso de que sea Un CSV se crearan los cuadros de texto dinamicamente y se eliminaran los anteriores
+                for titu in vb.titulos_label:
+                    titu.Destroy()
+                for titu in vb.titulos_input:
+                    titu.Destroy()
+                vb.csv = dlg.GetPath()
+                # Obtenemos el numero de columnas del csv
+                vb.contador_col = col.columnas()
+                vb.titulos_label = []
+                vb.titulos_input = []
 
-            for columna in range(vb.contador_col - 1):
-                vb.titulos_label.append(
-                    wx.StaticText(panel_principal, label=f"titulo {columna+1}", pos=(800, 40 + columna * 40)))
-                vb.titulos_input.append(wx.TextCtrl(panel_principal, pos=(840, 40 + columna * 40)))
-                vb.titulos_input[columna].Bind(wx.EVT_TEXT, partial(cambiar_titulos, lista=vb.titulos_input))
-            cuadro2.SetValue(dlg.GetPath())
+                for columna in range(vb.contador_col - 1):
+                    vb.titulos_label.append(
+                        wx.StaticText(panel_principal, label=f"titulo {columna+1}", pos=(800, 40 + columna * 40)))
+                    vb.titulos_input.append(wx.TextCtrl(panel_principal, pos=(840, 40 + columna * 40)))
+                    vb.titulos_input[columna].Bind(wx.EVT_TEXT, partial(cambiar_titulos, lista=vb.titulos_input))
+                cuadro2.SetValue(dlg.GetPath())
+            except:
+                error = wx.MessageDialog(menu_principal, "Archivo no valido", "Error",
+                                         wx.OK | wx.ICON_EXCLAMATION)
+                error.ShowModal()
+                error.Centre()
+
+def previsualizar(e):
+    if vb.video=="":
+        error = wx.MessageDialog(menu_principal, "No se ha cargado ningun video", "Error", wx.OK | wx.ICON_EXCLAMATION)
+        error.ShowModal()
+        error.Centre()
+    try:
+        pr.previsualizar(e)
+    except:
+        error = wx.MessageDialog(menu_principal, "No se ha cargado el CSV", "Error", wx.OK | wx.ICON_EXCLAMATION)
+        error.ShowModal()
+        error.Centre()
 
 
 data = json.load(open("settings.json"))
@@ -234,7 +252,7 @@ boton_previsualizar = wx.Button(panel_principal, label="Previsualizar video", po
 boton1.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el video", numero=1, tipo=""))
 boton2.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el CSV", numero=2, tipo="CSV files (.csv)|*.csv"))
 boton_salir.Bind(wx.EVT_BUTTON, vb.cerrar)
-boton_previsualizar.Bind(wx.EVT_BUTTON, pr.previsualizar)
+boton_previsualizar.Bind(wx.EVT_BUTTON, previsualizar)
 
 # Checkbox
 check = wx.CheckBox(panel_principal, label="Elegir colores personalizados", pos=(20, 115))
