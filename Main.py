@@ -9,37 +9,20 @@ import json
 def valores_choice(e):
     # Funcion que recoge los valores de los select
     vb.back_rep = ch_back_rep.GetString(ch_back_rep.GetCurrentSelection())
-    vb.contorno = ch_back_con.GetString(ch_back_con.GetCurrentSelection())
     vb.background_gr = ch_back_gr.GetString(ch_back_gr.GetCurrentSelection())
-    vb.color_linea = ch_linea_gr.GetString(ch_linea_gr.GetCurrentSelection())
-    vb.label = ch_label_gr.GetString(ch_label_gr.GetCurrentSelection())
-    vb.tamanno_tit = ch_titulo_tam.GetString(ch_titulo_tam.GetCurrentSelection())
-    vb.titulo_gr = ch_titulo_gr.GetString(ch_titulo_gr.GetCurrentSelection())
-    vb.fuente_tit = ch_titulo_fam.GetString(ch_titulo_fam.GetCurrentSelection())
-    vb.fuente_label = ch_fuente_etiqueta.GetString(ch_fuente_etiqueta.GetCurrentSelection())
-    vb.tamanno_label = ch_tamannos_etiqueta.GetString(ch_tamannos_etiqueta.GetCurrentSelection())
 
 
 def valores_color(e):
     # Funcion que recoge los colores de los input de tipo color
     vb.back_rep = cl_back_rep.GetColour()
     vb.back_rep = vb.back_rep.GetAsString(flags=wx.C2S_HTML_SYNTAX)
-    vb.contorno = cl_back_con.GetColour()
-    vb.contorno = vb.contorno.GetAsString(flags=wx.C2S_HTML_SYNTAX)
     vb.background_gr = cl_back_gr.GetColour()
     vb.background_gr = vb.background_gr.GetAsString(flags=wx.C2S_HTML_SYNTAX)
-    vb.color_linea = cl_linea_gr.GetColour()
-    vb.color_linea = vb.color_linea.GetAsString(flags=wx.C2S_HTML_SYNTAX)
-    vb.label = cl_label_gr.GetColour()
-    vb.label = vb.label.GetAsString(flags=wx.C2S_HTML_SYNTAX)
-    vb.titulo_gr = cl_titulo_gr.GetColour()
-    vb.titulo_gr = vb.titulo_gr.GetAsString(flags=wx.C2S_HTML_SYNTAX)
 
 
 def valores_texto(e):
     # Funcion que recoge los valores de los cuadros de texto
     vb.etiquetas = int(etiquetas_input.GetValue())
-    vb.grosor = float(grosor_input.GetValue())
     vb.s_entrada = int(s_entrada_input.GetValue())
     vb.s_salida = int(s_salida_input.GetValue())
     vb.angulo_gr = int(angulo_input.GetValue())
@@ -48,39 +31,17 @@ def valores_texto(e):
 def cambiar(e):
     # Funcion para cambiar entre los controles de lista para los colores o los input de tipo color
     if vb.checkbox == 1:
-        ch_linea_gr.Hide()
-        ch_label_gr.Hide()
-        ch_back_con.Hide()
         ch_back_gr.Hide()
         ch_back_rep.Hide()
-        ch_titulo_gr.Hide()
-        cl_back_con.Show()
         cl_back_rep.Show()
         cl_back_gr.Show()
-        cl_label_gr.Show()
-        cl_linea_gr.Show()
-        cl_titulo_gr.Show()
         vb.checkbox = 0
     else:
-        ch_linea_gr.Show()
-        ch_label_gr.Show()
-        ch_back_con.Show()
         ch_back_gr.Show()
         ch_back_rep.Show()
-        ch_titulo_gr.Show()
-        cl_back_con.Hide()
         cl_back_rep.Hide()
         cl_back_gr.Hide()
-        cl_label_gr.Hide()
-        cl_linea_gr.Hide()
-        cl_titulo_gr.Hide()
         vb.checkbox = 1
-
-
-def cambiar_titulos(e, lista):
-    # Funcion que guarda los titulos que se introducen en los cuadros de texto creados dinamicamente
-    for titu in range(len(lista)):
-        vb.titulos[titu] = lista[titu].GetValue()
 
 
 def predeterminados(widget, texto, lista):
@@ -177,22 +138,9 @@ def cargar_archivo(e, numero, texto, tipo):
             cuadro1.SetValue(dlg.GetPath())
         else:
             try:
-                # En el caso de que sea Un CSV se crearan los cuadros de texto dinamicamente y se eliminaran los anteriores
-                for titu in vb.titulos_label:
-                    titu.Destroy()
-                for titu in vb.titulos_input:
-                    titu.Destroy()
                 vb.csv = dlg.GetPath()
                 # Obtenemos el numero de columnas del csv
                 vb.contador_col = col.columnas()
-                vb.titulos_label = []
-                vb.titulos_input = []
-
-                for columna in range(vb.contador_col - 1):
-                    vb.titulos_label.append(
-                        wx.StaticText(panel_principal, label=f"titulo {columna+1}", pos=(800, 40 + columna * 40)))
-                    vb.titulos_input.append(wx.TextCtrl(panel_principal, pos=(840, 40 + columna * 40)))
-                    vb.titulos_input[columna].Bind(wx.EVT_TEXT, partial(cambiar_titulos, lista=vb.titulos_input))
                 cuadro2.SetValue(dlg.GetPath())
             except:
                 error = wx.MessageDialog(menu_principal, "Archivo no valido", "Error",
@@ -200,14 +148,15 @@ def cargar_archivo(e, numero, texto, tipo):
                 error.ShowModal()
                 error.Centre()
 
+
 def previsualizar(e):
-    if vb.video=="":
+    if vb.video == "":
         error = wx.MessageDialog(menu_principal, "No se ha cargado ningun video", "Error", wx.OK | wx.ICON_EXCLAMATION)
         error.ShowModal()
         error.Centre()
     try:
         pr.previsualizar(e)
-    except:
+    except FileNotFoundError:
         error = wx.MessageDialog(menu_principal, "No se ha cargado el CSV", "Error", wx.OK | wx.ICON_EXCLAMATION)
         error.ShowModal()
         error.Centre()
@@ -272,14 +221,6 @@ predeterminados(ch_back_rep, data["colores"]["color_fondo"], colores_wx)
 ch_back_rep.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_rep.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
-texto_back_con = wx.StaticText(panel_principal, label="Color del contorno de las gráficas", pos=(20, 190))
-ch_back_con = wx.Choice(panel_principal, choices=colores_mat, pos=(200, 185))
-cl_back_con = wx.ColourPickerCtrl(panel_principal, pos=(200, 185), colour=(wx.BLACK))
-cl_back_con.Hide()
-predeterminados(ch_back_con, data["colores"]["color_contorno_grafica"], colores_mat)
-ch_back_con.Bind(wx.EVT_CHOICE, valores_choice)
-cl_back_con.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
-
 texto_back_gr = wx.StaticText(panel_principal, label="Color de fondo de la gráfica", pos=(20, 230))
 ch_back_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(180, 225))
 cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225), colour=(wx.WHITE))
@@ -288,51 +229,12 @@ predeterminados(ch_back_gr, data["colores"]["color_fondo_grafica"], colores_mat)
 ch_back_gr.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
-texto_linea_gr = wx.StaticText(panel_principal, label="Color de las líneas de la gráfica", pos=(20, 270))
-ch_linea_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(190, 265))
-cl_linea_gr = wx.ColourPickerCtrl(panel_principal, pos=(190, 265), colour=(wx.BLUE))
-cl_linea_gr.Hide()
-predeterminados(ch_linea_gr, data["colores"]["color_lineas_grafica"], colores_mat)
-ch_linea_gr.Bind(wx.EVT_CHOICE, valores_choice)
-cl_linea_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
-
-texto_label_gr = wx.StaticText(panel_principal, label="Color de las etiquetas de la gráfica", pos=(20, 310))
-ch_label_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(210, 305))
-cl_label_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 305), colour=(wx.BLACK))
-cl_label_gr.Hide()
-predeterminados(ch_label_gr, data["colores"]["color_etiquetas"], colores_mat)
-ch_label_gr.Bind(wx.EVT_CHOICE, valores_choice)
-cl_label_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
-
-texto_titulo_gr = wx.StaticText(panel_principal, label="Color de los títulos de la gráfica", pos=(20, 350))
-ch_titulo_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(210, 345))
-cl_titulo_gr = wx.ColourPickerCtrl(panel_principal, pos=(210, 345), colour=(wx.BLACK))
-cl_titulo_gr.Hide()
-predeterminados(ch_titulo_gr, data["colores"]["color_titulos"], colores_mat)
-ch_titulo_gr.Bind(wx.EVT_CHOICE, valores_choice)
-cl_titulo_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
-
 # Intervalos de etiquetas
 etiquetas = wx.StaticText(panel_principal, label="Intervalos de etiquetas", pos=(400, 40))
 etiquetas_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["intervalos"]), pos=(540, 38),
                               size=(175, -1))
 etiquetas_input.Bind(wx.EVT_TEXT, valores_texto)
 
-# Grosor linea, fuente y tamaño del titulo de la grafica
-
-grosor = wx.StaticText(panel_principal, label="Pixeles de tamaño de la línea del gráfico", pos=(400, 80))
-grosor_input = wx.TextCtrl(panel_principal, value=str(data["grafica"]["pixeles_linea"]), pos=(630, 78), size=(80, -1))
-grosor_input.Bind(wx.EVT_TEXT, valores_texto)
-
-titulo_tam = wx.StaticText(panel_principal, label="Tamaño del título del gráfico", pos=(400, 120))
-ch_titulo_tam = wx.Choice(panel_principal, choices=tamannos, pos=(630, 118))
-predeterminados(ch_titulo_tam, data["grafica"]["tamanno_titulo"], tamannos)
-ch_titulo_tam.Bind(wx.EVT_CHOICE, valores_choice)
-
-titulo_fam = wx.StaticText(panel_principal, label="Fuente para el titulo", pos=(400, 160))
-ch_titulo_fam = wx.Choice(panel_principal, choices=fonts, pos=(530, 158))
-predeterminados(ch_titulo_fam, data["grafica"]["fuente_titulo"], fonts)
-ch_titulo_fam.Bind(wx.EVT_CHOICE, valores_choice)
 
 # Checkbox para si se quieren todas las columnas del CSV
 check_col = wx.CheckBox(panel_principal, label="Elegir Columnas", pos=(400, 198))
@@ -353,28 +255,17 @@ angulo = wx.StaticText(panel_principal, label="Angulo de rotacion de las etiquet
 angulo_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["rotacion"]), pos=(950, 478), size=(80, -1))
 angulo_input.Bind(wx.EVT_TEXT, valores_texto)
 
-# Fuente y Tamaño de las etiquetas
-fuente_etiqueta = wx.StaticText(panel_principal, label="Fuente de las etiquetas", pos=(750, 400))
-ch_fuente_etiqueta = wx.Choice(panel_principal, choices=fonts, pos=(880, 398))
-predeterminados(ch_fuente_etiqueta, data["grafica"]["fuente_etiqueta"], fonts)
-ch_fuente_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
-
-tamannos_etiqueta = wx.StaticText(panel_principal, label="Tamaño de las etiquetas", pos=(750, 440))
-ch_tamannos_etiqueta = wx.Choice(panel_principal, choices=tamannos2, pos=(885, 438))
-predeterminados(ch_tamannos_etiqueta, data["grafica"]["tamanno_etiqueta"], tamannos)
-ch_tamannos_etiqueta.Bind(wx.EVT_CHOICE, valores_choice)
-
 vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)
 vb.titulos_col.Hide()
 
 check_ytick = wx.CheckBox(panel_principal, label="Elegir etiquetas del eje y", pos=(800, 198))
 check_ytick.Bind(wx.EVT_CHECKBOX, ck_ytick)
 
-inicio_ytick=wx.StaticText(panel_principal,label="(inicio)",pos=(860,230))
+inicio_ytick = wx.StaticText(panel_principal, label="(inicio)", pos=(860, 230))
 inicio_ytick.Hide()
-fin_ytick=wx.StaticText(panel_principal,label="(final)",pos=(910,230))
+fin_ytick = wx.StaticText(panel_principal, label="(final)", pos=(910, 230))
 fin_ytick.Hide()
-saltos_ytick=wx.StaticText(panel_principal,label="(nº saltos)",pos=(960,230))
+saltos_ytick = wx.StaticText(panel_principal, label="(nº saltos)", pos=(960, 230))
 saltos_ytick.Hide()
 
 menu_principal.Show()

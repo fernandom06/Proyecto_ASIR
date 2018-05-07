@@ -1,21 +1,38 @@
 {
   "colores": {
     "color_fondo": "White",
-    "color_contorno_grafica": "Black",
-    "color_fondo_grafica": "White",
-    "color_lineas_grafica": "Blue",
-    "color_etiquetas": "Black",
-    "color_titulos": "Blue"
+    "color_fondo_grafica": "White"
   },
   "etiquetas": {
     "intervalos": 30,
     "rotacion": 90
   },
-  "grafica": {
-    "pixeles_linea": 1.5,
-    "tamanno_titulo": "large",
-    "fuente_titulo": "Arial",
-    "tamanno_etiqueta": "medium",
-    "fuente_etiqueta": "Arial"
+  "graficas":{
+    "grafica":[
+      {
+        "titulo":"Atención",
+        "pixeles_linea": 1.5,
+        "color_lineas_grafica": "Blue",
+        "color_contorno_grafica": "Black",
+        "color_etiquetas": "Black",
+        "color_titulos": "Blue",
+        "tamanno_titulo": "large",
+        "fuente_titulo": "Arial",
+        "tamanno_etiqueta": "medium",
+        "fuente_etiqueta": "Arial"
+      },
+      {
+        "titulo":"Atención",
+        "pixeles_linea": 1.5,
+        "color_lineas_grafica": "Blue",
+        "color_contorno_grafica": "Black",
+        "color_etiquetas": "Black",
+        "color_titulos": "Blue",
+        "tamanno_titulo": "large",
+        "fuente_titulo": "Arial",
+        "tamanno_etiqueta": "medium",
+        "fuente_etiqueta": "Arial"
+      }
+    ]
   }
 }

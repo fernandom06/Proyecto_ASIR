@@ -16,15 +16,8 @@ csv = ""
 video = ""
 
 # Variables de las graficas
-color_linea = data["colores"]["color_lineas_grafica"]  # Color de la lina de la grafica
-contorno = data["colores"]["color_contorno_grafica"]  # color del contorno que rodea a la grafica
 background_gr = data["colores"]["color_fondo_grafica"]  # Color de fondo de la imagen
-label = data["colores"]["color_etiquetas"]  # Color de las etiquetas
 etiquetas = data["etiquetas"]["intervalos"]
-grosor = data["grafica"]["pixeles_linea"]
-fuente_tit = data["grafica"]["fuente_titulo"]
-tamanno_tit = data["grafica"]["tamanno_titulo"]
-titulo_gr = data["colores"]["color_titulos"]
 
 # Responsive, variables de la ventana w=ancho h=alto
 w_ant = 1920
@@ -126,8 +119,6 @@ t_barra = 15
 # Angulo de etiquetas
 
 angulo_gr = data["etiquetas"]["rotacion"]
-fuente_label = data["grafica"]["fuente_etiqueta"]
-tamanno_label = data["grafica"]["tamanno_etiqueta"]
 
 barra_tiempo = []
 # Teimpo entrada y salida de video

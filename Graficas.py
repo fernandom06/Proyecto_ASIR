@@ -1,5 +1,6 @@
 import csv
 import numpy
+import json
 import matplotlib.pyplot as plt
 from datetime import datetime
 import Variables as vb
@@ -7,6 +8,8 @@ import Variables as vb
 
 def grafica(numero):
     # Aqui se genera la imagen con la grafica
+
+    data = json.load(open("settings.json", encoding='utf-8'))
 
     with open(vb.csv) as fichero:
         leido = csv.reader(fichero, delimiter=';')
@@ -48,61 +51,75 @@ def grafica(numero):
 
     if vb.c_titulos == 0:
         # For en el que se crean las graficas
-        for i in range(len(vb.titulos_input)):
-            gra = fig.add_subplot(len(vb.titulos_input), 1, i + 1)
-            gra.plot(tiempo, eje_y[i], color=vb.color_linea, linewidth=vb.grosor)
+        for i in range(vb.contador_col - 1):
+            gra = fig.add_subplot(vb.contador_col - 1, 1, i + 1)
+            gra.plot(tiempo, eje_y[i], color=data["graficas"]["grafica"][i]["color_lineas_grafica"],
+                     linewidth=data["graficas"]["grafica"][i]["pixeles_linea"])
             gra.set_facecolor(vb.background_gr)
             # Establece donde empieza y donde acaba el eje x, con ese metodo ajusta la grafica
             gra.set_xlim(vb.s_entrada, vb.s_salida)
             # If que comprueba si es la ultima grafica para colocarle las etiquetas en el eje x
-            if i == len(vb.titulos_input) - 1:
+            if i == vb.contador_col - 2:
                 gra.set_xticks(x)
-                plt.xticks(rotation=vb.angulo_gr, fontsize=vb.tamanno_label, fontname=vb.fuente_label)
-            gra.set_ylabel(vb.titulos[i], family=vb.fuente_tit, color=vb.titulo_gr, size=vb.tamanno_tit)
-            gra.spines['bottom'].set_color(vb.contorno)
+                plt.xticks(rotation=vb.angulo_gr, fontsize=data["graficas"]["grafica"][i]["tamanno_etiqueta"],
+                           fontname=data["graficas"]["grafica"][i]["fuente_etiqueta"])
+            gra.set_ylabel(data["graficas"]["grafica"][i]["titulo"],
+                           family=data["graficas"]["grafica"][i]["fuente_titulo"],
+                           color=data["graficas"]["grafica"][i]["color_titulos"],
+                           size=data["graficas"]["grafica"][i]["tamanno_titulo"])
+            gra.spines['bottom'].set_color(data["graficas"]["grafica"][i]["color_contorno_grafica"])
             gra.spines['top'].set_visible(False)
-            gra.spines['right'].set_color(vb.contorno)
-            gra.spines['left'].set_color(vb.contorno)
+            gra.spines['right'].set_color(data["graficas"]["grafica"][i]["color_contorno_grafica"])
+            gra.spines['left'].set_color(data["graficas"]["grafica"][i]["color_contorno_grafica"])
             # si no es la ultima grafica se eliminan las marcas del eje x
-            if i != len(vb.titulos_input) - 1:
-                gra.tick_params(axis='both', colors=vb.label, labelbottom="off", bottom='off')
+            if i != vb.contador_col - 2:
+                gra.tick_params(axis='both', colors=data["graficas"]["grafica"][i]["color_etiquetas"],
+                                labelbottom="off", bottom='off')
             else:
-                gra.tick_params(axis='both', colors=vb.label)
+                gra.tick_params(axis='both', colors=data["graficas"]["grafica"][i]["color_etiquetas"])
             gra.get_yaxis().set_label_coords(-0.1, 0.5)
             if vb.c_yticks == 1:
                 gra.set_ylim(min(eje_y_ticks[i]), max(eje_y_ticks[i]))
                 gra.set_yticks(eje_y_ticks[i])
-            plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
+            plt.yticks(fontsize=data["graficas"]["grafica"][i]["tamanno_etiqueta"],
+                       fontname=data["graficas"]["grafica"][i]["fuente_etiqueta"])
     if vb.c_titulos == 1:
         # For en el que se crean las graficas
         contador_true = vb.col_checked.count(True)
         contador = 1
-        for i in range(len(vb.titulos_input)):
+        for i in range(vb.contador_col - 1):
             if vb.col_checked[i]:
                 gra = fig.add_subplot(contador_true, 1, contador)
-                gra.plot(tiempo, eje_y[i], color=vb.color_linea, linewidth=vb.grosor)
+                gra.plot(tiempo, eje_y[i], color=data["graficas"]["grafica"][i]["color_lineas_grafica"],
+                         linewidth=data["graficas"]["grafica"][i]["pixeles_linea"])
                 gra.set_facecolor(vb.background_gr)
                 # Establece donde empieza y donde acaba el eje x, con ese metodo ajusta la grafica
                 gra.set_xlim(vb.s_entrada, vb.s_salida)
                 # If que comprueba si es la ultima grafica para colocarle las etiquetas en el eje x
                 if contador_true == contador:
                     gra.set_xticks(x)
-                    plt.xticks(rotation=vb.angulo_gr, fontsize=vb.tamanno_label, fontname=vb.fuente_label)
-                gra.set_ylabel(vb.titulos[i], family=vb.fuente_tit, color=vb.titulo_gr, size=vb.tamanno_tit)
-                gra.spines['bottom'].set_color(vb.contorno)
+                    plt.xticks(rotation=vb.angulo_gr, fontsize=data["graficas"]["grafica"][i]["tamanno_etiqueta"],
+                               fontname=data["graficas"]["grafica"][i]["fuente_etiqueta"])
+                gra.set_ylabel(data["graficas"]["grafica"][i]["titulo"],
+                               family=data["graficas"]["grafica"][i]["fuente_titulo"],
+                               color=data["graficas"]["grafica"][i]["color_titulos"],
+                               size=data["graficas"]["grafica"][i]["tamanno_titulo"])
+                gra.spines['bottom'].set_color(data["graficas"]["grafica"][i]["color_contorno_grafica"])
                 gra.spines['top'].set_visible(False)
-                gra.spines['right'].set_color(vb.contorno)
-                gra.spines['left'].set_color(vb.contorno)
+                gra.spines['right'].set_color(data["graficas"]["grafica"][i]["color_contorno_grafica"])
+                gra.spines['left'].set_color(data["graficas"]["grafica"][i]["color_contorno_grafica"])
                 # si no es la ultima grafica se eliminan las marcas del eje x
                 if contador_true != contador:
-                    gra.tick_params(axis='both', colors=vb.label, labelbottom="off", bottom='off')
+                    gra.tick_params(axis='both', colors=data["graficas"]["grafica"][i]["color_etiquetas"],
+                                    labelbottom="off", bottom='off')
                 else:
-                    gra.tick_params(axis='both', colors=vb.label)
+                    gra.tick_params(axis='both', colors=data["graficas"]["grafica"][i]["color_etiquetas"])
                 gra.get_yaxis().set_label_coords(-0.1, 0.5)
                 if vb.c_yticks == 1:
                     gra.set_ylim(min(eje_y_ticks[i]), max(eje_y_ticks[i]))
                     gra.set_yticks(eje_y_ticks[i])
-                plt.yticks(fontsize=vb.tamanno_label, fontname=vb.fuente_label)
+                plt.yticks(fontsize=data["graficas"]["grafica"][i]["tamanno_etiqueta"],
+                           fontname=data["graficas"]["grafica"][i]["fuente_etiqueta"])
                 contador += 1
     fig.set_facecolor(vb.background_gr)
     # Guarda el grafico con los colores especificados
