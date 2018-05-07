@@ -106,17 +106,19 @@ def ck_ytick(e):
     if vb.c_yticks == 0:
         for i in range(vb.contador_col - 1):
             vb.ytick_label.append(
-                wx.StaticText(panel_principal, label=f"Columna {i+1}", pos=(800, 230 + i * 40)))
-            vb.ytick_entrada.append(wx.TextCtrl(panel_principal, pos=(860, 230 + i * 40), size=(40, -1)))
+                wx.StaticText(panel_principal, label=f"Columna {i+1}", pos=(800, 260 + i * 40)))
+            vb.ytick_entrada.append(wx.TextCtrl(panel_principal, pos=(860, 260 + i * 40), size=(40, -1)))
             vb.ytick_entrada[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_entrada, entrada=vb.ytick_entrada))
             vb.ytick_entrada_fin.append(0)
-            vb.ytick_salida.append(wx.TextCtrl(panel_principal, pos=(910, 230 + i * 40), size=(40, -1)))
+            vb.ytick_salida.append(wx.TextCtrl(panel_principal, pos=(910, 260 + i * 40), size=(40, -1)))
             vb.ytick_salida[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_salida, entrada=vb.ytick_salida))
             vb.ytick_salida_fin.append(0)
-            vb.ytick_salto.append(wx.TextCtrl(panel_principal, pos=(960, 230 + i * 40), size=(40, -1)))
+            vb.ytick_salto.append(wx.TextCtrl(panel_principal, pos=(960, 260 + i * 40), size=(40, -1)))
             vb.ytick_salto[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_salto, entrada=vb.ytick_salto))
             vb.ytick_salto_fin.append(0)
-
+        inicio_ytick.Show()
+        fin_ytick.Show()
+        saltos_ytick.Show()
         vb.c_yticks = 1
     else:
         for ytick in vb.ytick_label:
@@ -131,6 +133,9 @@ def ck_ytick(e):
         vb.ytick_entrada = []
         vb.ytick_salida = []
         vb.ytick_salto = []
+        inicio_ytick.Hide()
+        fin_ytick.Hide()
+        saltos_ytick.Hide()
         vb.c_yticks = 0
 
 
@@ -364,6 +369,13 @@ vb.titulos_col.Hide()
 
 check_ytick = wx.CheckBox(panel_principal, label="Elegir etiquetas del eje y", pos=(800, 198))
 check_ytick.Bind(wx.EVT_CHECKBOX, ck_ytick)
+
+inicio_ytick=wx.StaticText(panel_principal,label="(inicio)",pos=(860,230))
+inicio_ytick.Hide()
+fin_ytick=wx.StaticText(panel_principal,label="(final)",pos=(910,230))
+fin_ytick.Hide()
+saltos_ytick=wx.StaticText(panel_principal,label="(nº saltos)",pos=(960,230))
+saltos_ytick.Hide()
 
 menu_principal.Show()
 menu_principal.Centre()

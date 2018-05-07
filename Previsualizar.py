@@ -42,6 +42,7 @@ def previsualizar(e):
         # Cuando se suelta para reubicar el slider hay que avanzar o retroceder el video y volver a lanzar el timer
         player.Seek(slider_player.GetValue() * 1000)
         timer.Start(50)
+        reproductor.SetFocus()
 
     def parar_video():
         # Cuando se llega al final del video se para el video y se para el timer
@@ -107,7 +108,16 @@ def previsualizar(e):
         panel_grafica.SetSize(930, 580)
         vb.w_grafica = 830
         vb.h_grafica = 480
+        vb.l_barra = 151
+        vb.t_barra = 15
+        vb.w_barra=4
+        vb.h_barra=350
+        vb.l_grafica = 25
+        vb.t_grafica = 25
+        vb.pixeles_grafica=650
         grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
+        barra_mover.SetBitmap(wx.Bitmap(name="barra2.png"))
+        barra_mover.SetPosition(pt=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
         reproductor.Maximize()
         reproductor.Destroy()
 
@@ -177,6 +187,7 @@ def previsualizar(e):
                     slider_player.GetPosition()[0],
                     slider_player.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
         elif vb.c_resize_grafica == 1:
+            w_grafica_ant = vb.w_grafica
             # Se obtiene la relacion de tamaño entre el panel y la vetana
             w_panel, h_panel = panel_grafica.GetSize()
             relacion_w = vb.w_ant / w_panel
@@ -207,6 +218,8 @@ def previsualizar(e):
             guardar = imagen.resize((int(vb.w_barra), int(vb.h_barra)))
             guardar.save("otra.png")
             barra_mover.SetBitmap(wx.Bitmap(name="otra.png"))
+
+            vb.pixeles_grafica = vb.pixeles_grafica * vb.w_grafica / w_grafica_ant
 
     def resize(e):
         # Funcion para redimensionar la imagen ajustandolo al tamaño de la ventana
