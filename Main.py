@@ -44,10 +44,6 @@ def cambiar(e):
         vb.checkbox = 1
 
 
-def predeterminados(widget, texto, lista):
-    widget.SetSelection(lista.index(texto))
-
-
 def cambiar_ytick_entrada(e, entrada):
     for ytick in range(len(entrada)):
         vb.ytick_entrada_fin[ytick] = float(entrada[ytick].GetValue())
@@ -210,22 +206,25 @@ boton_previsualizar.Bind(wx.EVT_BUTTON, previsualizar)
 
 # Checkbox
 check = wx.CheckBox(panel_principal, label="Elegir colores personalizados", pos=(20, 115))
+check.SetValue(True)
 check.Bind(wx.EVT_CHECKBOX, cambiar)
 
 # Colores
 texto_back_rep = wx.StaticText(panel_principal, label="Color de fondo", pos=(20, 150))
 ch_back_rep = wx.Choice(panel_principal, choices=colores_wx, pos=(120, 145))
 cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 145), colour=(wx.WHITE))
-cl_back_rep.Hide()
-predeterminados(ch_back_rep, data["colores"]["color_fondo"], colores_wx)
+ch_back_rep.Hide()
+ch_back_rep.SetSelection(0)
+cl_back_rep.SetColour(data["colores"]["color_fondo"])
 ch_back_rep.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_rep.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
 texto_back_gr = wx.StaticText(panel_principal, label="Color de fondo de la gráfica", pos=(20, 230))
 ch_back_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(180, 225))
 cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225), colour=(wx.WHITE))
-cl_back_gr.Hide()
-predeterminados(ch_back_gr, data["colores"]["color_fondo_grafica"], colores_mat)
+ch_back_gr.Hide()
+ch_back_gr.SetSelection(0)
+cl_back_gr.SetColour(data["colores"]["color_fondo_grafica"])
 ch_back_gr.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 

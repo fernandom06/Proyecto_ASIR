@@ -10,7 +10,7 @@ ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 
 data = json.load(open("settings.json"))
 
-checkbox = 1
+checkbox = 0
 
 csv = ""
 video = ""
