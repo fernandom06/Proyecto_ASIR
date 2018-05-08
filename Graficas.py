@@ -40,6 +40,11 @@ def grafica(numero):
     for i in range(vb.s_entrada, vb.s_salida, vb.etiquetas):
         x.append(tiempo[i])
 
+    quitar_filas = 0
+    total_filas = 0
+    for i in range(len(data["graficas"]["grafica"])):
+        total_filas += data["graficas"]["grafica"][i]["filas"]
+
     # Si si que se quieren elegir las etiquetas se crean arrays con la ayuda de la libreria numpy para poder introducir
     # valores de tipo float
     if vb.c_yticks == 1:
@@ -52,7 +57,8 @@ def grafica(numero):
     if vb.c_titulos == 0:
         # For en el que se crean las graficas
         for i in range(vb.contador_col - 1):
-            gra = fig.add_subplot(vb.contador_col - 1, 1, i + 1)
+            gra = plt.subplot2grid((total_filas, 1), (quitar_filas, 0), rowspan=data["graficas"]["grafica"][i]["filas"])
+            quitar_filas += data["graficas"]["grafica"][i]["filas"]
             gra.plot(tiempo, eje_y[i], color=data["graficas"]["grafica"][i]["color_lineas_grafica"],
                      linewidth=data["graficas"]["grafica"][i]["pixeles_linea"])
             gra.set_facecolor(vb.background_gr)
@@ -74,7 +80,7 @@ def grafica(numero):
             # si no es la ultima grafica se eliminan las marcas del eje x
             if i != vb.contador_col - 2:
                 gra.tick_params(axis='both', colors=data["graficas"]["grafica"][i]["color_etiquetas"],
-                                labelbottom="off", bottom='off')
+                                labelbottom=False, bottom=False)
             else:
                 gra.tick_params(axis='both', colors=data["graficas"]["grafica"][i]["color_etiquetas"])
             gra.get_yaxis().set_label_coords(-0.1, 0.5)
@@ -89,7 +95,9 @@ def grafica(numero):
         contador = 1
         for i in range(vb.contador_col - 1):
             if vb.col_checked[i]:
-                gra = fig.add_subplot(contador_true, 1, contador)
+                gra = plt.subplot2grid((total_filas, 1), (quitar_filas, 0),
+                                       rowspan=data["graficas"]["grafica"][i]["filas"])
+                quitar_filas += data["graficas"]["grafica"][i]["filas"]
                 gra.plot(tiempo, eje_y[i], color=data["graficas"]["grafica"][i]["color_lineas_grafica"],
                          linewidth=data["graficas"]["grafica"][i]["pixeles_linea"])
                 gra.set_facecolor(vb.background_gr)
@@ -111,7 +119,7 @@ def grafica(numero):
                 # si no es la ultima grafica se eliminan las marcas del eje x
                 if contador_true != contador:
                     gra.tick_params(axis='both', colors=data["graficas"]["grafica"][i]["color_etiquetas"],
-                                    labelbottom="off", bottom='off')
+                                    labelbottom=False, bottom=False)
                 else:
                     gra.tick_params(axis='both', colors=data["graficas"]["grafica"][i]["color_etiquetas"])
                 gra.get_yaxis().set_label_coords(-0.1, 0.5)

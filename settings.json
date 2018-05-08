@@ -1,7 +1,7 @@
 {
   "colores": {
-    "color_fondo": "#ff3456",
-    "color_fondo_grafica": "#123456"
+    "color_fondo": "#ffffff",
+    "color_fondo_grafica": "#ffffff"
   },
   "etiquetas": {
     "intervalos": 30,
@@ -13,13 +13,14 @@
         "titulo":"Atención",
         "pixeles_linea": 1.5,
         "color_lineas_grafica": "Blue",
-        "color_contorno_grafica": "#ffffff",
+        "color_contorno_grafica": "#000000",
         "color_etiquetas": "Black",
         "color_titulos": "Blue",
         "tamanno_titulo": "large",
         "fuente_titulo": "Arial",
         "tamanno_etiqueta": "medium",
-        "fuente_etiqueta": "Arial"
+        "fuente_etiqueta": "Arial",
+        "filas":7
       },
       {
         "titulo":"Atención",
@@ -31,7 +32,8 @@
         "tamanno_titulo": "large",
         "fuente_titulo": "Arial",
         "tamanno_etiqueta": "medium",
-        "fuente_etiqueta": "Arial"
+        "fuente_etiqueta": "Arial",
+        "filas":2
       }
     ]
   }
