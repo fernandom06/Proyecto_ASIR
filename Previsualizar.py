@@ -123,8 +123,12 @@ def previsualizar(e):
 
     def regrafica(e):
         barra_mover.Hide()
+        cursor=wx.Cursor(wx.CURSOR_WAIT)
+        reproductor.SetCursor(cursor)
         gr.grafica(numero=1)
         grafica.SetBitmap(wx.Bitmap(name="otra.png"))
+        cursor=wx.Cursor(wx.CURSOR_ARROW)
+        reproductor.SetCursor(cursor)
         reproductor.SetFocus()
 
     def dentro(e, widget):

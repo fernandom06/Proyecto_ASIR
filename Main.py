@@ -151,8 +151,14 @@ def previsualizar(e):
         error.ShowModal()
         error.Centre()
     try:
+        vb.cursor=wx.Cursor(wx.CURSOR_WAIT)
+        menu_principal.SetCursor(vb.cursor)
         pr.previsualizar(e)
+        vb.cursor=wx.Cursor(wx.CURSOR_ARROW)
+        menu_principal.SetCursor(vb.cursor)
     except FileNotFoundError:
+        vb.cursor=wx.Cursor(wx.CURSOR_ARROW)
+        menu_principal.SetCursor(vb.cursor)
         error = wx.MessageDialog(menu_principal, "No se ha cargado el CSV", "Error", wx.OK | wx.ICON_EXCLAMATION)
         error.ShowModal()
         error.Centre()
