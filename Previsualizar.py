@@ -69,6 +69,40 @@ def previsualizar(e):
         barra_mover.SetPosition((vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
         vb.c_segundos = 0
 
+    def pincharw(e, widget):
+        if widget.HasCapture():
+            widget.ReleaseMouse()
+        widget.CaptureMouse()
+        x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
+        originx, originy = widget.GetPosition()
+        dx = x - originx
+        vb.delta = (dx, originy)
+        widget.Bind(wx.EVT_MOTION, partial(arrastrarw, widget=widget))
+
+    def arrastrarw(e, widget):
+        if e.Dragging():
+            x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
+            fp = (x - vb.delta[0], vb.delta[1])
+            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget))
+            widget.Move(fp)
+
+    def pincharh(e, widget):
+        if widget.HasCapture():
+            widget.ReleaseMouse()
+        widget.CaptureMouse()
+        x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
+        originx, originy = widget.GetPosition()
+        dy = y - originy
+        vb.delta = (originx, dy)
+        widget.Bind(wx.EVT_MOTION, partial(arrastrarh, widget=widget))
+
+    def arrastrarh(e, widget):
+        if e.Dragging():
+            x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
+            fp = (vb.delta[0], y - vb.delta[1])
+            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget))
+            widget.Move(fp)
+
     def pinchar(e, widget):
         if widget.HasCapture():
             widget.ReleaseMouse()
@@ -86,11 +120,30 @@ def previsualizar(e):
             fp = (x - vb.delta[0], y - vb.delta[1])
             widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget))
             widget.Move(fp)
+        if widget.Name == "player":
+            vb.l_panel_player, vb.t_panel_player = widget.GetPosition()
+        elif widget.Name == "grafica":
+            vb.l_panel_grafica, vb.t_panel_grafica = widget.GetPosition()
+        reposicionar()
 
     def soltar(e, widget):
         if widget.HasCapture():
             widget.ReleaseMouse()
         reproductor.Refresh()
+
+    def reposicionar():
+        izq_video.SetPosition(pt=(vb.l_panel_player + vb.l_izq_video, vb.t_panel_player + vb.t_izq_video))
+        der_video.SetPosition(
+            pt=(vb.l_panel_player + vb.w_panel_player + vb.l_der_video - 10, vb.t_panel_player + vb.t_der_video))
+        top_video.SetPosition(pt=(vb.l_panel_player + vb.l_top_video, vb.t_panel_player + vb.t_top_video))
+        bottom_video.SetPosition(
+            pt=(vb.l_panel_player + vb.l_bottom_video, vb.t_panel_player + vb.h_panel_player + vb.t_bottom_video - 10))
+        izq_grafica.SetPosition(pt=(vb.l_panel_grafica + vb.l_izq_grafica - 2, vb.t_panel_grafica + vb.t_izq_grafica))
+        der_grafica.SetPosition(
+            pt=(vb.l_panel_grafica + vb.w_panel_grafica + vb.l_der_grafica - 6, vb.t_panel_grafica + vb.t_der_grafica))
+        top_grafica.SetPosition(pt=(vb.l_panel_grafica + vb.l_top_grafica, vb.t_panel_grafica + vb.t_top_grafica - 6))
+        bottom_grafica.SetPosition(pt=(
+            vb.l_panel_grafica + vb.l_bottom_grafica, vb.t_panel_grafica + vb.h_panel_grafica + vb.t_top_grafica - 8))
 
     def atras(e):
         # Funcion para volver al formulario principal
@@ -110,11 +163,11 @@ def previsualizar(e):
         vb.h_grafica = 480
         vb.l_barra = 151
         vb.t_barra = 15
-        vb.w_barra=4
-        vb.h_barra=350
+        vb.w_barra = 4
+        vb.h_barra = 350
         vb.l_grafica = 25
         vb.t_grafica = 25
-        vb.pixeles_grafica=650
+        vb.pixeles_grafica = 650
         grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
         barra_mover.SetBitmap(wx.Bitmap(name="barra2.png"))
         barra_mover.SetPosition(pt=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
@@ -123,11 +176,11 @@ def previsualizar(e):
 
     def regrafica(e):
         barra_mover.Hide()
-        cursor=wx.Cursor(wx.CURSOR_WAIT)
+        cursor = wx.Cursor(wx.CURSOR_WAIT)
         reproductor.SetCursor(cursor)
         gr.grafica(numero=1)
         grafica.SetBitmap(wx.Bitmap(name="otra.png"))
-        cursor=wx.Cursor(wx.CURSOR_ARROW)
+        cursor = wx.Cursor(wx.CURSOR_ARROW)
         reproductor.SetCursor(cursor)
         reproductor.SetFocus()
 
@@ -429,5 +482,48 @@ def previsualizar(e):
                                   pos=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra),
                                   size=(vb.w_barra, vb.h_barra))
     barra_mover.Hide()
+
+    # Paneles para redimensionar el panel del player
+    izq_video = wx.Panel(reproductor, size=(10, 10),
+                         pos=(vb.l_panel_player + vb.l_izq_video, vb.t_panel_player + vb.t_izq_video))
+    izq_video.SetBackgroundColour(wx.BLUE)
+    izq_video.Bind(wx.EVT_LEFT_DOWN, partial(pincharw, widget=izq_video))
+
+    der_video = wx.Panel(reproductor, size=(10, 10), pos=(
+        vb.l_panel_player + vb.w_panel_player + vb.l_der_video, vb.t_panel_player + vb.t_der_video))
+    der_video.SetBackgroundColour(wx.BLUE)
+    der_video.Bind(wx.EVT_LEFT_DOWN, partial(pincharw, widget=der_video))
+
+    top_video = wx.Panel(reproductor, size=(10, 10),
+                         pos=(vb.l_panel_player + vb.l_top_video, vb.t_panel_player + vb.t_top_video))
+    top_video.SetBackgroundColour(wx.BLUE)
+    top_video.Bind(wx.EVT_LEFT_DOWN, partial(pincharh, widget=top_video))
+
+    bottom_video = wx.Panel(reproductor, size=(10, 10), pos=(
+        vb.l_panel_player + vb.l_bottom_video, vb.t_panel_player + vb.h_panel_player + vb.t_bottom_video))
+    bottom_video.SetBackgroundColour(wx.BLUE)
+    bottom_video.Bind(wx.EVT_LEFT_DOWN, partial(pincharh, widget=bottom_video))
+
+    # Paneles para redimensionar el panel del player
+    izq_grafica = wx.Panel(reproductor, size=(10, 10),
+                           pos=(vb.l_panel_grafica + vb.l_izq_grafica, vb.t_panel_grafica + vb.t_izq_grafica))
+    izq_grafica.SetBackgroundColour(wx.BLUE)
+    izq_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pincharw, widget=izq_grafica))
+
+    der_grafica = wx.Panel(reproductor, size=(10, 10), pos=(
+        vb.l_panel_grafica + vb.w_panel_grafica + vb.l_der_grafica, vb.t_panel_grafica + vb.t_der_grafica))
+    der_grafica.SetBackgroundColour(wx.BLUE)
+    der_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pincharw, widget=der_grafica))
+
+    top_grafica = wx.Panel(reproductor, size=(10, 10),
+                           pos=(vb.l_panel_grafica + vb.l_top_grafica, vb.t_panel_grafica + vb.t_top_grafica))
+    top_grafica.SetBackgroundColour(wx.BLUE)
+    top_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pincharh, widget=top_grafica))
+
+    bottom_grafica = wx.Panel(reproductor, size=(10, 10), pos=(
+        vb.l_panel_grafica + vb.l_bottom_grafica, vb.t_panel_grafica + vb.h_panel_grafica + vb.t_top_grafica))
+    bottom_grafica.SetBackgroundColour(wx.BLUE)
+    bottom_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pincharh, widget=bottom_grafica))
+
     reproductor.Show()
     reproductor.Centre(wx.BOTH)

@@ -116,6 +116,32 @@ t_regrafica = 464
 l_barra = 151
 t_barra = 15
 
+# Paneles para redimensionar del player
+l_izq_video = -5
+t_izq_video = 255
+
+l_der_video = 5
+t_der_video = 255
+
+l_top_video = 320
+t_top_video = -5
+
+l_bottom_video = 320
+t_bottom_video = 5
+
+# Paneles para redimensionar del grafica
+l_izq_grafica = -5
+t_izq_grafica = 260
+
+l_der_grafica = 5
+t_der_grafica = 260
+
+l_top_grafica = 465
+t_top_grafica = 2
+
+l_bottom_grafica = 465
+t_bottom_grafica = 5
+
 # Angulo de etiquetas
 
 angulo_gr = data["etiquetas"]["rotacion"]
