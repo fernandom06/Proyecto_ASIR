@@ -120,11 +120,11 @@ def previsualizar(e):
             fp = (x - vb.delta[0], y - vb.delta[1])
             widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget))
             widget.Move(fp)
-        if widget.Name == "player":
-            vb.l_panel_player, vb.t_panel_player = widget.GetPosition()
-        elif widget.Name == "grafica":
-            vb.l_panel_grafica, vb.t_panel_grafica = widget.GetPosition()
-        reposicionar()
+            if widget.Name == "player":
+                vb.l_panel_player, vb.t_panel_player = widget.GetPosition()
+            elif widget.Name == "grafica":
+                vb.l_panel_grafica, vb.t_panel_grafica = widget.GetPosition()
+            reposicionar()
 
     def soltar(e, widget):
         if widget.HasCapture():
@@ -132,18 +132,35 @@ def previsualizar(e):
         reproductor.Refresh()
 
     def reposicionar():
-        izq_video.SetPosition(pt=(vb.l_panel_player + vb.l_izq_video, vb.t_panel_player + vb.t_izq_video))
-        der_video.SetPosition(
-            pt=(vb.l_panel_player + vb.w_panel_player + vb.l_der_video - 10, vb.t_panel_player + vb.t_der_video))
-        top_video.SetPosition(pt=(vb.l_panel_player + vb.l_top_video, vb.t_panel_player + vb.t_top_video))
-        bottom_video.SetPosition(
-            pt=(vb.l_panel_player + vb.l_bottom_video, vb.t_panel_player + vb.h_panel_player + vb.t_bottom_video - 10))
-        izq_grafica.SetPosition(pt=(vb.l_panel_grafica + vb.l_izq_grafica - 2, vb.t_panel_grafica + vb.t_izq_grafica))
-        der_grafica.SetPosition(
-            pt=(vb.l_panel_grafica + vb.w_panel_grafica + vb.l_der_grafica - 6, vb.t_panel_grafica + vb.t_der_grafica))
-        top_grafica.SetPosition(pt=(vb.l_panel_grafica + vb.l_top_grafica, vb.t_panel_grafica + vb.t_top_grafica - 6))
-        bottom_grafica.SetPosition(pt=(
-            vb.l_panel_grafica + vb.l_bottom_grafica, vb.t_panel_grafica + vb.h_panel_grafica + vb.t_top_grafica - 8))
+        # Panel
+        vb.t_izq_video = panel_player.GetPosition()[1] + (panel_player.GetSize()[1] / 2)
+        izq_video.SetPosition(pt=(vb.l_panel_player + vb.l_izq_video, vb.t_izq_video))
+
+        vb.l_der_video = panel_player.GetPosition()[0] + (panel_player.GetSize()[0])
+        vb.t_der_video = panel_player.GetPosition()[1] + (panel_player.GetSize()[1] / 2)
+        der_video.SetPosition(pt=(vb.l_der_video - 5, vb.t_der_video))
+
+        vb.l_top_video = panel_player.GetPosition()[0] + (panel_player.GetSize()[0] / 2)
+        top_video.SetPosition(pt=(vb.l_top_video, vb.t_panel_player + vb.t_top_video))
+
+        vb.l_bottom_video = panel_player.GetPosition()[0] + (panel_player.GetSize()[0] / 2)
+        vb.t_bottom_video = panel_player.GetPosition()[1] + (panel_player.GetSize()[1])
+        bottom_video.SetPosition(pt=(vb.l_bottom_video, vb.t_bottom_video - 5))
+
+        # Grafica
+        vb.t_izq_grafica = panel_grafica.GetPosition()[1] + (panel_grafica.GetSize()[1] / 2)
+        izq_grafica.SetPosition(pt=(vb.l_panel_grafica + vb.l_izq_grafica, vb.t_izq_grafica))
+
+        vb.l_der_grafica = panel_grafica.GetPosition()[0] + (panel_grafica.GetSize()[0])
+        vb.t_der_grafica = panel_grafica.GetPosition()[1] + (panel_grafica.GetSize()[1] / 2)
+        der_grafica.SetPosition(pt=(vb.l_der_grafica - 5, vb.t_der_grafica))
+
+        vb.l_top_grafica = panel_grafica.GetPosition()[0] + (panel_grafica.GetSize()[0] / 2)
+        top_grafica.SetPosition(pt=(vb.l_top_grafica, vb.t_panel_grafica + vb.t_top_grafica - 5))
+
+        vb.l_bottom_grafica = panel_grafica.GetPosition()[0] + (panel_grafica.GetSize()[0] / 2)
+        vb.t_bottom_grafica = panel_grafica.GetPosition()[1] + (panel_grafica.GetSize()[1])
+        bottom_grafica.SetPosition(pt=(vb.l_bottom_grafica, vb.t_bottom_grafica - 5))
 
     def atras(e):
         # Funcion para volver al formulario principal
@@ -243,6 +260,7 @@ def previsualizar(e):
                 pt=(
                     slider_player.GetPosition()[0],
                     slider_player.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
+            reposicionar()
         elif vb.c_resize_grafica == 1:
             w_grafica_ant = vb.w_grafica
             # Se obtiene la relacion de tamaño entre el panel y la vetana
@@ -277,6 +295,7 @@ def previsualizar(e):
             barra_mover.SetBitmap(wx.Bitmap(name="otra.png"))
 
             vb.pixeles_grafica = vb.pixeles_grafica * vb.w_grafica / w_grafica_ant
+            reposicionar()
 
     def resize(e):
         # Funcion para redimensionar la imagen ajustandolo al tamaño de la ventana
@@ -392,6 +411,8 @@ def previsualizar(e):
         vb.h_ant = h
         vb.w_ant_grafica = vb.w_grafica
         vb.h_ant_grafica = vb.h_grafica
+
+        reposicionar()
 
         reproductor.Thaw()
 
