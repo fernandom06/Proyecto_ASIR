@@ -81,9 +81,11 @@ def previsualizar(e):
 
     def arrastrarw(e, widget):
         if e.Dragging():
+            cursor = wx.Cursor(wx.CURSOR_SIZEWE)
+            reproductor.SetCursor(cursor)
             x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
             fp = (x - vb.delta[0], vb.delta[1])
-            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget))
+            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget, cuadrado=True))
             widget.Move(fp)
 
     def pincharh(e, widget):
@@ -98,9 +100,11 @@ def previsualizar(e):
 
     def arrastrarh(e, widget):
         if e.Dragging():
+            cursor = wx.Cursor(wx.CURSOR_SIZENS)
+            reproductor.SetCursor(cursor)
             x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
             fp = (vb.delta[0], y - vb.delta[1])
-            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget))
+            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget, cuadrado=True))
             widget.Move(fp)
 
     def pinchar(e, widget):
@@ -118,49 +122,148 @@ def previsualizar(e):
         if e.Dragging():
             x, y = reproductor.ScreenToClient(widget.ClientToScreen(e.GetPosition()))
             fp = (x - vb.delta[0], y - vb.delta[1])
-            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget))
+            widget.Bind(wx.EVT_LEFT_UP, partial(soltar, widget=widget, cuadrado=False))
             widget.Move(fp)
             if widget.Name == "player":
                 vb.l_panel_player, vb.t_panel_player = widget.GetPosition()
             elif widget.Name == "grafica":
                 vb.l_panel_grafica, vb.t_panel_grafica = widget.GetPosition()
-            reposicionar()
+            reposicionar_cuadrados()
 
-    def soltar(e, widget):
+    def soltar(e, widget, cuadrado):
+        cursor = wx.Cursor(wx.CURSOR_ARROW)
+        reproductor.SetCursor(cursor)
         if widget.HasCapture():
             widget.ReleaseMouse()
         reproductor.Refresh()
+        if cuadrado:
+            reposicionar_paneles()
+            reposicionar_cuadrados()
 
-    def reposicionar():
-        # Panel
+    def reposicionar_paneles():
+        # Player
+        w_panel_player, h_panel_player = panel_player.GetSize()
+        w_panel_grafica, h_panel_grafica = panel_grafica.GetSize()
+        vb.l_panel_player = izq_video.GetPosition()[0]
+        vb.t_panel_player = top_video.GetPosition()[1]
+        vb.w_panel_player = der_video.GetPosition()[0] - vb.l_panel_player
+        vb.h_panel_player = bottom_video.GetPosition()[1] - vb.t_panel_player
+        panel_player.SetSize(vb.w_panel_player, vb.h_panel_player)
+        panel_player.SetPosition(pt=(vb.l_panel_player, vb.t_panel_player))
+
+        # Grafica
+        vb.l_panel_grafica = izq_grafica.GetPosition()[0]
+        vb.t_panel_grafica = top_grafica.GetPosition()[1]
+        vb.w_panel_grafica = der_grafica.GetPosition()[0] - vb.l_panel_grafica
+        vb.h_panel_grafica = bottom_grafica.GetPosition()[1] - vb.t_panel_grafica
+        panel_grafica.SetSize(vb.w_panel_grafica, vb.h_panel_grafica)
+        panel_grafica.SetPosition(pt=(vb.l_panel_grafica, vb.t_panel_grafica))
+        reposicionar_elementos(w_panel_player, h_panel_player, w_panel_grafica, h_panel_grafica)
+
+    def reposicionar_elementos(w_panel_player, h_panel_player, w_panel_grafica, h_panel_grafica):
+        # Se obtiene la relacion de tamaño entre el panel y la vetana
+        boton_play.SetPosition(
+            pt=(
+                boton_play.GetPosition()[0],
+                boton_play.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel_player)))
+
+        boton_pause.SetPosition(
+            pt=(
+                boton_pause.GetPosition()[0],
+                boton_pause.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel_player)))
+
+        boton_atras.SetPosition(
+            pt=(
+                boton_atras.GetPosition()[0],
+                boton_atras.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel_player)))
+
+        boton_grabar.SetPosition(
+            pt=(
+                boton_grabar.GetPosition()[0],
+                boton_grabar.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel_player)))
+
+        boton_grafica.SetPosition(
+            pt=(
+                boton_grafica.GetPosition()[0],
+                boton_grafica.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel_player)))
+
+        vb.w_slider = vb.w_slider * panel_player.GetSize()[0] / w_panel_player
+        slider_player.SetSize(vb.w_slider, vb.h_slider)
+        slider_player.SetPosition(
+            pt=(
+                slider_player.GetPosition()[0],
+                slider_player.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel_player)))
+
+        vb.w_player = vb.w_player * panel_player.GetSize()[0] / w_panel_player
+        vb.h_player = vb.h_player * panel_player.GetSize()[1] / h_panel_player
+        player.SetSize(vb.w_player, vb.h_player)
+
+        # Grafica
+
+        w_grafica_ant = vb.w_grafica
+        vb.w_grafica = vb.w_grafica * panel_grafica.GetSize()[0] / w_panel_grafica
+        vb.h_grafica = vb.h_grafica * panel_grafica.GetSize()[1] / h_panel_grafica
+        vb.w_inch = vb.w_grafica / 100
+        vb.h_inch = vb.h_grafica / 100
+        imagen = Image.open("grafico.png")
+        guardar = imagen.resize((int(vb.w_panel_grafica) - 40, int(vb.h_panel_grafica) - 50))
+        guardar.save("otra.png")
+        grafica.SetBitmap(wx.Bitmap(name="otra.png"))
+
+        vb.w_barra = vb.w_barra * panel_grafica.GetSize()[0] / w_panel_grafica
+        vb.h_barra = vb.h_barra * panel_grafica.GetSize()[1] / h_panel_grafica
+        vb.l_barra = vb.l_barra * panel_grafica.GetSize()[0] / w_panel_grafica
+        vb.t_barra = vb.t_barra * panel_grafica.GetSize()[1] / h_panel_grafica
+        barra_mover.SetPosition(pt=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
+        imagen = Image.open("barra2.png")
+        guardar = imagen.resize((int(vb.w_barra), int(vb.h_barra)))
+        guardar.save("otra.png")
+        barra_mover.SetBitmap(wx.Bitmap(name="otra.png"))
+
+        vb.pixeles_grafica = vb.pixeles_grafica * vb.w_grafica / w_grafica_ant
+
+    def reposicionar_cuadrados():
+        # Player
         vb.t_izq_video = panel_player.GetPosition()[1] + (panel_player.GetSize()[1] / 2)
-        izq_video.SetPosition(pt=(vb.l_panel_player + vb.l_izq_video, vb.t_izq_video))
+        izq_video.SetPosition(pt=(vb.l_panel_player - 5 + vb.l_izq_video, vb.t_izq_video))
 
         vb.l_der_video = panel_player.GetPosition()[0] + (panel_player.GetSize()[0])
         vb.t_der_video = panel_player.GetPosition()[1] + (panel_player.GetSize()[1] / 2)
-        der_video.SetPosition(pt=(vb.l_der_video - 5, vb.t_der_video))
+        der_video.SetPosition(pt=(vb.l_der_video, vb.t_der_video))
 
         vb.l_top_video = panel_player.GetPosition()[0] + (panel_player.GetSize()[0] / 2)
-        top_video.SetPosition(pt=(vb.l_top_video, vb.t_panel_player + vb.t_top_video))
+        top_video.SetPosition(pt=(vb.l_top_video, vb.t_panel_player + vb.t_top_video - 5))
 
         vb.l_bottom_video = panel_player.GetPosition()[0] + (panel_player.GetSize()[0] / 2)
         vb.t_bottom_video = panel_player.GetPosition()[1] + (panel_player.GetSize()[1])
-        bottom_video.SetPosition(pt=(vb.l_bottom_video, vb.t_bottom_video - 5))
+        bottom_video.SetPosition(pt=(vb.l_bottom_video, vb.t_bottom_video))
 
         # Grafica
         vb.t_izq_grafica = panel_grafica.GetPosition()[1] + (panel_grafica.GetSize()[1] / 2)
-        izq_grafica.SetPosition(pt=(vb.l_panel_grafica + vb.l_izq_grafica, vb.t_izq_grafica))
+        izq_grafica.SetPosition(pt=(vb.l_panel_grafica - 5 + vb.l_izq_grafica, vb.t_izq_grafica))
 
         vb.l_der_grafica = panel_grafica.GetPosition()[0] + (panel_grafica.GetSize()[0])
         vb.t_der_grafica = panel_grafica.GetPosition()[1] + (panel_grafica.GetSize()[1] / 2)
-        der_grafica.SetPosition(pt=(vb.l_der_grafica - 5, vb.t_der_grafica))
+        der_grafica.SetPosition(pt=(vb.l_der_grafica, vb.t_der_grafica))
 
         vb.l_top_grafica = panel_grafica.GetPosition()[0] + (panel_grafica.GetSize()[0] / 2)
-        top_grafica.SetPosition(pt=(vb.l_top_grafica, vb.t_panel_grafica + vb.t_top_grafica - 5))
+        top_grafica.SetPosition(pt=(vb.l_top_grafica, vb.t_panel_grafica + vb.t_top_grafica - 10))
 
         vb.l_bottom_grafica = panel_grafica.GetPosition()[0] + (panel_grafica.GetSize()[0] / 2)
         vb.t_bottom_grafica = panel_grafica.GetPosition()[1] + (panel_grafica.GetSize()[1])
-        bottom_grafica.SetPosition(pt=(vb.l_bottom_grafica, vb.t_bottom_grafica - 5))
+        bottom_grafica.SetPosition(pt=(vb.l_bottom_grafica, vb.t_bottom_grafica))
+
+    def entrar_paneles_w(e):
+        cursor = wx.Cursor(wx.CURSOR_SIZEWE)
+        reproductor.SetCursor(cursor)
+
+    def entrar_paneles_h(e):
+        cursor = wx.Cursor(wx.CURSOR_SIZENS)
+        reproductor.SetCursor(cursor)
+
+    def salir_paneles(e):
+        cursor = wx.Cursor(wx.CURSOR_ARROW)
+        reproductor.SetCursor(cursor)
 
     def atras(e):
         # Funcion para volver al formulario principal
@@ -198,6 +301,7 @@ def previsualizar(e):
         gr.grafica(numero=1)
         grafica.SetBitmap(wx.Bitmap(name="otra.png"))
         cursor = wx.Cursor(wx.CURSOR_ARROW)
+        reproductor.Refresh()
         reproductor.SetCursor(cursor)
         reproductor.SetFocus()
 
@@ -260,7 +364,7 @@ def previsualizar(e):
                 pt=(
                     slider_player.GetPosition()[0],
                     slider_player.GetPosition()[1] + (panel_player.GetSize()[1] - h_panel)))
-            reposicionar()
+            reposicionar_cuadrados()
         elif vb.c_resize_grafica == 1:
             w_grafica_ant = vb.w_grafica
             # Se obtiene la relacion de tamaño entre el panel y la vetana
@@ -295,7 +399,7 @@ def previsualizar(e):
             barra_mover.SetBitmap(wx.Bitmap(name="otra.png"))
 
             vb.pixeles_grafica = vb.pixeles_grafica * vb.w_grafica / w_grafica_ant
-            reposicionar()
+            reposicionar_cuadrados()
 
     def resize(e):
         # Funcion para redimensionar la imagen ajustandolo al tamaño de la ventana
@@ -412,7 +516,7 @@ def previsualizar(e):
         vb.w_ant_grafica = vb.w_grafica
         vb.h_ant_grafica = vb.h_grafica
 
-        reposicionar()
+        reposicionar_cuadrados()
 
         reproductor.Thaw()
 
@@ -509,42 +613,58 @@ def previsualizar(e):
                          pos=(vb.l_panel_player + vb.l_izq_video, vb.t_panel_player + vb.t_izq_video))
     izq_video.SetBackgroundColour(wx.BLUE)
     izq_video.Bind(wx.EVT_LEFT_DOWN, partial(pincharw, widget=izq_video))
+    izq_video.Bind(wx.EVT_ENTER_WINDOW, entrar_paneles_w)
+    izq_video.Bind(wx.EVT_LEAVE_WINDOW, salir_paneles)
 
     der_video = wx.Panel(reproductor, size=(10, 10), pos=(
         vb.l_panel_player + vb.w_panel_player + vb.l_der_video, vb.t_panel_player + vb.t_der_video))
     der_video.SetBackgroundColour(wx.BLUE)
     der_video.Bind(wx.EVT_LEFT_DOWN, partial(pincharw, widget=der_video))
+    der_video.Bind(wx.EVT_ENTER_WINDOW, entrar_paneles_w)
+    der_video.Bind(wx.EVT_LEAVE_WINDOW, salir_paneles)
 
     top_video = wx.Panel(reproductor, size=(10, 10),
                          pos=(vb.l_panel_player + vb.l_top_video, vb.t_panel_player + vb.t_top_video))
     top_video.SetBackgroundColour(wx.BLUE)
     top_video.Bind(wx.EVT_LEFT_DOWN, partial(pincharh, widget=top_video))
+    top_video.Bind(wx.EVT_ENTER_WINDOW, entrar_paneles_h)
+    top_video.Bind(wx.EVT_LEAVE_WINDOW, salir_paneles)
 
     bottom_video = wx.Panel(reproductor, size=(10, 10), pos=(
         vb.l_panel_player + vb.l_bottom_video, vb.t_panel_player + vb.h_panel_player + vb.t_bottom_video))
     bottom_video.SetBackgroundColour(wx.BLUE)
     bottom_video.Bind(wx.EVT_LEFT_DOWN, partial(pincharh, widget=bottom_video))
+    bottom_video.Bind(wx.EVT_ENTER_WINDOW, entrar_paneles_h)
+    bottom_video.Bind(wx.EVT_LEAVE_WINDOW, salir_paneles)
 
     # Paneles para redimensionar el panel del player
     izq_grafica = wx.Panel(reproductor, size=(10, 10),
                            pos=(vb.l_panel_grafica + vb.l_izq_grafica, vb.t_panel_grafica + vb.t_izq_grafica))
     izq_grafica.SetBackgroundColour(wx.BLUE)
     izq_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pincharw, widget=izq_grafica))
+    izq_grafica.Bind(wx.EVT_ENTER_WINDOW, entrar_paneles_w)
+    izq_grafica.Bind(wx.EVT_LEAVE_WINDOW, salir_paneles)
 
     der_grafica = wx.Panel(reproductor, size=(10, 10), pos=(
         vb.l_panel_grafica + vb.w_panel_grafica + vb.l_der_grafica, vb.t_panel_grafica + vb.t_der_grafica))
     der_grafica.SetBackgroundColour(wx.BLUE)
     der_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pincharw, widget=der_grafica))
+    der_grafica.Bind(wx.EVT_ENTER_WINDOW, entrar_paneles_w)
+    der_grafica.Bind(wx.EVT_LEAVE_WINDOW, salir_paneles)
 
     top_grafica = wx.Panel(reproductor, size=(10, 10),
                            pos=(vb.l_panel_grafica + vb.l_top_grafica, vb.t_panel_grafica + vb.t_top_grafica))
     top_grafica.SetBackgroundColour(wx.BLUE)
     top_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pincharh, widget=top_grafica))
+    top_grafica.Bind(wx.EVT_ENTER_WINDOW, entrar_paneles_h)
+    top_grafica.Bind(wx.EVT_LEAVE_WINDOW, salir_paneles)
 
     bottom_grafica = wx.Panel(reproductor, size=(10, 10), pos=(
         vb.l_panel_grafica + vb.l_bottom_grafica, vb.t_panel_grafica + vb.h_panel_grafica + vb.t_top_grafica))
     bottom_grafica.SetBackgroundColour(wx.BLUE)
     bottom_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pincharh, widget=bottom_grafica))
+    bottom_grafica.Bind(wx.EVT_ENTER_WINDOW, entrar_paneles_h)
+    bottom_grafica.Bind(wx.EVT_LEAVE_WINDOW, salir_paneles)
 
     reproductor.Show()
     reproductor.Centre(wx.BOTH)
