@@ -42,8 +42,6 @@ def grafica(numero):
 
     quitar_filas = 0
     total_filas = 0
-    for i in range(len(data["graficas"]["grafica"])):
-        total_filas += data["graficas"]["grafica"][i]["filas"]
 
     # Si si que se quieren elegir las etiquetas se crean arrays con la ayuda de la libreria numpy para poder introducir
     # valores de tipo float
@@ -55,6 +53,8 @@ def grafica(numero):
     fig.subplots_adjust(top=0.95, bottom=0.25, left=0.18, right=0.97, hspace=0.1)
 
     if vb.c_titulos == 0:
+        for i in range(len(data["graficas"]["grafica"])):
+            total_filas += data["graficas"]["grafica"][i]["filas"]
         # For en el que se crean las graficas
         for i in range(vb.contador_col - 1):
             gra = plt.subplot2grid((total_filas, 1), (quitar_filas, 0), rowspan=data["graficas"]["grafica"][i]["filas"])
@@ -90,6 +90,9 @@ def grafica(numero):
             plt.yticks(fontsize=data["graficas"]["grafica"][i]["tamanno_etiqueta"],
                        fontname=data["graficas"]["grafica"][i]["fuente_etiqueta"])
     if vb.c_titulos == 1:
+        for i in range(len(data["graficas"]["grafica"])):
+            if vb.col_checked[i]:
+                total_filas += data["graficas"]["grafica"][i]["filas"]
         # For en el que se crean las graficas
         contador_true = vb.col_checked.count(True)
         contador = 1

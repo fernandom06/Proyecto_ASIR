@@ -279,6 +279,10 @@ def previsualizar(e):
         vb.w_panel_grafica = 930
         vb.h_panel_grafica = 580
         panel_grafica.SetSize(930, 580)
+        vb.l_panel_player = 640
+        vb.t_panel_player = 0
+        vb.l_panel_grafica = 445
+        vb.t_panel_grafica = 530
         vb.w_grafica = 830
         vb.h_grafica = 480
         vb.l_barra = 151
@@ -287,6 +291,8 @@ def previsualizar(e):
         vb.h_barra = 350
         vb.l_grafica = 25
         vb.t_grafica = 25
+        vb.w_player = 640
+        vb.h_player = 400
         vb.pixeles_grafica = 650
         grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
         barra_mover.SetBitmap(wx.Bitmap(name="barra2.png"))
