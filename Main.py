@@ -66,18 +66,18 @@ def ck_ytick(e):
                 wx.StaticText(panel_principal, label=f"Columna {i+1}", pos=(800, 260 + i * 40)))
             vb.ytick_entrada.append(wx.TextCtrl(panel_principal, pos=(860, 260 + i * 40), size=(40, -1)))
             vb.ytick_entrada[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_entrada, entrada=vb.ytick_entrada))
-            vb.ytick_entrada[i].Bind(wx.EVT_ENTER_WINDOW,dentro)
-            vb.ytick_entrada[i].Bind(wx.EVT_LEAVE_WINDOW,fuera)
+            vb.ytick_entrada[i].Bind(wx.EVT_ENTER_WINDOW, dentro)
+            vb.ytick_entrada[i].Bind(wx.EVT_LEAVE_WINDOW, fuera)
             vb.ytick_entrada_fin.append(0)
             vb.ytick_salida.append(wx.TextCtrl(panel_principal, pos=(935, 260 + i * 40), size=(40, -1)))
             vb.ytick_salida[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_salida, entrada=vb.ytick_salida))
-            vb.ytick_salida[i].Bind(wx.EVT_ENTER_WINDOW,dentro)
-            vb.ytick_salida[i].Bind(wx.EVT_LEAVE_WINDOW,fuera)
+            vb.ytick_salida[i].Bind(wx.EVT_ENTER_WINDOW, dentro)
+            vb.ytick_salida[i].Bind(wx.EVT_LEAVE_WINDOW, fuera)
             vb.ytick_salida_fin.append(0)
             vb.ytick_salto.append(wx.TextCtrl(panel_principal, pos=(1010, 260 + i * 40), size=(40, -1)))
             vb.ytick_salto[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_salto, entrada=vb.ytick_salto))
-            vb.ytick_salto[i].Bind(wx.EVT_ENTER_WINDOW,dentro)
-            vb.ytick_salto[i].Bind(wx.EVT_LEAVE_WINDOW,fuera)
+            vb.ytick_salto[i].Bind(wx.EVT_ENTER_WINDOW, dentro)
+            vb.ytick_salto[i].Bind(wx.EVT_LEAVE_WINDOW, fuera)
             vb.ytick_salto_fin.append(0)
         inicio_ytick.Show()
         fin_ytick.Show()
@@ -150,13 +150,16 @@ def cargar_archivo(e, numero, texto, tipo):
                 error.ShowModal()
                 error.Centre()
 
+
 def dentro(e):
     vb.cursor = wx.Cursor(wx.CURSOR_IBEAM)
     menu_principal.SetCursor(vb.cursor)
 
+
 def fuera(e):
     vb.cursor = wx.Cursor(wx.CURSOR_ARROW)
     menu_principal.SetCursor(vb.cursor)
+
 
 def previsualizar(e):
     if vb.video == "":
@@ -258,8 +261,8 @@ etiquetas = wx.StaticText(panel_principal, label="Intervalos de etiquetas", pos=
 etiquetas_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["intervalos"]), pos=(540, 38),
                               size=(175, -1))
 etiquetas_input.Bind(wx.EVT_TEXT, valores_texto)
-etiquetas_input.Bind(wx.EVT_ENTER_WINDOW,dentro)
-etiquetas_input.Bind(wx.EVT_LEAVE_WINDOW,fuera)
+etiquetas_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
+etiquetas_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
 
 # Checkbox para si se quieren todas las columnas del CSV
 check_col = wx.CheckBox(panel_principal, label="Elegir Columnas", pos=(400, 198))
@@ -269,22 +272,22 @@ check_col.Bind(wx.EVT_CHECKBOX, ck_col)
 s_entrada = wx.StaticText(panel_principal, label="Tiempo entrada del video (segundos)", pos=(400, 440))
 s_entrada_input = wx.TextCtrl(panel_principal, value="0", pos=(600, 438), size=(80, -1))
 s_entrada_input.Bind(wx.EVT_TEXT, valores_texto)
-s_entrada_input.Bind(wx.EVT_ENTER_WINDOW,dentro)
-s_entrada_input.Bind(wx.EVT_LEAVE_WINDOW,fuera)
+s_entrada_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
+s_entrada_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
 
 s_salida = wx.StaticText(panel_principal, label="Tiempo salida del video (segundos)", pos=(400, 480))
 # Poner que si se deja a 0 se tomara el valor total del video
 s_salida_input = wx.TextCtrl(panel_principal, value="0", pos=(590, 478), size=(80, -1))
 s_salida_input.Bind(wx.EVT_TEXT, valores_texto)
-s_salida_input.Bind(wx.EVT_ENTER_WINDOW,dentro)
-s_salida_input.Bind(wx.EVT_LEAVE_WINDOW,fuera)
+s_salida_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
+s_salida_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
 
 # Angulo de rotacion de las etiquetas
 angulo = wx.StaticText(panel_principal, label="Angulo de rotacion de las etiquetas", pos=(750, 480))
 angulo_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["rotacion"]), pos=(950, 478), size=(80, -1))
 angulo_input.Bind(wx.EVT_TEXT, valores_texto)
-angulo_input.Bind(wx.EVT_ENTER_WINDOW,dentro)
-angulo_input.Bind(wx.EVT_LEAVE_WINDOW,fuera)
+angulo_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
+angulo_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
 
 vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)
 vb.titulos_col.Hide()

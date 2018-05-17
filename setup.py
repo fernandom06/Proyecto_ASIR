@@ -11,7 +11,7 @@ build_exe_options = {
 
 setup(
     name="Proyecto",
-    version="3.0",
+    version="4.0",
     py_modules=["wx"],
     options={"build_exe": build_exe_options},
     executables=executables,
