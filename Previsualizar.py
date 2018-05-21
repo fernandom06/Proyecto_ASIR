@@ -2,6 +2,7 @@ from functools import partial
 import wx
 import wx.media
 from PIL import Image
+import json
 import Graficas as gr
 import Variables as vb
 
@@ -223,7 +224,7 @@ def previsualizar(e):
         vb.l_barra = vb.l_barra * panel_grafica.GetSize()[0] / w_panel_grafica
         vb.t_barra = vb.t_barra * panel_grafica.GetSize()[1] / h_panel_grafica
         barra_mover.SetPosition(pt=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
-        imagen = Image.open("barra2.png")
+        imagen = Image.open(f"barra-{data['barra']}.png")
         guardar = imagen.resize((int(vb.w_barra), int(vb.h_barra)))
         guardar.save("otra.png")
         barra_mover.SetBitmap(wx.Bitmap(name="otra.png"))
@@ -303,7 +304,7 @@ def previsualizar(e):
         vb.h_player = 400
         vb.pixeles_grafica = 650
         grafica.SetBitmap(wx.Bitmap(name="grafico.png"))
-        barra_mover.SetBitmap(wx.Bitmap(name="barra2.png"))
+        barra_mover.SetBitmap(wx.Bitmap(name=f"barra-{data['barra']}.png"))
         barra_mover.SetPosition(pt=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
         reproductor.Maximize()
         reproductor.Destroy()
@@ -407,7 +408,7 @@ def previsualizar(e):
             vb.h_barra = vb.h_barra * panel_grafica.GetSize()[1] / h_panel
             vb.l_barra = vb.l_barra * panel_grafica.GetSize()[0] / w_panel
             barra_mover.SetPosition(pt=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra))
-            imagen = Image.open("barra2.png")
+            imagen = Image.open(f"barra-{data['barra']}.png")
             guardar = imagen.resize((int(vb.w_barra), int(vb.h_barra)))
             guardar.save("otra.png")
             barra_mover.SetBitmap(wx.Bitmap(name="otra.png"))
@@ -536,6 +537,7 @@ def previsualizar(e):
 
     # LLamar a la funcion grafica para crear la grafica
     vb.barra_tiempo = gr.grafica(numero=0)
+    data = json.load(open("settings.json", encoding='utf-8'))
 
     # Crear ventana para el video
     reproductor = wx.Frame(None, size=(1440, 900))
@@ -617,7 +619,7 @@ def previsualizar(e):
     player.Bind(wx.EVT_TIMER, cargado, timer_grabar)
 
     # Introducir la barra encima del gráfico
-    barra_mover = wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name="barra2.png"),
+    barra_mover = wx.StaticBitmap(panel_grafica, -1, wx.Bitmap(name=f"barra-{data['barra']}.png"),
                                   pos=(vb.l_grafica + vb.l_barra, vb.t_grafica + vb.t_barra),
                                   size=(vb.w_barra, vb.h_barra))
     barra_mover.Hide()
