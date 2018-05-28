@@ -178,6 +178,18 @@ def previsualizar(e):
         error = wx.MessageDialog(menu_principal, "No se ha cargado el CSV", "Error", wx.OK | wx.ICON_ERROR)
         error.ShowModal()
         error.Centre()
+    except ValueError:
+        vb.cursor = wx.Cursor(wx.CURSOR_ARROW)
+        menu_principal.SetCursor(vb.cursor)
+        error = wx.MessageDialog(menu_principal, "Las etiquetas del eje Y no estan bien definidas", "Error", wx.OK | wx.ICON_ERROR)
+        error.ShowModal()
+        error.Centre()
+    except ZeroDivisionError:
+        vb.cursor = wx.Cursor(wx.CURSOR_ARROW)
+        menu_principal.SetCursor(vb.cursor)
+        error = wx.MessageDialog(menu_principal, "Las etiquetas del eje Y no estan bien definidas", "Error", wx.OK | wx.ICON_ERROR)
+        error.ShowModal()
+        error.Centre()
     except IndexError:
         vb.cursor = wx.Cursor(wx.CURSOR_ARROW)
         menu_principal.SetCursor(vb.cursor)
