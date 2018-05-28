@@ -63,18 +63,18 @@ def ck_ytick(e):
     if vb.c_yticks == 0:
         for i in range(vb.contador_col - 1):
             vb.ytick_label.append(
-                wx.StaticText(panel_principal, label=f"Columna {i+1}", pos=(800, 260 + i * 40)))
-            vb.ytick_entrada.append(wx.TextCtrl(panel_principal, pos=(860, 260 + i * 40), size=(40, -1)))
+                wx.StaticText(panel_principal, label=f"Columna {i+1}", pos=(400, 475 + i * 40)))
+            vb.ytick_entrada.append(wx.TextCtrl(panel_principal, pos=(465, 470 + i * 40), size=(40, -1)))
             vb.ytick_entrada[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_entrada, entrada=vb.ytick_entrada))
             vb.ytick_entrada[i].Bind(wx.EVT_ENTER_WINDOW, dentro)
             vb.ytick_entrada[i].Bind(wx.EVT_LEAVE_WINDOW, fuera)
             vb.ytick_entrada_fin.append(0)
-            vb.ytick_salida.append(wx.TextCtrl(panel_principal, pos=(935, 260 + i * 40), size=(40, -1)))
+            vb.ytick_salida.append(wx.TextCtrl(panel_principal, pos=(535, 470 + i * 40), size=(40, -1)))
             vb.ytick_salida[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_salida, entrada=vb.ytick_salida))
             vb.ytick_salida[i].Bind(wx.EVT_ENTER_WINDOW, dentro)
             vb.ytick_salida[i].Bind(wx.EVT_LEAVE_WINDOW, fuera)
             vb.ytick_salida_fin.append(0)
-            vb.ytick_salto.append(wx.TextCtrl(panel_principal, pos=(1010, 260 + i * 40), size=(40, -1)))
+            vb.ytick_salto.append(wx.TextCtrl(panel_principal, pos=(610, 470 + i * 40), size=(40, -1)))
             vb.ytick_salto[i].Bind(wx.EVT_TEXT, partial(cambiar_ytick_salto, entrada=vb.ytick_salto))
             vb.ytick_salto[i].Bind(wx.EVT_ENTER_WINDOW, dentro)
             vb.ytick_salto[i].Bind(wx.EVT_LEAVE_WINDOW, fuera)
@@ -116,7 +116,7 @@ def ck_col(e):
         for i in range(vb.contador_col - 1):
             list_col.append(f"Columna {i+1}")
             vb.col_checked.append(True)
-        vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)
+        vb.titulos_col = wx.CheckListBox(panel_principal, pos=(25, 460), choices=list_col)
         vb.titulos_col.Bind(wx.EVT_CHECKLISTBOX, lista_col)
         vb.c_titulos = 1
 
@@ -208,24 +208,36 @@ fonts = ["Arial", "Times New Roman", "Verdana", "Courier New", "Comic Sans MS", 
 
 app = wx.App()
 # El estilo que se le aplica a la ventana es el de por defecto pero quitandole la posibilidad de modificar el tamaño
-menu_principal = wx.Frame(None, size=(1200, 600), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
+menu_principal = wx.Frame(None, size=(800, 700), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
 menu_principal.Bind(wx.EVT_CLOSE, vb.cerrar)
 
 panel_principal = wx.Panel(menu_principal)
 
-# Elegir video y CSV
-texto1 = wx.StaticText(panel_principal, label="Video", pos=(20, 40))
-texto2 = wx.StaticText(panel_principal, label="CSV", pos=(20, 80))
+#Bienvenida
+wx.StaticLine(panel_principal,pos=(20,80),size=(740,-1))
+bienvenida=wx.StaticText(panel_principal,pos=(220,20),label="Selección de Parámetros")
+font_bienvenida = wx.Font(20, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+font_titulo = wx.Font(11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+bienvenida.SetFont(wx.Font(font_bienvenida))
+bienvenida.SetForegroundColour("#244ABF")
 
-cuadro1 = wx.TextCtrl(panel_principal, value=vb.video, pos=(70, 38), size=(175, -1), style=wx.TE_READONLY)
+# Elegir video y CSV
+titulo_archivos=wx.StaticText(panel_principal,pos=(25,120),label="Archivos   ")
+titulo_archivos.SetFont(font_titulo)
+titulo_archivos.SetForegroundColour("#3982E8")
+wx.StaticLine(panel_principal,pos=(25,140),size=(80,-1))
+texto1 = wx.StaticText(panel_principal, label="Video", pos=(20, 160))
+texto2 = wx.StaticText(panel_principal, label="CSV", pos=(20, 200))
+
+cuadro1 = wx.TextCtrl(panel_principal, value=vb.video, pos=(70, 158), size=(175, -1), style=wx.TE_READONLY)
 cuadro1.Bind(wx.EVT_TEXT, valores_texto)
-cuadro2 = wx.TextCtrl(panel_principal, value=vb.csv, pos=(70, 78), size=(175, -1), style=wx.TE_READONLY)
+cuadro2 = wx.TextCtrl(panel_principal, value=vb.csv, pos=(70, 198), size=(175, -1), style=wx.TE_READONLY)
 cuadro2.Bind(wx.EVT_TEXT, valores_texto)
 
-boton1 = wx.Button(panel_principal, label="Cargar video", pos=(260, 37))
-boton2 = wx.Button(panel_principal, label="Cargar CSV", pos=(260, 77))
-boton_salir = wx.Button(panel_principal, label="Salir", pos=(150, 500))
-boton_previsualizar = wx.Button(panel_principal, label="Previsualizar video", pos=(20, 500))
+boton1 = wx.Button(panel_principal, label="Cargar video", pos=(260, 157))
+boton2 = wx.Button(panel_principal, label="Cargar CSV", pos=(260, 197))
+boton_salir = wx.Button(panel_principal, label="Salir", pos=(150, 580))
+boton_previsualizar = wx.Button(panel_principal, label="Previsualizar video", pos=(20, 580))
 
 boton1.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el video", numero=1, tipo=""))
 boton2.Bind(wx.EVT_BUTTON, partial(cargar_archivo, texto="Carga el CSV", numero=2, tipo="CSV files (.csv)|*.csv"))
@@ -233,73 +245,93 @@ boton_salir.Bind(wx.EVT_BUTTON, vb.cerrar)
 boton_previsualizar.Bind(wx.EVT_BUTTON, previsualizar)
 
 # Checkbox
-check = wx.CheckBox(panel_principal, label="Elegir colores personalizados", pos=(20, 115))
+titulo_colores=wx.StaticText(panel_principal,pos=(25,250),label="Colores   ")
+titulo_colores.SetFont(font_titulo)
+titulo_colores.SetForegroundColour("#3982E8")
+wx.StaticLine(panel_principal,pos=(25,270),size=(80,-1))
+check = wx.CheckBox(panel_principal, label="Elegir colores personalizados", pos=(20, 285))
 check.SetValue(True)
 check.Bind(wx.EVT_CHECKBOX, cambiar)
 
 # Colores
-texto_back_rep = wx.StaticText(panel_principal, label="Color de fondo", pos=(20, 150))
-ch_back_rep = wx.Choice(panel_principal, choices=colores_wx, pos=(120, 145))
-cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 145), colour=(wx.WHITE))
+texto_back_rep = wx.StaticText(panel_principal, label="Color de fondo", pos=(20, 320))
+ch_back_rep = wx.Choice(panel_principal, choices=colores_wx, pos=(120, 315))
+cl_back_rep = wx.ColourPickerCtrl(panel_principal, pos=(120, 315), colour=(wx.WHITE))
 ch_back_rep.Hide()
 ch_back_rep.SetSelection(0)
 cl_back_rep.SetColour(data["colores"]["color_fondo"])
 ch_back_rep.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_rep.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
-texto_back_gr = wx.StaticText(panel_principal, label="Color de fondo de la gráfica", pos=(20, 230))
-ch_back_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(180, 225))
-cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 225), colour=(wx.WHITE))
+texto_back_gr = wx.StaticText(panel_principal, label="Color de fondo de la gráfica", pos=(20, 350))
+ch_back_gr = wx.Choice(panel_principal, choices=colores_mat, pos=(180, 345))
+cl_back_gr = wx.ColourPickerCtrl(panel_principal, pos=(180, 345), colour=(wx.WHITE))
 ch_back_gr.Hide()
 ch_back_gr.SetSelection(0)
 cl_back_gr.SetColour(data["colores"]["color_fondo_grafica"])
 ch_back_gr.Bind(wx.EVT_CHOICE, valores_choice)
 cl_back_gr.Bind(wx.EVT_COLOURPICKER_CHANGED, valores_color)
 
+# Checkbox para si se quieren todas las columnas del CSV
+titulo_columnas=wx.StaticText(panel_principal,pos=(25,380),label="Columnas   ")
+titulo_columnas.SetFont(font_titulo)
+titulo_columnas.SetForegroundColour("#3982E8")
+wx.StaticLine(panel_principal,pos=(25,400),size=(85,-1))
+check_col = wx.CheckBox(panel_principal, label="Elegir Columnas", pos=(25, 420))
+check_col.Bind(wx.EVT_CHECKBOX, ck_col)
+
+vb.titulos_col = wx.CheckListBox(panel_principal, pos=(25, 540), choices=list_col)
+vb.titulos_col.Hide()
+
 # Intervalos de etiquetas
-etiquetas = wx.StaticText(panel_principal, label="Intervalos de etiquetas", pos=(400, 40))
-etiquetas_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["intervalos"]), pos=(540, 38),
-                              size=(175, -1))
+titulo_xticks=wx.StaticText(panel_principal,pos=(405,120),label="Etiquetas eje X   ")
+titulo_xticks.SetFont(font_titulo)
+titulo_xticks.SetForegroundColour("#3982E8")
+wx.StaticLine(panel_principal,pos=(405,140),size=(127,-1))
+etiquetas = wx.StaticText(panel_principal, label="Intervalos de etiquetas", pos=(400, 160))
+etiquetas_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["intervalos"]), pos=(540, 158),
+                              size=(80, -1))
 etiquetas_input.Bind(wx.EVT_TEXT, valores_texto)
 etiquetas_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
 etiquetas_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
 
-# Checkbox para si se quieren todas las columnas del CSV
-check_col = wx.CheckBox(panel_principal, label="Elegir Columnas", pos=(400, 198))
-check_col.Bind(wx.EVT_CHECKBOX, ck_col)
-
-# Tiempo entrada y salida
-s_entrada = wx.StaticText(panel_principal, label="Tiempo entrada del video (segundos)", pos=(400, 440))
-s_entrada_input = wx.TextCtrl(panel_principal, value="0", pos=(600, 438), size=(80, -1))
-s_entrada_input.Bind(wx.EVT_TEXT, valores_texto)
-s_entrada_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
-s_entrada_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
-
-s_salida = wx.StaticText(panel_principal, label="Tiempo salida del video (segundos)", pos=(400, 480))
-# Poner que si se deja a 0 se tomara el valor total del video
-s_salida_input = wx.TextCtrl(panel_principal, value="0", pos=(590, 478), size=(80, -1))
-s_salida_input.Bind(wx.EVT_TEXT, valores_texto)
-s_salida_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
-s_salida_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
-
 # Angulo de rotacion de las etiquetas
-angulo = wx.StaticText(panel_principal, label="Angulo de rotacion de las etiquetas", pos=(750, 480))
-angulo_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["rotacion"]), pos=(950, 478), size=(80, -1))
+angulo = wx.StaticText(panel_principal, label="Angulo de rotacion de las etiquetas", pos=(400, 200))
+angulo_input = wx.TextCtrl(panel_principal, value=str(data["etiquetas"]["rotacion"]), pos=(600, 198), size=(80, -1))
 angulo_input.Bind(wx.EVT_TEXT, valores_texto)
 angulo_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
 angulo_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
 
-vb.titulos_col = wx.CheckListBox(panel_principal, pos=(400, 240), choices=list_col)
-vb.titulos_col.Hide()
+# Tiempo entrada y salida
+titulo_tiempo=wx.StaticText(panel_principal,pos=(405,250),label="Tiempo de entrada   ")
+titulo_tiempo.SetForegroundColour("#3982E8")
+titulo_tiempo.SetFont(font_titulo)
+wx.StaticLine(panel_principal,pos=(405,270),size=(152,-1))
+s_entrada = wx.StaticText(panel_principal, label="Tiempo entrada del video (segundos)", pos=(400, 285))
+s_entrada_input = wx.TextCtrl(panel_principal, value="0", pos=(600, 285), size=(80, -1))
+s_entrada_input.Bind(wx.EVT_TEXT, valores_texto)
+s_entrada_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
+s_entrada_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
 
-check_ytick = wx.CheckBox(panel_principal, label="Elegir etiquetas del eje y", pos=(800, 198))
+s_salida = wx.StaticText(panel_principal, label="Tiempo salida del video (segundos)", pos=(400, 325))
+s_salida_input = wx.TextCtrl(panel_principal, value="0", pos=(590, 325), size=(80, -1))
+s_salida_input.Bind(wx.EVT_TEXT, valores_texto)
+s_salida_input.Bind(wx.EVT_ENTER_WINDOW, dentro)
+s_salida_input.Bind(wx.EVT_LEAVE_WINDOW, fuera)
+
+# Etiquetas eje Y
+titulo_yticks=wx.StaticText(panel_principal,pos=(405,360),label="Etiquetas eje Y   ")
+titulo_yticks.SetFont(font_titulo)
+titulo_yticks.SetForegroundColour("#3982E8")
+wx.StaticLine(panel_principal,pos=(405,380),size=(127,-1))
+check_ytick = wx.CheckBox(panel_principal, label="Elegir etiquetas del eje y", pos=(400, 400))
 check_ytick.Bind(wx.EVT_CHECKBOX, ck_ytick)
 
-inicio_ytick = wx.StaticText(panel_principal, label="(inicio)", pos=(860, 230))
+inicio_ytick = wx.StaticText(panel_principal, label="(inicio)", pos=(460, 435))
 inicio_ytick.Hide()
-fin_ytick = wx.StaticText(panel_principal, label="(final)", pos=(930, 230))
+fin_ytick = wx.StaticText(panel_principal, label="(final)", pos=(530, 435))
 fin_ytick.Hide()
-saltos_ytick = wx.StaticText(panel_principal, label="(longitud del salto)", pos=(985, 230))
+saltos_ytick = wx.StaticText(panel_principal, label="(longitud del salto)", pos=(585, 435))
 saltos_ytick.Hide()
 
 menu_principal.Show()
