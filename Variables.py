@@ -31,7 +31,7 @@ w_panel_player = 640
 h_panel_player = 500
 
 # Variables del logo
-w_logo = 431
+w_logo = 500
 h_logo = 183
 
 # Variables slider
@@ -94,7 +94,7 @@ t_player = 0
 l_panel_player = 640
 t_panel_player = 0
 
-l_logo = 1400
+l_logo = 1350
 t_logo = 0
 
 t_slider = 420
