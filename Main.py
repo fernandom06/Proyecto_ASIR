@@ -220,7 +220,7 @@ fonts = ["Arial", "Times New Roman", "Verdana", "Courier New", "Comic Sans MS", 
 
 app = wx.App()
 # El estilo que se le aplica a la ventana es el de por defecto pero quitandole la posibilidad de modificar el tamaño
-menu_principal = wx.Frame(None, size=(800, 700), style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
+menu_principal = wx.Frame(None, size=(800, 700), title="Menu principal", style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
 menu_principal.Bind(wx.EVT_CLOSE, vb.cerrar)
 
 panel_principal = wx.Panel(menu_principal)

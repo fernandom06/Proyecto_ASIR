@@ -540,7 +540,7 @@ def previsualizar(e):
     data = json.load(open("settings.json", encoding='utf-8'))
 
     # Crear ventana para el video
-    reproductor = wx.Frame(None, size=(1440, 900))
+    reproductor = wx.Frame(None, size=(1440, 900), title="Previsualizar")
     reproductor.SetBackgroundColour(vb.back_rep)
     reproductor.Maximize()
     reproductor.Bind(wx.EVT_SIZE, responsive)
@@ -551,14 +551,14 @@ def previsualizar(e):
     # main_sizer = wx.BoxSizer()
     panel_player = wx.Panel(reproductor, size=(vb.w_panel_player, vb.h_panel_player), pos=(640, 0), name="player")
     panel_player.Layout()
-    panel_player.SetBackgroundColour(wx.YELLOW)
+    panel_player.SetBackgroundColour("#3982E8")
     panel_player.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=panel_player))
     panel_player.Bind(wx.EVT_ENTER_WINDOW, partial(dentro, widget=panel_player))
     panel_player.Bind(wx.EVT_LEAVE_WINDOW, partial(fuera, widget=panel_player))
 
     panel_grafica = wx.Panel(reproductor, size=(vb.w_panel_grafica, vb.h_panel_grafica), pos=(445, 530), name="grafica")
     panel_grafica.Layout()
-    panel_grafica.SetBackgroundColour(wx.YELLOW)
+    panel_grafica.SetBackgroundColour("#3982E8")
     panel_grafica.Bind(wx.EVT_LEFT_DOWN, partial(pinchar, widget=panel_grafica))
     panel_grafica.Bind(wx.EVT_ENTER_WINDOW, partial(dentro, widget=panel_grafica))
     panel_grafica.Bind(wx.EVT_LEAVE_WINDOW, partial(fuera, widget=panel_grafica))

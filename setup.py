@@ -7,11 +7,13 @@ executables = [Executable("Main.py", base="Win32GUI")]
 build_exe_options = {
     "packages": ["wx", "Graficas", "Previsualizar", "Variables", 'numpy.core._methods', 'numpy.lib.format',
                  "matplotlib.backends.backend_wxagg"],
-    "include_files": ["barra2.png", "socio2.png", "player_pause.png", "player_play.png", "settings.json"]}
+    "include_files": ["socio2.png", "player_pause.png", "player_play.png", "settings.json", "barra-azul.png",
+                      "barra-amarillo.png", "barra-blanco.png", "barra-morado.png", "barra-negro.png", "barra-rojo.png",
+                      "barra-verde.png", "barra-rosa.png"]}
 
 setup(
     name="Proyecto",
-    version="4.0",
+    version="5.0",
     py_modules=["wx"],
     options={"build_exe": build_exe_options},
     executables=executables,
